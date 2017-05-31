@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.android.popularmovies.models.MovieData;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -15,9 +16,9 @@ import com.squareup.picasso.Picasso;
 
 class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAdapterViewHolder> {
 
-    private String[] movieData;
+    private MovieData[] movieData;
 
-    void setMovieData(String[] movieData) {
+    void setMovieData(MovieData[] movieData) {
         this.movieData = movieData;
         notifyDataSetChanged();
     }
@@ -34,7 +35,7 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
 
     @Override
     public void onBindViewHolder(MovieGridAdapterViewHolder holder, int position) {
-        String posterUrl = movieData[position];
+        String posterUrl = movieData[position].getPosterUrl();
         Picasso
                 .with(holder.mPosterImageView.getContext())
                 .load(posterUrl)

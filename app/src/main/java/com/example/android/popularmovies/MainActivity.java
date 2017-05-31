@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.android.popularmovies.models.MovieData;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TEST_POSTER_URL = "http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
@@ -23,15 +25,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        String[] fakeData = {
-                TEST_POSTER_URL,
-                TEST_POSTER_URL,
-                TEST_POSTER_URL,
-                TEST_POSTER_URL,
-                TEST_POSTER_URL,
-                TEST_POSTER_URL,
-                TEST_POSTER_URL
+        MovieData[] fakeData = {
+                new MovieData(TEST_POSTER_URL),
+                new MovieData(TEST_POSTER_URL),
+                new MovieData(TEST_POSTER_URL),
+                new MovieData(TEST_POSTER_URL),
+                new MovieData(TEST_POSTER_URL),
+                new MovieData(TEST_POSTER_URL),
+                new MovieData(TEST_POSTER_URL)
         };
+
         mAdapter.setMovieData(fakeData);
     }
 
