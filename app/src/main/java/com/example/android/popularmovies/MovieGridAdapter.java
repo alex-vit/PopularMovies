@@ -11,12 +11,17 @@ import com.example.android.popularmovies.models.MovieData;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by alex on 5/31/2017.
+ * Created by Aleksandrs Vitjukovs on 5/31/2017.
  */
 
 class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAdapterViewHolder> {
 
+    private final MovieClickListener mMovieClickListener;
     private MovieData[] movieData;
+
+    public MovieGridAdapter(MovieClickListener mMovieClickListener) {
+        this.mMovieClickListener = mMovieClickListener;
+    }
 
     void setMovieData(MovieData[] movieData) {
         this.movieData = movieData;
@@ -49,12 +54,28 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
         return (movieData == null) ? 0 : movieData.length;
     }
 
-    class MovieGridAdapterViewHolder extends RecyclerView.ViewHolder {
+    MovieData getData(int position) {
+        return movieData[position];
+    }
+
+    class MovieGridAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final ImageView mPosterImageView;
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            MovieData movie = getData(position);
+            mMovieClickListener.onMovieClicked(movie);
+        }
 
         MovieGridAdapterViewHolder(View itemView) {
             super(itemView);
             mPosterImageView = (ImageView) itemView.findViewById(R.id.poster_image);
+            itemView.setOnClickListener(this);
         }
+    }
+
+    public interface MovieClickListener {
+        void onMovieClicked(MovieData movieData);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.android.popularmovies;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -7,12 +8,12 @@ import android.support.v7.widget.RecyclerView;
 
 import com.example.android.popularmovies.models.MovieData;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieGridAdapter.MovieClickListener {
 
     private static final String TEST_POSTER_URL = "http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
     private static final int N_COLUMNS = 2;
 
-    private RecyclerView mMovieGridRecyclerView;
+    RecyclerView mMovieGridRecyclerView;
     private MovieGridAdapter mAdapter;
 
     @Override
@@ -42,9 +43,16 @@ public class MainActivity extends AppCompatActivity {
         mMovieGridRecyclerView = (RecyclerView) findViewById(R.id.movie_grid);
         mMovieGridRecyclerView.setLayoutManager(new GridLayoutManager(this, N_COLUMNS));
 
-        mAdapter = new MovieGridAdapter();
+        mAdapter = new MovieGridAdapter(this);
         mMovieGridRecyclerView.setAdapter(mAdapter);
 
         mMovieGridRecyclerView.setHasFixedSize(true);
+    }
+
+    @Override
+    public void onMovieClicked(MovieData movieData) {
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra("movie", movieData);
+        startActivity(intent);
     }
 }
