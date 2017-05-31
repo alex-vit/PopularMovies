@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.example.android.popularmovies.models.MovieData;
-import com.squareup.picasso.Picasso;
+
+import static com.example.android.popularmovies.utils.ImageUtils.loadUrlIntoImageView;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -19,11 +20,6 @@ public class DetailsActivity extends AppCompatActivity {
         MovieData movie = getIntent().getParcelableExtra("movie");
         mImageView = (ImageView) findViewById(R.id.poster_image);
 
-        Picasso
-                .with(this)
-                .load(movie.getPosterUrl())
-                .error(R.drawable.placeholder)
-                .placeholder(R.drawable.placeholder)
-                .into(mImageView);
+        loadUrlIntoImageView(this, movie.getPosterUrl(), R.drawable.placeholder, mImageView);
     }
 }

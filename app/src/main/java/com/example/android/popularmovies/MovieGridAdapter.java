@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import com.example.android.popularmovies.models.MovieData;
 import com.squareup.picasso.Picasso;
 
+import static com.example.android.popularmovies.utils.ImageUtils.loadUrlIntoImageView;
+
 /**
  * Created by Aleksandrs Vitjukovs on 5/31/2017.
  */
@@ -41,12 +43,7 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
     @Override
     public void onBindViewHolder(MovieGridAdapterViewHolder holder, int position) {
         String posterUrl = movieData[position].getPosterUrl();
-        Picasso
-                .with(holder.mPosterImageView.getContext())
-                .load(posterUrl)
-                .error(R.drawable.placeholder)
-                .placeholder(R.drawable.placeholder)
-                .into(holder.mPosterImageView);
+        loadUrlIntoImageView(holder.mPosterImageView.getContext(), posterUrl, R.drawable.placeholder, holder.mPosterImageView);
     }
 
     @Override
