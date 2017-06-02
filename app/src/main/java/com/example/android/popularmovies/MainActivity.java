@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
     @Override
     public void onMovieClicked(Movie movie) {
         Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra("movie id", movie.id);
+        intent.putExtra("movie", movie);
         startActivity(intent);
     }
 

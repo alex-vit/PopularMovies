@@ -149,4 +149,8 @@ public class Movie implements Parcelable {
             dest.writeDouble(voteAverage);
         }
     }
+
+    public String year() {
+        return releaseDate.split("-")[0];
+    }
 }
