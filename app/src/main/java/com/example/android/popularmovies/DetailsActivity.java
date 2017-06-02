@@ -9,11 +9,14 @@ import com.bumptech.glide.Glide;
 import com.example.android.popularmovies.models.Movie;
 import com.example.android.popularmovies.services.MovieService;
 
+import java.text.DecimalFormat;
+
 public class DetailsActivity extends AppCompatActivity {
 
     private TextView mTitleTextView;
     private ImageView mImageView;
     private TextView mYearTextView;
+    private TextView mVotesTextView;
     private TextView mOverviewTextView;
 
     @Override
@@ -24,6 +27,7 @@ public class DetailsActivity extends AppCompatActivity {
         mTitleTextView = (TextView) findViewById(R.id.movie_title);
         mImageView = (ImageView) findViewById(R.id.poster_image);
         mYearTextView = (TextView) findViewById(R.id.movie_year);
+        mVotesTextView = (TextView) findViewById(R.id.movie_votes);
         mOverviewTextView = (TextView) findViewById(R.id.movie_overview);
 
         Movie movie = getIntent().getParcelableExtra("movie");
@@ -37,6 +41,11 @@ public class DetailsActivity extends AppCompatActivity {
                 .into(mImageView);
 
         mYearTextView.setText(movie.year());
+        mVotesTextView.setText(
+                "Rating: "
+                        + new DecimalFormat("#0.0").format(movie.voteAverage)
+                        + " (" + movie.voteCount.toString() + " votes)"
+        );
         mOverviewTextView.setText(movie.overview);
     }
 }

@@ -5,4 +5,5 @@
     <string name="movie_poster_alt">Movie poster</string>
     <string name="year_placeholder">2017</string>
     <string name="movie_overview_placeholder">Captain Jack Sparrow works his way out of a blood debt with the ghostly Davey Jones, he also attempts to avoid eternal damnation.</string>
+    <string name="movie_votes_placeholder">8.7 (30241)</string>
 </resources>
