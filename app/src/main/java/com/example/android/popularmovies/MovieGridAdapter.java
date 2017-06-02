@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.popularmovies.models.Movie;
+import com.example.android.popularmovies.services.MovieService;
 
-import static com.example.android.popularmovies.utils.ImageUtils.loadUrlIntoImageView;
+import java.util.List;
 
 /**
  * Created by Aleksandrs Vitjukovs on 5/31/2017.
@@ -18,14 +20,14 @@ import static com.example.android.popularmovies.utils.ImageUtils.loadUrlIntoImag
 class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAdapterViewHolder> {
 
     private final MovieClickListener mMovieClickListener;
-    private Movie[] movie;
+    private List<Movie> movies;
 
     public MovieGridAdapter(MovieClickListener mMovieClickListener) {
         this.mMovieClickListener = mMovieClickListener;
     }
 
-    void setMovie(Movie[] movie) {
-        this.movie = movie;
+    void setMovies(List<Movie> movies) {
+        this.movies = movies;
         notifyDataSetChanged();
     }
 
@@ -41,17 +43,21 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
 
     @Override
     public void onBindViewHolder(MovieGridAdapterViewHolder holder, int position) {
-        String posterUrl = movie[position].getPosterUrl();
-        loadUrlIntoImageView(holder.mPosterImageView.getContext(), posterUrl, R.drawable.placeholder, holder.mPosterImageView);
+        String posterUrl = MovieService.fullPosterUrl(movies.get(position).posterPath);
+
+        Glide.with(holder.mPosterImageView.getContext())
+                .load(posterUrl)
+                .placeholder(R.drawable.placeholder)
+                .into(holder.mPosterImageView);
     }
 
     @Override
     public int getItemCount() {
-        return (movie == null) ? 0 : movie.length;
+        return (movies == null) ? 0 : movies.size();
     }
 
     Movie getData(int position) {
-        return movie[position];
+        return movies.get(position);
     }
 
     public interface MovieClickListener {

@@ -1,53 +1,57 @@
 package com.example.android.popularmovies.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 /**
  * Created by Aleksandrs Vitjukovs on 5/31/2017.
  */
 
-public class Movie implements Parcelable {
-    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
-        }
+public class Movie {
 
-        @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
-    private String posterUrl;
+    @SerializedName("poster_path")
+    @Expose
+    public String posterPath;
+    @SerializedName("adult")
+    @Expose
+    public Boolean adult;
+    @SerializedName("overview")
+    @Expose
+    public String overview;
+    @SerializedName("release_date")
+    @Expose
+    public String releaseDate;
+    @SerializedName("genre_ids")
+    @Expose
+    public List<Integer> genreIds = null;
+    @SerializedName("id")
+    @Expose
+    public Integer id;
+    @SerializedName("original_title")
+    @Expose
+    public String originalTitle;
+    @SerializedName("original_language")
+    @Expose
+    public String originalLanguage;
+    @SerializedName("title")
+    @Expose
+    public String title;
+    @SerializedName("backdrop_path")
+    @Expose
+    public String backdropPath;
+    @SerializedName("popularity")
+    @Expose
+    public Double popularity;
+    @SerializedName("vote_count")
+    @Expose
+    public Integer voteCount;
+    @SerializedName("video")
+    @Expose
+    public Boolean video;
+    @SerializedName("vote_average")
+    @Expose
+    public Double voteAverage;
 
-    public Movie() {
-    }
-
-    public Movie(String posterUrl) {
-        setPosterUrl(posterUrl);
-    }
-
-    // Parcelable implementation
-    protected Movie(Parcel in) {
-        posterUrl = in.readString();
-    }
-
-    public String getPosterUrl() {
-        return posterUrl;
-    }
-
-    public void setPosterUrl(String posterUrl) {
-        this.posterUrl = posterUrl;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(posterUrl);
-    }
 }

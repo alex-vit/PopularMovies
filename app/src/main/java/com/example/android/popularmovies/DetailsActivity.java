@@ -6,8 +6,6 @@ import android.widget.ImageView;
 
 import com.example.android.popularmovies.models.Movie;
 
-import static com.example.android.popularmovies.utils.ImageUtils.loadUrlIntoImageView;
-
 public class DetailsActivity extends AppCompatActivity {
 
     private ImageView mImageView;
@@ -19,7 +17,5 @@ public class DetailsActivity extends AppCompatActivity {
 
         Movie movie = getIntent().getParcelableExtra("movie");
         mImageView = (ImageView) findViewById(R.id.poster_image);
-
-        loadUrlIntoImageView(this, movie.getPosterUrl(), R.drawable.placeholder, mImageView);
     }
 }

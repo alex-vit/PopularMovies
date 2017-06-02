@@ -1,6 +1,7 @@
 package com.example.android.popularmovies;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,11 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import com.example.android.popularmovies.models.Movie;
 import com.example.android.popularmovies.services.MovieService;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements MovieGridAdapter.MovieClickListener {
 
     private static final int N_COLUMNS = 2;
-
     RecyclerView mMovieGridRecyclerView;
+    private MovieService mMovieService;
     private MovieGridAdapter mAdapter;
 
     @Override
@@ -21,13 +24,14 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mMovieService = new MovieService(getString(R.string.themoviedb_api_v3_key));
+
         initRecyclerView();
-        loadData();
+        loadPopularMovies();
     }
 
-    private void loadData() {
-        Movie[] movies = MovieService.getPopularMovies();
-        mAdapter.setMovie(movies);
+    private void loadPopularMovies() {
+        new FetchPopularMoviesTask().execute();
     }
 
     private void initRecyclerView() {
@@ -43,7 +47,20 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
     @Override
     public void onMovieClicked(Movie movie) {
         Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra("movie", movie);
+        intent.putExtra("movie id", movie.id);
         startActivity(intent);
+    }
+
+    private class FetchPopularMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
+        @Override
+        protected List<Movie> doInBackground(Void... params) {
+            return mMovieService.getPopularMovies();
+        }
+
+        @Override
+        protected void onPostExecute(List<Movie> movies) {
+            mAdapter.setMovies(movies);
+        }
+
     }
 }
