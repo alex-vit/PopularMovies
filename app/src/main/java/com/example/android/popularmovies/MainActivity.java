@@ -11,7 +11,6 @@ import com.example.android.popularmovies.services.MovieService;
 
 public class MainActivity extends AppCompatActivity implements MovieGridAdapter.MovieClickListener {
 
-    private static final String TEST_POSTER_URL = "http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
     private static final int N_COLUMNS = 2;
 
     RecyclerView mMovieGridRecyclerView;
