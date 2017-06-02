@@ -1,12 +1,13 @@
 package com.example.android.popularmovies;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.example.android.popularmovies.models.MovieData;
+import com.example.android.popularmovies.models.Movie;
+import com.example.android.popularmovies.services.MovieService;
 
 public class MainActivity extends AppCompatActivity implements MovieGridAdapter.MovieClickListener {
 
@@ -26,17 +27,8 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
     }
 
     private void loadData() {
-        MovieData[] fakeData = {
-                new MovieData(TEST_POSTER_URL),
-                new MovieData(TEST_POSTER_URL),
-                new MovieData(TEST_POSTER_URL),
-                new MovieData(TEST_POSTER_URL),
-                new MovieData(TEST_POSTER_URL),
-                new MovieData(TEST_POSTER_URL),
-                new MovieData(TEST_POSTER_URL)
-        };
-
-        mAdapter.setMovieData(fakeData);
+        Movie[] movies = MovieService.getPopularMovies();
+        mAdapter.setMovie(movies);
     }
 
     private void initRecyclerView() {
@@ -50,9 +42,9 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
     }
 
     @Override
-    public void onMovieClicked(MovieData movieData) {
+    public void onMovieClicked(Movie movie) {
         Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra("movie", movieData);
+        intent.putExtra("movie", movie);
         startActivity(intent);
     }
 }

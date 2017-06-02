@@ -7,8 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.android.popularmovies.models.MovieData;
-import com.squareup.picasso.Picasso;
+import com.example.android.popularmovies.models.Movie;
 
 import static com.example.android.popularmovies.utils.ImageUtils.loadUrlIntoImageView;
 
@@ -19,14 +18,14 @@ import static com.example.android.popularmovies.utils.ImageUtils.loadUrlIntoImag
 class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAdapterViewHolder> {
 
     private final MovieClickListener mMovieClickListener;
-    private MovieData[] movieData;
+    private Movie[] movie;
 
     public MovieGridAdapter(MovieClickListener mMovieClickListener) {
         this.mMovieClickListener = mMovieClickListener;
     }
 
-    void setMovieData(MovieData[] movieData) {
-        this.movieData = movieData;
+    void setMovie(Movie[] movie) {
+        this.movie = movie;
         notifyDataSetChanged();
     }
 
@@ -42,37 +41,37 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
 
     @Override
     public void onBindViewHolder(MovieGridAdapterViewHolder holder, int position) {
-        String posterUrl = movieData[position].getPosterUrl();
+        String posterUrl = movie[position].getPosterUrl();
         loadUrlIntoImageView(holder.mPosterImageView.getContext(), posterUrl, R.drawable.placeholder, holder.mPosterImageView);
     }
 
     @Override
     public int getItemCount() {
-        return (movieData == null) ? 0 : movieData.length;
+        return (movie == null) ? 0 : movie.length;
     }
 
-    MovieData getData(int position) {
-        return movieData[position];
+    Movie getData(int position) {
+        return movie[position];
+    }
+
+    public interface MovieClickListener {
+        void onMovieClicked(Movie movie);
     }
 
     class MovieGridAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final ImageView mPosterImageView;
-
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-            MovieData movie = getData(position);
-            mMovieClickListener.onMovieClicked(movie);
-        }
 
         MovieGridAdapterViewHolder(View itemView) {
             super(itemView);
             mPosterImageView = (ImageView) itemView.findViewById(R.id.poster_image);
             itemView.setOnClickListener(this);
         }
-    }
 
-    public interface MovieClickListener {
-        void onMovieClicked(MovieData movieData);
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            Movie movie = getData(position);
+            mMovieClickListener.onMovieClicked(movie);
+        }
     }
 }
