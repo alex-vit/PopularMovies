@@ -1,25 +1,31 @@
 package com.example.android.popularmovies;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.android.popularmovies.models.Movie;
 import com.example.android.popularmovies.services.MovieService;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieGridAdapter.MovieClickListener {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private static final int N_COLUMNS = 2;
     RecyclerView mMovieGridRecyclerView;
     private MovieService mMovieService;
     private MovieGridAdapter mAdapter;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +33,29 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
         setContentView(R.layout.activity_main);
 
         mMovieService = new MovieService(getString(R.string.themoviedb_api_v3_key));
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         initRecyclerView();
-        loadPopularMovies();
+        loadData();
     }
 
-    private void loadPopularMovies() {
-        new FetchPopularMoviesTask().execute();
+    private void loadData() {
+        String sortBy = mSharedPreferences.getString(
+                getString(R.string.pref_sort_order_key),
+                MovieService.SortBy.popularityDesc
+        );
+        CharSequence[] values = getResources().getStringArray(R.array.pref_sort_by_values);
+        CharSequence[] titles = getResources().getStringArray(R.array.pref_sort_by_entries);
+        int idx = Arrays.asList(values).indexOf(sortBy);
+        CharSequence sortByTitle = titles[idx];
+        setTitle(sortByTitle);
+
+        loadMovies(sortBy);
+        Log.d(TAG, "Sort option: " + sortBy);
+    }
+
+    private void loadMovies(String sortBy) {
+        new FetchMoviesTask().execute(sortBy);
     }
 
     private void initRecyclerView() {
@@ -71,10 +93,11 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
 
     }
 
-    private class FetchPopularMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
+    private class FetchMoviesTask extends AsyncTask<String, Void, List<Movie>> {
         @Override
-        protected List<Movie> doInBackground(Void... params) {
-            return mMovieService.getPopularMovies();
+        protected List<Movie> doInBackground(String... params) {
+            String sortBy = params[0];
+            return mMovieService.getMovies(sortBy);
         }
 
         @Override

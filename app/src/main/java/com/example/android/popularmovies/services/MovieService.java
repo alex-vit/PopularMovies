@@ -44,14 +44,15 @@ public class MovieService {
     private Uri.Builder baseUriBuilder() {
         return Uri
                 .parse(API_BASE_URL).buildUpon()
-                .appendQueryParameter(Param.apiKey, apiKey);
+                .appendQueryParameter(Param.apiKey, apiKey)
+                .appendQueryParameter(Param.voteCount, String.valueOf(100));
     }
 
-    public List<Movie> getPopularMovies() {
+    public List<Movie> getMovies(String sortBy) {
 
         Uri uri = baseUriBuilder()
                 .appendEncodedPath("discover/movie")
-                .appendQueryParameter(Param.sortBy, SortBy.popularityDesc)
+                .appendQueryParameter(Param.sortBy, sortBy)
                 .build();
 
         Log.d(TAG, "Built URI: " + uri);
@@ -76,12 +77,18 @@ public class MovieService {
 
     }
 
+    public String defaultSorting() {
+        return SortBy.popularityDesc;
+    }
+
     private static final class Param {
         private static final String apiKey = "api_key";
         private static final String sortBy = "sort_by";
+        private static final String voteCount = "vote_count.gte";
     }
 
-    private static final class SortBy {
-        private static final String popularityDesc = "popularity.desc";
+    public static final class SortBy {
+        public static final String popularityDesc = "popularity.desc";
+        public static final String voteAverageDesc = "vote_average.desc";
     }
 }
