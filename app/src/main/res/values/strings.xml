@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">Popular Movies</string>
-    <string name="detail_activity_title">Detail Activity</string>
+    <string name="detail_activity_title">Movie Details</string>
+    <string name="settings_activity_title">Settings</string>
     <string name="movie_title">Movie Title</string>
     <string name="movie_poster_alt">Movie poster</string>
     <string name="year_placeholder">2017</string>
     <string name="movie_overview_placeholder">Captain Jack Sparrow works his way out of a blood debt with the ghostly Davey Jones, he also attempts to avoid eternal damnation.</string>
     <string name="movie_votes_placeholder">8.7 (30241)</string>
+    <string name="pref_sort_by_title">Sort by</string>
+    <string name="menu_settings">Settings</string>
+    <string name="pref_sort_order_key">pref_sort_order_key</string>
 </resources>

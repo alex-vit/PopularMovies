@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="pref_sort_by_entries">
+        <item>Popular</item>
+        <item>Top rated</item>
+    </array>
+
+    <string name="pref_sort_by_default">popularity.desc</string>
+
+    <array name="pref_sort_by_values">
+        <item>@string/pref_sort_by_default</item>
+        <item>vote_average.desc</item>
+    </array>
+
+</resources>
