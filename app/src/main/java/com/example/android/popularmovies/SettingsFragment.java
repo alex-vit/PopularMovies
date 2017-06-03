@@ -35,6 +35,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    /*
+    How to get label from a list preference:
+    https://storiesandroid.wordpress.com/2015/10/06/android-settings-using-preference-fragments/
+    */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Preference preference = findPreference(key);

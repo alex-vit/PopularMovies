@@ -2,6 +2,10 @@ package com.example.android.popularmovies.models;
 
 /**
  * Created by Aleksandrs Vitjukovs on 6/2/2017.
+ *
+ * GSON and Parcelable implementation generated using
+ * - http://www.parcelabler.com/
+ * - http://www.jsonschema2pojo.org/
  */
 
 import android.os.Parcel;

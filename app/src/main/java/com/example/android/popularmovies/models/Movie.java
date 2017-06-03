@@ -11,6 +11,10 @@ import java.util.List;
 
 /**
  * Created by Aleksandrs Vitjukovs on 5/31/2017.
+ *
+ * GSON and Parcelable implementation generated using
+ * - http://www.parcelabler.com/
+ * - http://www.jsonschema2pojo.org/
  */
 
 public class Movie implements Parcelable {
