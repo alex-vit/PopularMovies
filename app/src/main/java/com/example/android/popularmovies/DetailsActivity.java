@@ -76,6 +76,7 @@ public class DetailsActivity extends AppCompatActivity {
             String backdropUrl = MovieService.fullImageUrl(movie.backdropPath, backdropSize);
             Glide.with(this)
                     .load(backdropUrl)
+                    .placeholder(R.drawable.placeholder_backdrop)
                     .into(mBackdropImageView);
 
             mYearTextView.setText(movie.year());
