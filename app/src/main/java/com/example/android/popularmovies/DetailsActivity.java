@@ -40,7 +40,7 @@ public class DetailsActivity extends AppCompatActivity {
 
             mTitleTextView.setText(movie.title);
 
-            String posterUrl = MovieService.fullPosterUrl(movie.posterPath);
+            String posterUrl = MovieService.fullImageUrl(movie.posterPath);
             Glide.with(this)
                     .load(posterUrl)
                     .placeholder(R.drawable.placeholder)

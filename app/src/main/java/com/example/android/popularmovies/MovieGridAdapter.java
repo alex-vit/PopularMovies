@@ -19,6 +19,7 @@ import java.util.List;
 
 class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAdapterViewHolder> {
 
+    private static final String TAG = MovieGridAdapter.class.getSimpleName();
     private final MovieClickListener mMovieClickListener;
     private List<Movie> movies;
 
@@ -43,8 +44,7 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
 
     @Override
     public void onBindViewHolder(MovieGridAdapterViewHolder holder, int position) {
-        String posterUrl = MovieService.fullPosterUrl(movies.get(position).posterPath);
-
+        String posterUrl = MovieService.fullImageUrl(movies.get(position).posterPath);
         Glide.with(holder.mPosterImageView.getContext())
                 .load(posterUrl)
                 .placeholder(R.drawable.placeholder)

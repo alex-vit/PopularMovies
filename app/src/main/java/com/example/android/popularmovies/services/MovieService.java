@@ -24,7 +24,7 @@ public class MovieService {
     private static final String TAG = MovieService.class.getSimpleName();
     //    private static final String TEST_POSTER_URL = "http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
     private static final String API_BASE_URL = "https://api.themoviedb.org/3";
-    private static final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w185";
+    private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
     private final String apiKey;
 
     public MovieService(String apiKey) {
@@ -37,8 +37,17 @@ public class MovieService {
         return listResponse.movies;
     }
 
-    public static String fullPosterUrl(String posterPath) {
-        return POSTER_BASE_URL + posterPath;
+    public static String fullImageUrl(String imagePath) {
+        return fullImageUrl(imagePath, PosterSize.w185);
+    }
+
+    public static String fullImageUrl(String imagePath, String size) {
+//        return IMAGE_BASE_URL + imagePath;
+        return Uri.parse(IMAGE_BASE_URL).buildUpon()
+                .appendPath(size)
+                .appendPath(imagePath.substring(1))
+                .build()
+                .toString();
     }
 
     private Uri.Builder baseUriBuilder() {
@@ -54,8 +63,6 @@ public class MovieService {
                 .appendEncodedPath("discover/movie")
                 .appendQueryParameter(Param.sortBy, sortBy)
                 .build();
-
-        Log.d(TAG, "Built URI: " + uri);
 
         HttpURLConnection connection = null;
         try {
@@ -90,5 +97,15 @@ public class MovieService {
     public static final class SortBy {
         public static final String popularityDesc = "popularity.desc";
         public static final String voteAverageDesc = "vote_average.desc";
+    }
+
+    public static final class PosterSize {
+        public static final String w185 = "w185";
+        public static final String w342 = "w342";
+    }
+
+    public static final class BackdropSize {
+        public static final String w300 = "w300";
+        public static final String w780 = "w780";
     }
 }

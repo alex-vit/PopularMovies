@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -65,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
         }
 
         initRecyclerView();
-        loadData();
+        // TODO: Is onResume always run? If I leave loadData(), it's loaded twice on start.
+//        loadData();
+//        Log.d(TAG, "onCreate: Loading data");
     }
 
     private void loadData() {
@@ -77,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
         setTitle(sortByTitle);
 
         loadMovies(sortBy);
-        Log.d(TAG, "Sort option: " + sortBy);
     }
 
     private void loadMovies(String sortBy) {
