@@ -2,6 +2,7 @@ package com.example.android.popularmovies;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import java.text.DecimalFormat;
 
 public class DetailsActivity extends AppCompatActivity {
 
+    private static final String TAG = DetailsActivity.class.getSimpleName();
     private TextView mTitleTextView;
     private ImageView mImageView;
     private TextView mYearTextView;
@@ -30,22 +32,27 @@ public class DetailsActivity extends AppCompatActivity {
         mVotesTextView = (TextView) findViewById(R.id.movie_votes);
         mOverviewTextView = (TextView) findViewById(R.id.movie_overview);
 
-        Movie movie = getIntent().getParcelableExtra("movie");
+        Bundle extras = getIntent().getExtras();
+        if (extras == null) {
+            Log.e(TAG, "No extras were passed.");
+        } else {
+            Movie movie = getIntent().getParcelableExtra("movie");
 
-        mTitleTextView.setText(movie.title);
+            mTitleTextView.setText(movie.title);
 
-        String posterUrl = MovieService.fullPosterUrl(movie.posterPath);
-        Glide.with(this)
-                .load(posterUrl)
-                .placeholder(R.drawable.placeholder)
-                .into(mImageView);
+            String posterUrl = MovieService.fullPosterUrl(movie.posterPath);
+            Glide.with(this)
+                    .load(posterUrl)
+                    .placeholder(R.drawable.placeholder)
+                    .into(mImageView);
 
-        mYearTextView.setText(movie.year());
-        mVotesTextView.setText(
-                "Rating: "
-                        + new DecimalFormat("#0.0").format(movie.voteAverage)
-                        + " (" + movie.voteCount.toString() + " votes)"
-        );
-        mOverviewTextView.setText(movie.overview);
+            mYearTextView.setText(movie.year());
+            mVotesTextView.setText(
+                    "Rating: "
+                            + new DecimalFormat("#0.0").format(movie.voteAverage)
+                            + " (" + movie.voteCount.toString() + " votes)"
+            );
+            mOverviewTextView.setText(movie.overview);
+        }
     }
 }
