@@ -68,12 +68,12 @@ public class DetailsActivity extends AppCompatActivity {
 
             mCollapsingToolbarLayout.setTitle(movie.title);
 
-            String posterUrl = MovieService.fullImageUrl(movie.posterPath);
+            String posterUrl = MovieService.fullImageUrl(movie.posterPath, posterSize);
             Glide.with(this)
                     .load(posterUrl)
                     .placeholder(R.drawable.placeholder)
                     .into(mImageView);
-            String backdropUrl = MovieService.fullImageUrl(movie.backdropPath, MovieService.BackdropSize.w300);
+            String backdropUrl = MovieService.fullImageUrl(movie.backdropPath, backdropSize);
             Glide.with(this)
                     .load(backdropUrl)
                     .into(mBackdropImageView);
