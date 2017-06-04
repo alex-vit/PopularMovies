@@ -19,7 +19,6 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity implements MovieGridAdapter.MovieClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int N_COLUMNS = 2;
     RecyclerView mMovieGridRecyclerView;
     private String currentSortOrder = null;
     private MovieService mMovieService;
@@ -87,7 +86,9 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
 
     private void initRecyclerView() {
         mMovieGridRecyclerView = (RecyclerView) findViewById(R.id.movie_grid);
-        mMovieGridRecyclerView.setLayoutManager(new GridLayoutManager(this, N_COLUMNS));
+
+        final int nColumns = getResources().getInteger(R.integer.grid_column_count);
+        mMovieGridRecyclerView.setLayoutManager(new GridLayoutManager(this, nColumns));
 
         mAdapter = new MovieGridAdapter(this);
         mMovieGridRecyclerView.setAdapter(mAdapter);

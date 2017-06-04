@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- UI constants -->
+    <integer name="grid_column_count">2</integer>
     <!-- Padding and margin -->
     <dimen name="padding_small">8dp</dimen>
     <dimen name="margin_small">8dp</dimen>
