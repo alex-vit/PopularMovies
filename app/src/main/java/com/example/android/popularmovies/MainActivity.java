@@ -2,7 +2,6 @@ package com.example.android.popularmovies;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
@@ -16,7 +15,6 @@ import com.example.android.popularmovies.models.Movie;
 import com.example.android.popularmovies.services.MovieService;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieGridAdapter.MovieClickListener {
 
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
     }
 
     private void loadMovies(String sortBy) {
-        new FetchMoviesTask().execute(sortBy);
+        new FetchMoviesTask(mMovieService, mAdapter).execute(sortBy);
     }
 
     private void initRecyclerView() {
@@ -89,20 +87,6 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
                 startActivity(new Intent(this, SettingsActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
-        }
-
-    }
-
-    private class FetchMoviesTask extends AsyncTask<String, Void, List<Movie>> {
-        @Override
-        protected List<Movie> doInBackground(String... params) {
-            String sortBy = params[0];
-            return mMovieService.getMovies(sortBy);
-        }
-
-        @Override
-        protected void onPostExecute(List<Movie> movies) {
-            mAdapter.setMovies(movies);
         }
 
     }
