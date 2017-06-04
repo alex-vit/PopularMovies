@@ -1,7 +1,9 @@
 package com.example.android.popularmovies;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,27 +12,41 @@ import com.bumptech.glide.Glide;
 import com.example.android.popularmovies.models.Movie;
 import com.example.android.popularmovies.services.MovieService;
 
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
+
 import java.text.DecimalFormat;
 
 public class DetailsActivity extends AppCompatActivity {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
-    private TextView mTitleTextView;
     private ImageView mImageView;
     private TextView mYearTextView;
     private TextView mVotesTextView;
     private TextView mOverviewTextView;
+
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private ImageView mBackdropImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        mTitleTextView = (TextView) findViewById(R.id.movie_title);
         mImageView = (ImageView) findViewById(R.id.poster_image);
         mYearTextView = (TextView) findViewById(R.id.movie_year);
         mVotesTextView = (TextView) findViewById(R.id.movie_votes);
         mOverviewTextView = (TextView) findViewById(R.id.movie_overview);
+
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        mBackdropImageView = (ImageView) findViewById(R.id.backdrop);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mCollapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(this, R.color.primary_dark));
+        mCollapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.white_text));
+        mCollapsingToolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.white_text));
 
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
@@ -38,13 +54,17 @@ public class DetailsActivity extends AppCompatActivity {
         } else {
             Movie movie = getIntent().getParcelableExtra("movie");
 
-            mTitleTextView.setText(movie.title);
+            mCollapsingToolbarLayout.setTitle(movie.title);
 
             String posterUrl = MovieService.fullImageUrl(movie.posterPath);
             Glide.with(this)
                     .load(posterUrl)
                     .placeholder(R.drawable.placeholder)
                     .into(mImageView);
+            String backdropUrl = MovieService.fullImageUrl(movie.backdropPath, MovieService.BackdropSize.w300);
+            Glide.with(this)
+                    .load(backdropUrl)
+                    .into(mBackdropImageView);
 
             mYearTextView.setText(movie.year());
             mVotesTextView.setText(

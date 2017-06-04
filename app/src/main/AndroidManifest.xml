@@ -22,7 +22,8 @@
         <activity
             android:name=".DetailsActivity"
             android:label="@string/detail_activity_title"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/NoActionBar">
 
         </activity>
 

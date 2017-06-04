@@ -42,7 +42,6 @@ public class MovieService {
     }
 
     public static String fullImageUrl(String imagePath, String size) {
-//        return IMAGE_BASE_URL + imagePath;
         return Uri.parse(IMAGE_BASE_URL).buildUpon()
                 .appendPath(size)
                 .appendPath(imagePath.substring(1))
