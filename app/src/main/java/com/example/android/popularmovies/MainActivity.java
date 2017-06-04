@@ -21,9 +21,29 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int N_COLUMNS = 2;
     RecyclerView mMovieGridRecyclerView;
+    private String currentSortOrder = null;
     private MovieService mMovieService;
     private MovieGridAdapter mAdapter;
     private SharedPreferences mSharedPreferences;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reloadIfNeeded();
+    }
+
+    private void reloadIfNeeded() {
+        String prefsSortOrder = mSharedPreferences.getString(
+                getString(R.string.pref_sort_order_key),
+                MovieService.SortBy.popularityDesc
+        );
+
+        if (!currentSortOrder.equals(prefsSortOrder) || mAdapter.getItemCount() == 0) {
+            currentSortOrder = prefsSortOrder;
+            loadData();
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +53,24 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
         mMovieService = new MovieService(getString(R.string.themoviedb_api_v3_key));
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        // TODO: Maybe abstract this into a setFromStateOrPrefs method
+        if (savedInstanceState != null) {
+            currentSortOrder = savedInstanceState.getString(getString(R.string.pref_sort_order_key));
+        }
+
+        if (currentSortOrder == null) {
+            currentSortOrder = mSharedPreferences.getString(
+                    getString(R.string.pref_sort_order_key),
+                    MovieService.SortBy.popularityDesc
+            );
+        }
+
         initRecyclerView();
         loadData();
     }
 
     private void loadData() {
-        String sortBy = mSharedPreferences.getString(
-                getString(R.string.pref_sort_order_key),
-                MovieService.SortBy.popularityDesc
-        );
+        String sortBy = currentSortOrder;
         CharSequence[] values = getResources().getStringArray(R.array.pref_sort_by_values);
         CharSequence[] titles = getResources().getStringArray(R.array.pref_sort_by_entries);
         int idx = Arrays.asList(values).indexOf(sortBy);
@@ -71,6 +100,12 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra("movie", movie);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(getString(R.string.pref_sort_order_key), currentSortOrder);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
