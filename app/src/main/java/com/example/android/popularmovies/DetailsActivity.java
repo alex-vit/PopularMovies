@@ -1,5 +1,6 @@
 package com.example.android.popularmovies;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +54,17 @@ public class DetailsActivity extends AppCompatActivity {
             Log.e(TAG, "No extras were passed.");
         } else {
             Movie movie = getIntent().getParcelableExtra("movie");
+
+            String posterSize;
+            String backdropSize;
+
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                posterSize = MovieService.PosterSize.w342;
+                backdropSize = MovieService.BackdropSize.w780;
+            } else {
+                posterSize = MovieService.PosterSize.w185;
+                backdropSize = MovieService.BackdropSize.w300;
+            }
 
             mCollapsingToolbarLayout.setTitle(movie.title);
 
