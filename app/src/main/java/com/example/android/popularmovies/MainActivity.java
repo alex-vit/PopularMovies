@@ -15,33 +15,15 @@ import com.example.android.popularmovies.services.MovieService;
 
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements MovieGridAdapter.MovieClickListener {
+public class MainActivity extends AppCompatActivity implements MovieGridAdapter.MovieClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     RecyclerView mMovieGridRecyclerView;
-    private String currentSortOrder = null;
+    private String mCurrentSortOrder = null;
     private MovieService mMovieService;
     private MovieGridAdapter mAdapter;
     private SharedPreferences mSharedPreferences;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        reloadIfNeeded();
-    }
-
-    private void reloadIfNeeded() {
-        String prefsSortOrder = mSharedPreferences.getString(
-                getString(R.string.pref_sort_order_key),
-                MovieService.SortBy.popularityDesc
-        );
-
-        if (!currentSortOrder.equals(prefsSortOrder) || mAdapter.getItemCount() == 0) {
-            currentSortOrder = prefsSortOrder;
-            loadData();
-        }
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,24 +35,24 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
 
         // TODO: Maybe abstract this into a setFromStateOrPrefs method
         if (savedInstanceState != null) {
-            currentSortOrder = savedInstanceState.getString(getString(R.string.pref_sort_order_key));
+            mCurrentSortOrder = savedInstanceState.getString(getString(R.string.pref_sort_order_key));
         }
 
-        if (currentSortOrder == null) {
-            currentSortOrder = mSharedPreferences.getString(
+        if (mCurrentSortOrder == null) {
+            mCurrentSortOrder = mSharedPreferences.getString(
                     getString(R.string.pref_sort_order_key),
                     MovieService.SortBy.popularityDesc
             );
         }
 
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
         initRecyclerView();
-        // TODO: Is onResume always run? If I leave loadData(), it's loaded twice on start.
-//        loadData();
-//        Log.d(TAG, "onCreate: Loading data");
+        loadData();
     }
 
     private void loadData() {
-        String sortBy = currentSortOrder;
+        String sortBy = mCurrentSortOrder;
         CharSequence[] values = getResources().getStringArray(R.array.pref_sort_by_values);
         CharSequence[] titles = getResources().getStringArray(R.array.pref_sort_by_entries);
         int idx = Arrays.asList(values).indexOf(sortBy);
@@ -105,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(getString(R.string.pref_sort_order_key), currentSortOrder);
+        outState.putString(getString(R.string.pref_sort_order_key), mCurrentSortOrder);
         super.onSaveInstanceState(outState);
     }
 
@@ -123,6 +105,24 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
                 startActivity(new Intent(this, SettingsActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_sort_order_key))) {
+            String newSortOrder = sharedPreferences.getString(key, MovieService.SortBy.popularityDesc);
+            if (!newSortOrder.equals(mCurrentSortOrder)) {
+                mCurrentSortOrder = newSortOrder;
+                loadData();
+            }
         }
 
     }
