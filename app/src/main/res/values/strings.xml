@@ -2,7 +2,7 @@
     <string name="app_name">Popular Movies</string>
     <string name="detail_activity_title">Movie Details</string>
     <string name="settings_activity_title">Settings</string>
-    <string name="movie_poster_alt">Movie poster</string>
+    <string name="iv_poster_description">Movie poster</string>
     <string name="year_example">2017</string>
     <string name="movie_overview_example">The Imperial Forces — under orders from cruel Darth Vader (David Prowse) — hold Princess Leia (Carrie Fisher) hostage, in their efforts to quell the rebellion against the Galactic Empire. Luke Skywalker (Mark Hamill) and Han Solo (Harrison Ford), captain of the Millennium Falcon, work together with the companionable droid duo R2-D2 (Kenny Baker) and C-3PO (Anthony Daniels) to rescue the beautiful princess, help the Rebel Alliance, and restore freedom and justice to the Galaxy.</string>
     <string name="movie_votes_example">8.7 (30241)</string>
