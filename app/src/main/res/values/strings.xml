@@ -10,4 +10,5 @@
     <string name="menu_settings">Settings</string>
     <string name="pref_sort_order_key">pref_sort_order_key</string>
     <string name="movie_title_long_example">A Really Long Movie Title Pt. 2, Episode IX</string>
+    <string name="backdrop_description">Backdrop image</string>
 </resources>
