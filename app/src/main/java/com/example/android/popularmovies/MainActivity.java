@@ -3,6 +3,8 @@ package com.example.android.popularmovies;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,14 +12,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.android.popularmovies.data.MovieApiLoader;
 import com.example.android.popularmovies.models.Movie;
 import com.example.android.popularmovies.services.MovieService;
 
 import java.util.Arrays;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MovieGridAdapter.MovieClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity
+        implements MovieGridAdapter.MovieClickListener,
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        LoaderManager.LoaderCallbacks<List<Movie>> {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int MOVIE_API_LOADER_ID = 1001;
+
     RecyclerView mMovieGridRecyclerView;
     private String mCurrentSortOrder = null;
     private MovieService mMovieService;
@@ -31,23 +40,10 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
 
         mMovieService = new MovieService(this);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // TODO: Maybe abstract this into a setFromStateOrPrefs method
-        if (savedInstanceState != null) {
-            mCurrentSortOrder = savedInstanceState.getString(getString(R.string.pref_sort_order_key));
-        }
-
-        if (mCurrentSortOrder == null) {
-            mCurrentSortOrder = mSharedPreferences.getString(
-                    getString(R.string.pref_sort_order_key),
-                    MovieService.SortBy.popularityDesc
-            );
-        }
-
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         initRecyclerView();
-        loadData();
+        getSupportLoaderManager().initLoader(MOVIE_API_LOADER_ID, null, this);
     }
 
     @Override
@@ -55,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
         super.onResume();
         // TODO Use content loader and restart it here. Currently, if you go to movie detail
         // and un-favorite, need to manually refresh.
-        if (mCurrentSortOrder.equals(MovieService.SortBy.favorite)) loadData();
+        getSupportLoaderManager().restartLoader(MOVIE_API_LOADER_ID, null, this);
+//        if (mCurrentSortOrder.equals(MovieService.SortBy.favorite)) loadData();
     }
 
     private void loadData() {
@@ -93,12 +90,6 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(getString(R.string.pref_sort_order_key), mCurrentSortOrder);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
@@ -132,5 +123,28 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
             }
         }
 
+    }
+
+    @Override
+    public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case MOVIE_API_LOADER_ID:
+                return new MovieApiLoader(this);
+            default:
+                throw new UnsupportedOperationException("Unknown loader id: " + id);
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movies) {
+        String sortBy = PrefUtils.getSortBy(this);
+        CharSequence title = PrefUtils.getSortByTitle(this, sortBy);
+        setTitle(title);
+        mAdapter.setMovies(movies);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Movie>> loader) {
+        mAdapter.setMovies(null);
     }
 }

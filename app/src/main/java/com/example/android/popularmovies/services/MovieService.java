@@ -27,9 +27,9 @@ import java.util.Scanner;
 
 public class MovieService {
 
-    private static final String TAG = MovieService.class.getSimpleName();
     //    private static final String TEST_POSTER_URL = "http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
-    private static final String API_BASE_URL = "https://api.themoviedb.org/3";
+    public static final String API_BASE_URL = "https://api.themoviedb.org/3";
+    private static final String TAG = MovieService.class.getSimpleName();
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
     private final String apiKey;
     private final Context context;
@@ -131,10 +131,10 @@ public class MovieService {
         return SortBy.popularityDesc;
     }
 
-    private static final class Param {
-        private static final String apiKey = "api_key";
-        private static final String sortBy = "sort_by";
-        private static final String voteCount = "vote_count.gte";
+    public static final class Param {
+        public static final String apiKey = "api_key";
+        public static final String sortBy = "sort_by";
+        public static final String voteCount = "vote_count.gte";
     }
 
     public static final class SortBy {
