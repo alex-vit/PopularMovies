@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.android.popularmovies.data.MovieContract;
@@ -121,19 +120,11 @@ public class DetailsActivity extends AppCompatActivity {
                 values.put(MovieContract.MovieEntry.COLUMN_VOTE_COUNT, movie.voteCount);
                 values.put(MovieContract.MovieEntry.COLUMN_IS_FAVORITE, 1);
                 getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, values);
-                Toast.makeText(DetailsActivity.this,
-                        "Movie inserted: " + movie.id,
-                        Toast.LENGTH_LONG)
-                        .show();
             } else {
                 getContentResolver().delete(
                         ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, movie.id),
                         null,
                         null);
-                Toast.makeText(DetailsActivity.this,
-                        "Movie deleted: " + movie.id,
-                        Toast.LENGTH_LONG)
-                        .show();
             }
         }
     }

@@ -55,6 +55,15 @@ public class MovieContentProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
+            case MOVIES:
+                retCursor = db.query(MovieContract.MovieEntry.TABLE_NAME,
+                        null,
+                        "isFavorite = ?",
+                        new String[]{"1"},
+                        null,
+                        null,
+                        null);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
         }

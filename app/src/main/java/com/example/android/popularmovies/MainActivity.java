@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mMovieService = new MovieService(getString(R.string.themoviedb_api_v3_key));
+        mMovieService = new MovieService(this);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // TODO: Maybe abstract this into a setFromStateOrPrefs method
@@ -48,6 +48,14 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
 
         initRecyclerView();
         loadData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // TODO Use content loader and restart it here. Currently, if you go to movie detail
+        // and un-favorite, need to manually refresh.
+        if (mCurrentSortOrder.equals(MovieService.SortBy.favorite)) loadData();
     }
 
     private void loadData() {
