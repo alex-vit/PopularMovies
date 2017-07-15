@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements MovieGridAdapter.
     private MovieGridAdapter mAdapter;
     private SharedPreferences mSharedPreferences;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

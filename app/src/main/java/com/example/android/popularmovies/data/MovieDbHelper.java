@@ -13,7 +13,7 @@ import static com.example.android.popularmovies.data.MovieContract.MovieEntry;
 public class MovieDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "movie.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public MovieDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -21,8 +21,8 @@ public class MovieDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + MovieEntry.TABLE_NAME + " ("
-                + MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+        final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE IF NOT EXISTS " + MovieEntry.TABLE_NAME + " ("
+                + MovieEntry._ID + " INTEGER PRIMARY KEY NOT NULL, "
                 + MovieEntry.COLUMN_TITLE + " TEXT NOT NULL, "
                 + MovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL, "
                 + MovieEntry.COLUMN_OVERVIEW + " TEXT NOT NULL, "
@@ -30,7 +30,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 + MovieEntry.COLUMN_BACKDROP_PATH + " TEXT NOT NULL, "
                 + MovieEntry.COLUMN_VOTE_COUNT + " INTEGER NOT NULL, "
                 + MovieEntry.COLUMN_VOTE_AVERAGE + " REAL NOT NULL, "
-                + MovieEntry.COLUMN_IS_FAVORITE + " BOOLEAN NOT NULL DEFAULT FALSE);";
+                + MovieEntry.COLUMN_IS_FAVORITE + " INTEGER DEFAULT 0);";
 
         db.execSQL(SQL_CREATE_MOVIE_TABLE);
     }
