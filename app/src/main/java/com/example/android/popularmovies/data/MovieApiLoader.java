@@ -5,11 +5,11 @@ import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-import com.example.android.popularmovies.PrefUtils;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.models.ListResponse;
 import com.example.android.popularmovies.models.Movie;
-import com.example.android.popularmovies.services.MovieService;
+import com.example.android.popularmovies.util.Api;
+import com.example.android.popularmovies.util.Prefs;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.example.android.popularmovies.services.MovieService.API_BASE_URL;
+import static com.example.android.popularmovies.util.Api.API_BASE_URL;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/16/2017.
@@ -43,8 +43,8 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
     private static Uri.Builder baseUriBuilder(String apiKey) {
         return Uri
                 .parse(API_BASE_URL).buildUpon()
-                .appendQueryParameter(MovieService.Param.apiKey, apiKey)
-                .appendQueryParameter(MovieService.Param.voteCount, String.valueOf(100));
+                .appendQueryParameter(Api.Param.apiKey, apiKey)
+                .appendQueryParameter(Api.Param.voteCount, String.valueOf(100));
     }
 
     private static List<Movie> parseListResponse(String response) {
@@ -55,7 +55,7 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
     @Override
     protected void onStartLoading() {
 
-        String newSortBy = PrefUtils.getSortBy(getContext());
+        String newSortBy = Prefs.getSortBy(getContext());
 
         if (mSortBy.equals(newSortBy) && mMovies != null) {
             deliverResult(mMovies);
@@ -78,7 +78,7 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
         String apiKey = getContext().getString(R.string.themoviedb_api_v3_key);
         Uri uri = baseUriBuilder(apiKey)
                 .appendEncodedPath("discover/movie")
-                .appendQueryParameter(MovieService.Param.sortBy, mSortBy)
+                .appendQueryParameter(Api.Param.sortBy, mSortBy)
                 .build();
 
         HttpURLConnection connection = null;

@@ -16,18 +16,20 @@ import android.view.MenuItem;
 import com.example.android.popularmovies.data.MovieApiLoader;
 import com.example.android.popularmovies.data.MovieSqlLoader;
 import com.example.android.popularmovies.models.Movie;
+import com.example.android.popularmovies.util.Api;
+import com.example.android.popularmovies.util.Prefs;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements MovieGridAdapter.MovieClickListener,
-//        SharedPreferences.OnSharedPreferenceChangeListener,
+        SharedPreferences.OnSharedPreferenceChangeListener,
         LoaderManager.LoaderCallbacks {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MOVIE_API_LOADER_ID = 1000;
     private static final int MOVIE_SQL_LOADER_ID = 1100;
-
+    private static final String STATE_SORT_KEY = "STATE_SORT_KEY";
     RecyclerView mMovieGridRecyclerView;
     private MovieGridAdapter mAdapter;
     private SharedPreferences mSharedPreferences;
@@ -39,16 +41,25 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
+        mSortBy = Prefs.getSortBy(this);
         initRecyclerView();
+    }
 
-        mSortBy = PrefUtils.getSortBy(this);
-        initLoader();
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mAdapter.getItemCount() == 0 || mSortBy.equals(Api.SortBy.favorite)) {
+            // Reload if there's nothing to show (orientation changed)
+            // Always reload favorites, so if you open a favorite, unfavorite it and go back, it disappears
+            reload();
+        }
 
     }
 
-    private void initLoader() {
+    private void reload() {
         if (mSortBy.equals(getString(R.string.pref_sort_by_favorite))) {
             getSupportLoaderManager().destroyLoader(MOVIE_API_LOADER_ID);
             getSupportLoaderManager().restartLoader(MOVIE_SQL_LOADER_ID, null, this);
@@ -78,13 +89,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mSortBy = PrefUtils.getSortBy(this);
-        initLoader();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
@@ -105,17 +109,27 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
-//    @Override
-//    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-//        if (key.equals(getString(R.string.pref_sort_order_key))) {
-//            mSortBy = sharedPreferences.getString(key, MovieService.SortBy.popularityDesc);
-//            initLoader();
-//        }
-//
-//    }
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_sort_order_key))) {
+            String newSortBy = sharedPreferences.getString(key, Api.defaultSorting());
+            if (!newSortBy.equals(mSortBy) && !newSortBy.equals(Api.SortBy.favorite)) {
+                // Sorting changed, should reload data.
+                // Don't reload if switched to favorites - it always reloads in onResume.
+                mSortBy = newSortBy;
+                reload();
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(STATE_SORT_KEY, mSortBy);
+    }
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
@@ -131,8 +145,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader loader, Object data) {
-        String sortBy = PrefUtils.getSortBy(this);
-        CharSequence title = PrefUtils.getSortByTitle(this, sortBy);
+        String sortBy = Prefs.getSortBy(this);
+        CharSequence title = Prefs.getSortByTitle(this, sortBy);
         setTitle(title);
 
         if (data instanceof List) {

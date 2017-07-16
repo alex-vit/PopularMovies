@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.android.popularmovies.data.MovieContract;
 import com.example.android.popularmovies.databinding.ActivityDetailsBinding;
 import com.example.android.popularmovies.models.Movie;
-import com.example.android.popularmovies.services.MovieService;
+import com.example.android.popularmovies.util.Api;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
@@ -56,21 +56,21 @@ public class DetailsActivity extends AppCompatActivity {
             String backdropSize;
 
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                posterSize = MovieService.PosterSize.w342;
-                backdropSize = MovieService.BackdropSize.w780;
+                posterSize = Api.PosterSize.w342;
+                backdropSize = Api.BackdropSize.w780;
             } else {
-                posterSize = MovieService.PosterSize.w185;
-                backdropSize = MovieService.BackdropSize.w300;
+                posterSize = Api.PosterSize.w185;
+                backdropSize = Api.BackdropSize.w300;
             }
 
             mCollapsingToolbarLayout.setTitle(mMovie.title);
 
-            String posterUrl = MovieService.fullImageUrl(mMovie.posterPath, posterSize);
+            String posterUrl = Api.fullImageUrl(mMovie.posterPath, posterSize);
             Glide.with(this)
                     .load(posterUrl)
                     .placeholder(R.drawable.placeholder)
                     .into(binding.ivPoster);
-            String backdropUrl = MovieService.fullImageUrl(mMovie.backdropPath, backdropSize);
+            String backdropUrl = Api.fullImageUrl(mMovie.backdropPath, backdropSize);
             Glide.with(this)
                     .load(backdropUrl)
                     .placeholder(R.drawable.placeholder_backdrop)
@@ -126,6 +126,7 @@ public class DetailsActivity extends AppCompatActivity {
                         null,
                         null);
             }
+            getContentResolver().notifyChange(MovieContract.MovieEntry.CONTENT_URI, null);
         }
     }
 }
