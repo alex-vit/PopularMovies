@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MOVIE_API_LOADER_ID = 1000;
     private static final int MOVIE_SQL_LOADER_ID = 1100;
-    private static final String STATE_SORT_KEY = "STATE_SORT_KEY";
     RecyclerView mMovieGridRecyclerView;
     private MovieGridAdapter mAdapter;
     private SharedPreferences mSharedPreferences;
@@ -123,17 +122,11 @@ public class MainActivity extends AppCompatActivity
             String newSortBy = sharedPreferences.getString(key, Api.defaultSorting());
             if (!newSortBy.equals(mSortBy)) {
                 // Sorting changed, should reload data.
-                // Don't reload if switched to favorites - it always reloads in onResume.
                 mSortBy = newSortBy;
                 if (!newSortBy.equals(Api.SortBy.favorite)) reload();
+                // Don't reload if switched to favorites - it always reloads in onResume.
             }
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(STATE_SORT_KEY, mSortBy);
     }
 
     @Override
