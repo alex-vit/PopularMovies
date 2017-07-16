@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MOVIE_API_LOADER_ID = 1000;
     private static final int MOVIE_SQL_LOADER_ID = 1100;
+
     RecyclerView mMovieGridRecyclerView;
     private MovieGridAdapter mAdapter;
     private SharedPreferences mSharedPreferences;
@@ -58,38 +59,10 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void reload() {
-        mAdapter.deleteMovies();
-        CharSequence title = Prefs.getSortByTitle(this, mSortBy);
-        setTitle(title);
-
-        // Technically, "query" never changes, so init, don't restart ( == destroy, create)
-        if (mSortBy.equals(getString(R.string.pref_sort_by_favorite))) {
-            getSupportLoaderManager().destroyLoader(MOVIE_API_LOADER_ID);
-            getSupportLoaderManager().initLoader(MOVIE_SQL_LOADER_ID, null, this);
-        } else {
-            getSupportLoaderManager().destroyLoader(MOVIE_SQL_LOADER_ID);
-            getSupportLoaderManager().initLoader(MOVIE_API_LOADER_ID, null, this);
-        }
-    }
-
-    private void initRecyclerView() {
-        mMovieGridRecyclerView = (RecyclerView) findViewById(R.id.movie_grid);
-
-        final int nColumns = getResources().getInteger(R.integer.grid_column_count);
-        mMovieGridRecyclerView.setLayoutManager(new GridLayoutManager(this, nColumns));
-
-        mAdapter = new MovieGridAdapter(this);
-        mMovieGridRecyclerView.setAdapter(mAdapter);
-
-        mMovieGridRecyclerView.setHasFixedSize(true);
-    }
-
     @Override
-    public void onMovieClicked(Movie movie) {
-        Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra("movie", movie);
-        startActivity(intent);
+    protected void onDestroy() {
+        super.onDestroy();
+        mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -111,9 +84,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+    public void onMovieClicked(Movie movie) {
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra("movie", movie);
+        startActivity(intent);
     }
 
     @Override
@@ -155,4 +129,32 @@ public class MainActivity extends AppCompatActivity
     public void onLoaderReset(Loader loader) {
         mAdapter.deleteMovies();
     }
+
+    private void initRecyclerView() {
+        mMovieGridRecyclerView = (RecyclerView) findViewById(R.id.movie_grid);
+
+        final int nColumns = getResources().getInteger(R.integer.grid_column_count);
+        mMovieGridRecyclerView.setLayoutManager(new GridLayoutManager(this, nColumns));
+
+        mAdapter = new MovieGridAdapter(this);
+        mMovieGridRecyclerView.setAdapter(mAdapter);
+
+        mMovieGridRecyclerView.setHasFixedSize(true);
+    }
+
+    private void reload() {
+        mAdapter.deleteMovies();
+        CharSequence title = Prefs.getSortByTitle(this, mSortBy);
+        setTitle(title);
+
+        // Technically, "query" never changes, so init, don't restart ( == destroy, create)
+        if (mSortBy.equals(getString(R.string.pref_sort_by_favorite))) {
+            getSupportLoaderManager().destroyLoader(MOVIE_API_LOADER_ID);
+            getSupportLoaderManager().initLoader(MOVIE_SQL_LOADER_ID, null, this);
+        } else {
+            getSupportLoaderManager().destroyLoader(MOVIE_SQL_LOADER_ID);
+            getSupportLoaderManager().initLoader(MOVIE_API_LOADER_ID, null, this);
+        }
+    }
+
 }

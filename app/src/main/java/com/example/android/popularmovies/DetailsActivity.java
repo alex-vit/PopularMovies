@@ -52,14 +52,13 @@ public class DetailsActivity extends AppCompatActivity {
         } else {
             mMovie = getIntent().getParcelableExtra("movie");
 
-            String posterSize;
+            // TODO: Calculate best resolution based on size / column count
+            String posterSize = Api.PosterSize.w185;
             String backdropSize;
-
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                posterSize = Api.PosterSize.w342;
+            if (getResources().getConfiguration().orientation ==
+                    Configuration.ORIENTATION_LANDSCAPE) {
                 backdropSize = Api.BackdropSize.w780;
             } else {
-                posterSize = Api.PosterSize.w185;
                 backdropSize = Api.BackdropSize.w300;
             }
 
@@ -70,6 +69,7 @@ public class DetailsActivity extends AppCompatActivity {
                     .load(posterUrl)
                     .placeholder(R.drawable.placeholder)
                     .into(binding.ivPoster);
+
             String backdropUrl = Api.fullImageUrl(mMovie.backdropPath, backdropSize);
             Glide.with(this)
                     .load(backdropUrl)
@@ -89,9 +89,9 @@ public class DetailsActivity extends AppCompatActivity {
 
             boolean isFavorite = false;
             if (cursor != null && cursor.moveToFirst()) {
-                isFavorite = (cursor.getInt(cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_IS_FAVORITE)) == 1);
+                isFavorite = (cursor.getInt(cursor.getColumnIndex(
+                        MovieContract.MovieEntry.COLUMN_IS_FAVORITE)) == 1);
             }
-
             binding.toggleFavortie.setChecked(isFavorite);
             binding.toggleFavortie.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
 
@@ -102,23 +102,15 @@ public class DetailsActivity extends AppCompatActivity {
 
         private Movie movie;
 
-        public FavoriteToggleListener(Movie movie) {
+        FavoriteToggleListener(Movie movie) {
             this.movie = movie;
         }
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
-                ContentValues values = new ContentValues();
-                values.put(MovieContract.MovieEntry._ID, movie.id);
-                values.put(MovieContract.MovieEntry.COLUMN_TITLE, movie.title);
-                values.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, movie.releaseDate);
-                values.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, movie.overview);
-                values.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, movie.posterPath);
-                values.put(MovieContract.MovieEntry.COLUMN_BACKDROP_PATH, movie.backdropPath);
-                values.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, movie.voteAverage);
-                values.put(MovieContract.MovieEntry.COLUMN_VOTE_COUNT, movie.voteCount);
-                values.put(MovieContract.MovieEntry.COLUMN_IS_FAVORITE, 1);
+                movie.isFavorite = true;
+                ContentValues values = Api.movieToContentValues(movie);
                 getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, values);
             } else {
                 getContentResolver().delete(
