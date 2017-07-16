@@ -63,12 +63,19 @@ public class MainActivity extends AppCompatActivity
         CharSequence title = Prefs.getSortByTitle(this, mSortBy);
         setTitle(title);
         if (mSortBy.equals(getString(R.string.pref_sort_by_favorite))) {
+            LoaderManager lm = getSupportLoaderManager();
             Loader loader = getSupportLoaderManager().getLoader(MOVIE_API_LOADER_ID);
-            if (loader != null) loader.cancelLoad();
+            if (loader != null) {
+                lm.destroyLoader(loader.getId());
+            }
+
             getSupportLoaderManager().restartLoader(MOVIE_SQL_LOADER_ID, null, this);
         } else {
+            LoaderManager lm = getSupportLoaderManager();
             Loader loader = getSupportLoaderManager().getLoader(MOVIE_SQL_LOADER_ID);
-            if (loader != null) loader.cancelLoad();
+            if (loader != null) {
+                lm.destroyLoader(loader.getId());
+            }
             getSupportLoaderManager().restartLoader(MOVIE_API_LOADER_ID, null, this);
         }
     }
