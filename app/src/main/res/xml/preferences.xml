@@ -3,10 +3,10 @@
 
     <ListPreference
         android:defaultValue="@string/pref_sort_by_default"
-        android:dialogTitle="@string/pref_sort_by_title"
+        android:dialogTitle="@string/title_pref_sort_by"
         android:entries="@array/pref_sort_by_entries"
         android:entryValues="@array/pref_sort_by_values"
         android:key="@string/pref_sort_order_key"
-        android:title="@string/pref_sort_by_title" />
+        android:title="@string/title_pref_sort_by" />
 
 </PreferenceScreen>

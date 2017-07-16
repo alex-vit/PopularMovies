@@ -7,12 +7,10 @@
         <item>Favorite</item>
     </array>
 
-    <string name="pref_sort_by_default">popularity.desc</string>
-
     <array name="pref_sort_by_values">
-        <item>@string/pref_sort_by_default</item>
-        <item>vote_average.desc</item>
-        <item>favorite</item>
+        <item>@string/pref_sort_by_popularity</item>
+        <item>@string/pref_sort_by_votes</item>
+        <item>@string/pref_sort_by_favorite</item>
     </array>
 
 </resources>

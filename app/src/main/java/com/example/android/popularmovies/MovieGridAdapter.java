@@ -1,6 +1,7 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,14 +22,32 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
 
     private static final String TAG = MovieGridAdapter.class.getSimpleName();
     private final MovieClickListener mMovieClickListener;
-    private List<Movie> movies;
+    private List<Movie> movieList;
+    private Cursor movieCursor;
+    private Mode mode = Mode.NoData;
 
-    public MovieGridAdapter(MovieClickListener mMovieClickListener) {
+    MovieGridAdapter(MovieClickListener mMovieClickListener) {
         this.mMovieClickListener = mMovieClickListener;
     }
 
-    void setMovies(List<Movie> movies) {
-        this.movies = movies;
+    synchronized void setMovies(List<Movie> movies) {
+        movieList = movies;
+        movieCursor = null;
+        mode = Mode.List;
+        notifyDataSetChanged();
+    }
+
+    synchronized void setMovies(Cursor cursor) {
+        movieCursor = cursor;
+        movieList = null;
+        mode = Mode.Cursor;
+        notifyDataSetChanged();
+    }
+
+    synchronized void deleteMovies() {
+        movieCursor = null;
+        movieList = null;
+        mode = Mode.NoData;
         notifyDataSetChanged();
     }
 
@@ -44,7 +63,11 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
 
     @Override
     public void onBindViewHolder(MovieGridAdapterViewHolder holder, int position) {
-        String posterUrl = MovieService.fullImageUrl(movies.get(position).posterPath);
+
+        Movie movie = getData(position);
+        if (movie == null) return;
+
+        String posterUrl = MovieService.fullImageUrl(movie.posterPath);
         Glide.with(holder.mPosterImageView.getContext())
                 .load(posterUrl)
                 .placeholder(R.drawable.placeholder)
@@ -53,14 +76,33 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
 
     @Override
     public int getItemCount() {
-        return (movies == null) ? 0 : movies.size();
+        switch (mode) {
+            case Cursor:
+                return movieCursor.getCount();
+            case List:
+                return movieList.size();
+            default:
+                return 0;
+        }
     }
 
-    Movie getData(int position) {
-        return movies.get(position);
+    private Movie getData(int position) {
+        switch (mode) {
+            case Cursor:
+                movieCursor.moveToPosition(position);
+                return MovieService.movieFromCursor(movieCursor);
+            case List:
+                return movieList.get(position);
+            default:
+                return null;
+        }
     }
 
-    public interface MovieClickListener {
+    private enum Mode {
+        List, Cursor, NoData
+    }
+
+    interface MovieClickListener {
         void onMovieClicked(Movie movie);
     }
 

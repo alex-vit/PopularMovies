@@ -57,7 +57,7 @@ public class MovieService {
                 .toString();
     }
 
-    private static Movie movieFromCursor(Cursor cursor) {
+    public static Movie movieFromCursor(Cursor cursor) {
         Movie m = new Movie();
         m.id = cursor.getInt(cursor.getColumnIndex(MovieEntry._ID));
         m.title = cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_TITLE));
