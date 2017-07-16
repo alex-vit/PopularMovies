@@ -60,11 +60,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void reload() {
+        mAdapter.deleteMovies();
+        CharSequence title = Prefs.getSortByTitle(this, mSortBy);
+        setTitle(title);
         if (mSortBy.equals(getString(R.string.pref_sort_by_favorite))) {
-            getSupportLoaderManager().destroyLoader(MOVIE_API_LOADER_ID);
+            Loader loader = getSupportLoaderManager().getLoader(MOVIE_API_LOADER_ID);
+            if (loader != null) loader.cancelLoad();
             getSupportLoaderManager().restartLoader(MOVIE_SQL_LOADER_ID, null, this);
         } else {
-            getSupportLoaderManager().destroyLoader(MOVIE_SQL_LOADER_ID);
+            Loader loader = getSupportLoaderManager().getLoader(MOVIE_SQL_LOADER_ID);
+            if (loader != null) loader.cancelLoad();
             getSupportLoaderManager().restartLoader(MOVIE_API_LOADER_ID, null, this);
         }
     }
@@ -116,11 +121,11 @@ public class MainActivity extends AppCompatActivity
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.pref_sort_order_key))) {
             String newSortBy = sharedPreferences.getString(key, Api.defaultSorting());
-            if (!newSortBy.equals(mSortBy) && !newSortBy.equals(Api.SortBy.favorite)) {
+            if (!newSortBy.equals(mSortBy)) {
                 // Sorting changed, should reload data.
                 // Don't reload if switched to favorites - it always reloads in onResume.
                 mSortBy = newSortBy;
-                reload();
+                if (!newSortBy.equals(Api.SortBy.favorite)) reload();
             }
         }
     }
@@ -145,10 +150,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader loader, Object data) {
-        String sortBy = Prefs.getSortBy(this);
-        CharSequence title = Prefs.getSortByTitle(this, sortBy);
-        setTitle(title);
-
         if (data instanceof List) {
             List<Movie> movies = (List<Movie>) data;
             mAdapter.setMovies(movies);

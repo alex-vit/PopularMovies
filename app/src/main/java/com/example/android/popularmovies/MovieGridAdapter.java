@@ -78,7 +78,7 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
     public int getItemCount() {
         switch (mode) {
             case Cursor:
-                return movieCursor.getCount();
+                return (movieCursor == null) ? 0 : movieCursor.getCount();
             case List:
                 return movieList.size();
             default:

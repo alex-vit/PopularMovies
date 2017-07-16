@@ -28,9 +28,6 @@ import static com.example.android.popularmovies.util.Api.API_BASE_URL;
 
 public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
 
-    // TODO: Does this need to listen to preference changes?
-    // Like sort order changed during loading? O_o
-
     private static final String TAG = MovieApiLoader.class.getSimpleName();
 
     private String mSortBy = "";
