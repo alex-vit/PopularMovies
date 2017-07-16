@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        if (mAdapter.getItemCount() == 0 || mSortBy.equals(Api.SortBy.favorite)) {
+        if (mAdapter.getItemCount() == 0) {
             // Reload if there's nothing to show (orientation changed)
             // Always reload favorites, so if you open a favorite, unfavorite it and go back, it disappears
             reload();
@@ -130,8 +130,7 @@ public class MainActivity extends AppCompatActivity
             if (!newSortBy.equals(mSortBy)) {
                 // Sorting changed, should reload data.
                 mSortBy = newSortBy;
-                if (!newSortBy.equals(Api.SortBy.favorite)) reload();
-                // Don't reload if switched to favorites - it always reloads in onResume.
+                reload();
             }
         }
     }

@@ -67,7 +67,7 @@ public class MovieContentProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
         }
-
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
     }
 
@@ -122,6 +122,6 @@ public class MovieContentProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        throw new UnsupportedOperationException("Update not implemented.");
     }
 }
