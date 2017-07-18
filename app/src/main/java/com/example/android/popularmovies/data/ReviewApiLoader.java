@@ -30,9 +30,9 @@ public class ReviewApiLoader extends AsyncTaskLoader<List<Review>> {
     private static final String TAG = ReviewApiLoader.class.getSimpleName();
 
     private List<Review> mReviews = null;
-    private String mMovieId;
+    private int mMovieId;
 
-    public ReviewApiLoader(Context context, String movieId) {
+    public ReviewApiLoader(Context context, int movieId) {
         super(context);
         this.mMovieId = movieId;
     }

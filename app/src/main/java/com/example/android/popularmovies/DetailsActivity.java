@@ -7,7 +7,9 @@ import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,19 +17,24 @@ import android.widget.CompoundButton;
 
 import com.bumptech.glide.Glide;
 import com.example.android.popularmovies.data.MovieContract;
+import com.example.android.popularmovies.data.ReviewApiLoader;
 import com.example.android.popularmovies.databinding.ActivityDetailsBinding;
 import com.example.android.popularmovies.models.Movie;
+import com.example.android.popularmovies.models.Review;
 import com.example.android.popularmovies.util.Api;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Review>> {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
+    private static final int REVIEW_LOADER_ID = 1200;
 
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private int mMovieId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +58,7 @@ public class DetailsActivity extends AppCompatActivity {
             Log.e(TAG, "No extras were passed.");
         } else {
             mMovie = getIntent().getParcelableExtra("movie");
+            mMovieId = mMovie.id;
 
             // TODO: Calculate best resolution based on size / column count
             String posterSize = Api.PosterSize.w185;
@@ -96,6 +104,42 @@ public class DetailsActivity extends AppCompatActivity {
             binding.toggleFavortie.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Bundle args = new Bundle();
+        args.putInt("movieId", mMovieId);
+        getSupportLoaderManager().initLoader(REVIEW_LOADER_ID, args, this);
+    }
+
+    @Override
+    public Loader<List<Review>> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case REVIEW_LOADER_ID:
+                int movieId = args.getInt("movieId");
+                return new ReviewApiLoader(this, movieId);
+            default:
+                throw new UnsupportedOperationException("Unknown loader id: " + id);
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Review>> loader, List<Review> reviews) {
+        for (Review review : reviews) {
+            Log.d(TAG,
+                    "Review: "
+                            + review.content.substring(0, Math.min(review.content.length(), 100))
+                            + " (by " + review.author + ")"
+            );
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Review>> loader) {
+        Log.d(TAG, "onLoaderReset");
     }
 
     private class FavoriteToggleListener implements CompoundButton.OnCheckedChangeListener {
