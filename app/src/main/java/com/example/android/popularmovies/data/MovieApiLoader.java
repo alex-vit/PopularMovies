@@ -6,8 +6,8 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.example.android.popularmovies.R;
-import com.example.android.popularmovies.models.ListResponse;
 import com.example.android.popularmovies.models.Movie;
+import com.example.android.popularmovies.models.MovieListResponse;
 import com.example.android.popularmovies.util.Api;
 import com.example.android.popularmovies.util.Prefs;
 import com.google.gson.Gson;
@@ -45,8 +45,8 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
     }
 
     private static List<Movie> parseListResponse(String response) {
-        ListResponse listResponse = new Gson().fromJson(response, ListResponse.class);
-        return listResponse.movies;
+        MovieListResponse movieListResponse = new Gson().fromJson(response, MovieListResponse.class);
+        return movieListResponse.movies;
     }
 
     @Override

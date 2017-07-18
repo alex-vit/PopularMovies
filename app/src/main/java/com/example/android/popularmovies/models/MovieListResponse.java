@@ -17,18 +17,18 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListResponse implements Parcelable {
+public class MovieListResponse implements Parcelable {
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<ListResponse> CREATOR = new Parcelable.Creator<ListResponse>() {
+    public static final Parcelable.Creator<MovieListResponse> CREATOR = new Parcelable.Creator<MovieListResponse>() {
         @Override
-        public ListResponse createFromParcel(Parcel in) {
-            return new ListResponse(in);
+        public MovieListResponse createFromParcel(Parcel in) {
+            return new MovieListResponse(in);
         }
 
         @Override
-        public ListResponse[] newArray(int size) {
-            return new ListResponse[size];
+        public MovieListResponse[] newArray(int size) {
+            return new MovieListResponse[size];
         }
     };
     @SerializedName("page")
@@ -44,7 +44,7 @@ public class ListResponse implements Parcelable {
     @Expose
     public Integer totalPages;
 
-    protected ListResponse(Parcel in) {
+    protected MovieListResponse(Parcel in) {
         page = in.readByte() == 0x00 ? null : in.readInt();
         if (in.readByte() == 0x01) {
             movies = new ArrayList<Movie>();
