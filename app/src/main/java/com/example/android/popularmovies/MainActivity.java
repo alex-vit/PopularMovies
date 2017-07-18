@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity
     private static final int MOVIE_API_LOADER_ID = 1000;
     private static final int MOVIE_SQL_LOADER_ID = 1100;
 
-    RecyclerView mMovieGridRecyclerView;
+    private RecyclerView mMovieGridRecyclerView;
     private MovieGridAdapter mAdapter;
     private SharedPreferences mSharedPreferences;
     private String mSortBy;

@@ -30,27 +30,6 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
         this.mMovieClickListener = mMovieClickListener;
     }
 
-    synchronized void setMovies(List<Movie> movies) {
-        movieList = movies;
-        movieCursor = null;
-        mode = Mode.List;
-        notifyDataSetChanged();
-    }
-
-    synchronized void setMovies(Cursor cursor) {
-        movieCursor = cursor;
-        movieList = null;
-        mode = Mode.Cursor;
-        notifyDataSetChanged();
-    }
-
-    synchronized void deleteMovies() {
-        movieCursor = null;
-        movieList = null;
-        mode = Mode.NoData;
-        notifyDataSetChanged();
-    }
-
     @Override
     public MovieGridAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -84,6 +63,27 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
             default:
                 return 0;
         }
+    }
+
+    synchronized void setMovies(List<Movie> movies) {
+        movieList = movies;
+        movieCursor = null;
+        mode = Mode.List;
+        notifyDataSetChanged();
+    }
+
+    synchronized void setMovies(Cursor cursor) {
+        movieCursor = cursor;
+        movieList = null;
+        mode = Mode.Cursor;
+        notifyDataSetChanged();
+    }
+
+    synchronized void deleteMovies() {
+        movieCursor = null;
+        movieList = null;
+        mode = Mode.NoData;
+        notifyDataSetChanged();
     }
 
     private Movie getData(int position) {

@@ -5,6 +5,7 @@
     <!-- Padding and margin -->
     <dimen name="padding_small">8dp</dimen>
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
     <!-- Text sizes -->
     <dimen name="text_size_large">30sp</dimen>
     <dimen name="text_size_medium">24sp</dimen>

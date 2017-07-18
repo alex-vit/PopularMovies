@@ -11,6 +11,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.CompoundButton;
@@ -33,23 +35,27 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     private static final String TAG = DetailsActivity.class.getSimpleName();
     private static final int REVIEW_LOADER_ID = 1200;
 
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private ActivityDetailsBinding binding;
+    private ReviewListAdapter mAdapter;
+
     private int mMovieId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_details);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_details);
 
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mCollapsingToolbarLayout = binding.collapsingToolbar;
+        CollapsingToolbarLayout mCollapsingToolbarLayout = binding.collapsingToolbar;
         mCollapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(this, R.color.primary_dark));
         mCollapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.white_text));
         mCollapsingToolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.white_text));
+
+        initRecyclerView();
 
         Movie mMovie = null;
 
@@ -109,7 +115,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     @Override
     protected void onResume() {
         super.onResume();
-
         Bundle args = new Bundle();
         args.putInt("movieId", mMovieId);
         getSupportLoaderManager().initLoader(REVIEW_LOADER_ID, args, this);
@@ -128,18 +133,21 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<List<Review>> loader, List<Review> reviews) {
-        for (Review review : reviews) {
-            Log.d(TAG,
-                    "Review: "
-                            + review.content.substring(0, Math.min(review.content.length(), 100))
-                            + " (by " + review.author + ")"
-            );
-        }
+        mAdapter.setReviews(reviews);
     }
 
     @Override
     public void onLoaderReset(Loader<List<Review>> loader) {
-        Log.d(TAG, "onLoaderReset");
+        mAdapter.deleteReviews();
+    }
+
+    private void initRecyclerView() {
+        RecyclerView rv = binding.reviewList;
+        mAdapter = new ReviewListAdapter();
+
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        rv.setAdapter(mAdapter);
+        rv.setHasFixedSize(false);
     }
 
     private class FavoriteToggleListener implements CompoundButton.OnCheckedChangeListener {
