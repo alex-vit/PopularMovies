@@ -6,10 +6,9 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.example.android.popularmovies.R;
-import com.example.android.popularmovies.models.Movie;
-import com.example.android.popularmovies.models.MovieListResponse;
+import com.example.android.popularmovies.models.Review;
+import com.example.android.popularmovies.models.ReviewListResponse;
 import com.example.android.popularmovies.util.Api;
-import com.example.android.popularmovies.util.Prefs;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -23,53 +22,47 @@ import java.util.Scanner;
 import static com.example.android.popularmovies.util.Api.API_BASE_URL;
 
 /**
- * Created by Aleksandrs Vitjukovs on 7/16/2017.
+ * Created by Aleksandrs Vitjukovs on 7/18/2017.
  */
 
-public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
+public class ReviewApiLoader extends AsyncTaskLoader<List<Review>> {
 
-    private static final String TAG = MovieApiLoader.class.getSimpleName();
+    private static final String TAG = ReviewApiLoader.class.getSimpleName();
 
-    private String mSortBy = "";
-    private List<Movie> mMovies = null;
+    private List<Review> mReviews = null;
+    private String mMovieId;
 
-    public MovieApiLoader(Context context) {
+    public ReviewApiLoader(Context context, String movieId) {
         super(context);
+        this.mMovieId = movieId;
     }
 
     private static Uri.Builder baseUriBuilder(String apiKey) {
         return Uri
                 .parse(API_BASE_URL).buildUpon()
-                .appendQueryParameter(Api.Param.apiKey, apiKey)
-                .appendQueryParameter(Api.Param.voteCount, String.valueOf(100));
+                .appendQueryParameter(Api.Param.apiKey, apiKey);
     }
 
-    private static List<Movie> parseListResponse(String response) {
-        MovieListResponse movieListResponse = new Gson().fromJson(response, MovieListResponse.class);
-        return movieListResponse.movies;
+    private static List<Review> parseListResponse(String response) {
+        ReviewListResponse reviewListResponse = new Gson().fromJson(response, ReviewListResponse.class);
+        return reviewListResponse.reviews;
     }
 
     @Override
     protected void onStartLoading() {
-
-        String newSortBy = Prefs.getSortBy(getContext());
-
-        if (mSortBy.equals(newSortBy) && mMovies != null) {
-            deliverResult(mMovies);
+        if (mReviews != null) {
+            deliverResult(mReviews);
         } else {
-            mSortBy = newSortBy;
             forceLoad();
         }
-
     }
 
     @Override
-    public List<Movie> loadInBackground() {
-
+    public List<Review> loadInBackground() {
         String apiKey = getContext().getString(R.string.themoviedb_api_v3_key);
+
         Uri uri = baseUriBuilder(apiKey)
-                .appendEncodedPath("discover/movie")
-                .appendQueryParameter(Api.Param.sortBy, mSortBy)
+                .appendEncodedPath("movie/" + mMovieId + "/reviews")
                 .build();
 
         HttpURLConnection connection = null;
@@ -89,13 +82,12 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
         }
 
         return null;
-
     }
 
     @Override
-    public void deliverResult(List<Movie> movies) {
-        mMovies = movies;
-        super.deliverResult(movies);
+    public void deliverResult(List<Review> reviews) {
+        mReviews = reviews;
+        super.deliverResult(reviews);
     }
 
 }
