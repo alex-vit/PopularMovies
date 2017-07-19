@@ -99,6 +99,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_votes"
                     tools:text="@string/movie_overview_example" />
 
+                <LinearLayout
+                    android:id="@+id/video_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/iv_poster"
+                    />
+
                 <ToggleButton
                     android:id="@+id/toggle_favortie"
                     style="@style/ImageToggle"
@@ -120,7 +128,7 @@
                     android:orientation="vertical"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_poster" />
+                    app:layout_constraintTop_toBottomOf="@+id/video_list" />
 
             </android.support.constraint.ConstraintLayout>
 
