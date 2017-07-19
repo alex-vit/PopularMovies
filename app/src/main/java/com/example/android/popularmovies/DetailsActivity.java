@@ -11,11 +11,13 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.android.popularmovies.data.MovieContract;
@@ -36,7 +38,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     private static final int REVIEW_LOADER_ID = 1200;
 
     private ActivityDetailsBinding binding;
-    private ReviewListAdapter mAdapter;
+    private ReviewAdapter mReviewAdapter;
 
     private int mMovieId;
 
@@ -45,6 +47,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details);
+        mReviewAdapter = new ReviewAdapter(binding.reviewList);
 
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
@@ -54,8 +57,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mCollapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(this, R.color.primary_dark));
         mCollapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.white_text));
         mCollapsingToolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.white_text));
-
-        initRecyclerView();
 
         Movie mMovie = null;
 
@@ -133,21 +134,12 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<List<Review>> loader, List<Review> reviews) {
-        mAdapter.setReviews(reviews);
+        mReviewAdapter.setReviews(reviews);
     }
 
     @Override
     public void onLoaderReset(Loader<List<Review>> loader) {
-        mAdapter.deleteReviews();
-    }
-
-    private void initRecyclerView() {
-        RecyclerView rv = binding.reviewList;
-        mAdapter = new ReviewListAdapter();
-
-        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        rv.setAdapter(mAdapter);
-        rv.setHasFixedSize(false);
+        mReviewAdapter.deleteReviews();
     }
 
     private class FavoriteToggleListener implements CompoundButton.OnCheckedChangeListener {
@@ -172,5 +164,37 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             }
             getContentResolver().notifyChange(MovieContract.MovieEntry.CONTENT_URI, null);
         }
+    }
+
+    private class ReviewAdapter {
+
+        private LinearLayout mParent;
+
+        ReviewAdapter(LinearLayout parent) {
+            this.mParent = parent;
+        }
+
+        public void setReviews(List<Review> reviewList) {
+            mParent.removeAllViews();
+
+            if (reviewList == null || reviewList.size() == 0) return;
+
+            for (Review review: reviewList) {
+                addReview(review);
+            }
+        }
+
+        public void deleteReviews() {
+            setReviews(null);
+        }
+
+        private void addReview(Review review) {
+            LayoutInflater inflater = LayoutInflater.from(mParent.getContext());
+            View itemView = inflater.inflate(R.layout.review_item, null, false);
+            ((TextView) itemView.findViewById(R.id.review_author)).setText(review.author);
+            ((TextView) itemView.findViewById(R.id.review_content)).setText(review.content);
+            mParent.addView(itemView);
+        }
+
     }
 }
