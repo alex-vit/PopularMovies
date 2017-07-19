@@ -13,133 +13,144 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.android.popularmovies.data.MovieContract;
-import com.example.android.popularmovies.data.ReviewApiLoader;
+import com.example.android.popularmovies.data.MovieExtrasApiLoader;
+import com.example.android.popularmovies.models.MovieExtras;
 import com.example.android.popularmovies.databinding.ActivityDetailsBinding;
 import com.example.android.popularmovies.models.Movie;
-import com.example.android.popularmovies.models.Review;
 import com.example.android.popularmovies.util.Api;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
-public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Review>> {
+public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<MovieExtras> {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
-    private static final int REVIEW_LOADER_ID = 1200;
+    private static final int EXTRA_LOADER_ID = 1200;
 
-    private ActivityDetailsBinding binding;
-    private ReviewAdapter mReviewAdapter;
+    private MovieExtrasAdapter mExtrasAdapter;
 
-    private int mMovieId;
+    private Movie mMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_details);
-        mReviewAdapter = new ReviewAdapter(binding.reviewList);
-
-        Toolbar toolbar = binding.toolbar;
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        CollapsingToolbarLayout mCollapsingToolbarLayout = binding.collapsingToolbar;
-        mCollapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(this, R.color.primary_dark));
-        mCollapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.white_text));
-        mCollapsingToolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.white_text));
-
-        Movie mMovie = null;
-
-        Bundle extras = getIntent().getExtras();
-        if (extras == null) {
-            Log.e(TAG, "No extras were passed.");
-        } else {
-            mMovie = getIntent().getParcelableExtra("movie");
-            mMovieId = mMovie.id;
-
-            // TODO: Calculate best resolution based on size / column count
-            String posterSize = Api.PosterSize.w185;
-            String backdropSize;
-            if (getResources().getConfiguration().orientation ==
-                    Configuration.ORIENTATION_LANDSCAPE) {
-                backdropSize = Api.BackdropSize.w780;
-            } else {
-                backdropSize = Api.BackdropSize.w300;
-            }
-
-            mCollapsingToolbarLayout.setTitle(mMovie.title);
-
-            String posterUrl = Api.fullImageUrl(mMovie.posterPath, posterSize);
-            Glide.with(this)
-                    .load(posterUrl)
-                    .placeholder(R.drawable.placeholder)
-                    .into(binding.ivPoster);
-
-            String backdropUrl = Api.fullImageUrl(mMovie.backdropPath, backdropSize);
-            Glide.with(this)
-                    .load(backdropUrl)
-                    .placeholder(R.drawable.placeholder_backdrop)
-                    .into(binding.ivBackdrop);
-
-            binding.tvYear.setText(mMovie.year());
-            binding.tvVotes.setText(
-                    "Rating: "
-                            + new DecimalFormat("#0.0").format(mMovie.voteAverage)
-                            + " (" + mMovie.voteCount.toString() + " votes)"
-            );
-            binding.tvOverview.setText(mMovie.overview);
-
-            Uri uri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, mMovie.id);
-            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-
-            boolean isFavorite = false;
-            if (cursor != null && cursor.moveToFirst()) {
-                isFavorite = (cursor.getInt(cursor.getColumnIndex(
-                        MovieContract.MovieEntry.COLUMN_IS_FAVORITE)) == 1);
-            }
-            binding.toggleFavortie.setChecked(isFavorite);
-            binding.toggleFavortie.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
-
+        mMovie = getMovie();
+        if (mMovie == null) {
+            Log.e(TAG, "No movie was passed.");
+            return;
         }
+
+        ActivityDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_details);
+        initToolbar(binding, mMovie.title);
+        loadImages(binding, mMovie);
+        loadText(binding, mMovie);
+        setupFavorite(binding, mMovie.id);
+
+        mExtrasAdapter = new MovieExtrasAdapter(binding.reviewList, binding.videoList);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Bundle args = new Bundle();
-        args.putInt("movieId", mMovieId);
-        getSupportLoaderManager().initLoader(REVIEW_LOADER_ID, args, this);
+        args.putInt("movieId", mMovie.id);
+        getSupportLoaderManager().initLoader(EXTRA_LOADER_ID, args, this);
     }
 
     @Override
-    public Loader<List<Review>> onCreateLoader(int id, Bundle args) {
+    public Loader<MovieExtras> onCreateLoader(int id, Bundle args) {
         switch (id) {
-            case REVIEW_LOADER_ID:
+            case EXTRA_LOADER_ID:
                 int movieId = args.getInt("movieId");
-                return new ReviewApiLoader(this, movieId);
+                return new MovieExtrasApiLoader(this, movieId);
             default:
                 throw new UnsupportedOperationException("Unknown loader id: " + id);
         }
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Review>> loader, List<Review> reviews) {
-        mReviewAdapter.setReviews(reviews);
+    public void onLoadFinished(Loader<MovieExtras> loader, MovieExtras extras) {
+        mExtrasAdapter.setExtras(extras);
     }
 
     @Override
-    public void onLoaderReset(Loader<List<Review>> loader) {
-        mReviewAdapter.deleteReviews();
+    public void onLoaderReset(Loader<MovieExtras> loader) {
+        mExtrasAdapter.deleteExtras();
+    }
+
+    private Movie getMovie() {
+        Bundle extras = getIntent().getExtras();
+        if (extras == null) {
+            return null;
+        } else {
+            return getIntent().getParcelableExtra("movie");
+        }
+    }
+
+    private void initToolbar(ActivityDetailsBinding binding, String title) {
+        Toolbar toolbar = binding.toolbar;
+        setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        CollapsingToolbarLayout collapsingToolbarLayout = binding.collapsingToolbar;
+        collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(this, R.color.primary_dark));
+        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.white_text));
+        collapsingToolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.white_text));
+        collapsingToolbarLayout.setTitle(title);
+    }
+
+    private void loadImages(ActivityDetailsBinding binding, Movie movie) {
+        String posterSize = Api.PosterSize.w185;
+        String backdropSize;
+        if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE) {
+            backdropSize = Api.BackdropSize.w780;
+        } else {
+            backdropSize = Api.BackdropSize.w300;
+        }
+
+        String posterUrl = Api.fullImageUrl(movie.posterPath, posterSize);
+        Glide.with(this)
+                .load(posterUrl)
+                .placeholder(R.drawable.placeholder)
+                .into(binding.ivPoster);
+
+        String backdropUrl = Api.fullImageUrl(movie.backdropPath, backdropSize);
+        Glide.with(this)
+                .load(backdropUrl)
+                .placeholder(R.drawable.placeholder_backdrop)
+                .into(binding.ivBackdrop);
+    }
+
+    private void loadText(ActivityDetailsBinding binding, Movie movie) {
+        binding.tvYear.setText(movie.year());
+        binding.tvVotes.setText(
+                "Rating: "
+                        + new DecimalFormat("#0.0").format(movie.voteAverage)
+                        + " (" + movie.voteCount.toString() + " votes)"
+        );
+        binding.tvOverview.setText(movie.overview);
+    }
+
+    private void setupFavorite(ActivityDetailsBinding binding, int movieId) {
+        Uri uri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, movieId);
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+
+        boolean isFavorite = false;
+        if (cursor != null && cursor.moveToFirst()) {
+            isFavorite = (cursor.getInt(cursor.getColumnIndex(
+                    MovieContract.MovieEntry.COLUMN_IS_FAVORITE)) == 1);
+            cursor.close();
+        }
+        binding.toggleFavortie.setChecked(isFavorite);
+        binding.toggleFavortie.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
     }
 
     private class FavoriteToggleListener implements CompoundButton.OnCheckedChangeListener {
@@ -166,35 +177,4 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
-    private class ReviewAdapter {
-
-        private LinearLayout mParent;
-
-        ReviewAdapter(LinearLayout parent) {
-            this.mParent = parent;
-        }
-
-        public void setReviews(List<Review> reviewList) {
-            mParent.removeAllViews();
-
-            if (reviewList == null || reviewList.size() == 0) return;
-
-            for (Review review: reviewList) {
-                addReview(review);
-            }
-        }
-
-        public void deleteReviews() {
-            setReviews(null);
-        }
-
-        private void addReview(Review review) {
-            LayoutInflater inflater = LayoutInflater.from(mParent.getContext());
-            View itemView = inflater.inflate(R.layout.review_item, null, false);
-            ((TextView) itemView.findViewById(R.id.review_author)).setText(review.author);
-            ((TextView) itemView.findViewById(R.id.review_content)).setText(review.content);
-            mParent.addView(itemView);
-        }
-
-    }
 }
