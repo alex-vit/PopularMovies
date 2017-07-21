@@ -46,6 +46,7 @@
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nested_scrollview_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -108,8 +109,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@id/iv_poster"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/iv_poster" />
 
                 <ToggleButton
                     android:id="@+id/toggle_favortie"
