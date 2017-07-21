@@ -3,7 +3,9 @@ package com.example.android.popularmovies;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.popularmovies.models.MovieExtras;
 import com.example.android.popularmovies.models.Review;
@@ -53,10 +55,19 @@ class MovieExtrasAdapter {
         reviewParent.addView(itemView);
     }
 
-    private void addVideo(Video video) {
+    private void addVideo(final Video video) {
         LayoutInflater inflater = LayoutInflater.from(videoParent.getContext());
         View itemView = inflater.inflate(R.layout.video_item, videoParent, false);
         ((TextView) itemView.findViewById(R.id.video_name)).setText(video.name);
+
+        Button button = (Button) itemView;
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), video.id, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         videoParent.addView(itemView);
     }
 }
