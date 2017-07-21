@@ -1,5 +1,7 @@
 package com.example.android.popularmovies;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 import com.example.android.popularmovies.models.MovieExtras;
 import com.example.android.popularmovies.models.Review;
 import com.example.android.popularmovies.models.Video;
+import com.example.android.popularmovies.util.Api;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/20/2017.
@@ -56,6 +59,9 @@ class MovieExtrasAdapter {
     }
 
     private void addVideo(final Video video) {
+        if (!Api.isSupportedVideoSite(video.site)) return;
+        final Uri videoUri = Api.getVideoUri(video.site, video.key);
+
         LayoutInflater inflater = LayoutInflater.from(videoParent.getContext());
         View itemView = inflater.inflate(R.layout.video_item, videoParent, false);
         ((TextView) itemView.findViewById(R.id.video_name)).setText(video.name);
@@ -64,7 +70,7 @@ class MovieExtrasAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), video.id, Toast.LENGTH_SHORT).show();
+                view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, videoUri));
             }
         });
 

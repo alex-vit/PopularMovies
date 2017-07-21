@@ -6,6 +6,11 @@ import android.net.Uri;
 
 import com.example.android.popularmovies.models.Movie;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import static com.example.android.popularmovies.data.MovieContract.MovieEntry;
 
 /**
@@ -18,6 +23,8 @@ public class Api {
     public static final String API_BASE_URL = "https://api.themoviedb.org/3";
     private static final String TAG = Api.class.getSimpleName();
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
+
+    private static final List<String> SUPPORTED_VIDE_SITES = Arrays.asList(VideoSite.YouTube);
 
     public static String fullImageUrl(String imagePath) {
         return fullImageUrl(imagePath, PosterSize.w185);
@@ -72,6 +79,24 @@ public class Api {
         return SortBy.popularityDesc;
     }
 
+    public static boolean isSupportedVideoSite(String site) {
+        return SUPPORTED_VIDE_SITES.contains(site);
+    }
+
+    public static Uri getVideoUri(String site, String key) {
+        Uri uri = null;
+        switch (site) {
+            case VideoSite.YouTube:
+                return Uri.parse(VideoSiteUrl.YouTube)
+                        .buildUpon()
+                        .appendQueryParameter("v", key)
+                        .build();
+            default:
+                throw new UnsupportedOperationException("Unknown video site: " + site);
+        }
+
+    }
+
     public static final class Param {
         public static final String apiKey = "api_key";
         public static final String sortBy = "sort_by";
@@ -92,5 +117,13 @@ public class Api {
     public static final class BackdropSize {
         public static final String w300 = "w300";
         public static final String w780 = "w780";
+    }
+
+    public static final class VideoSite {
+        public static final String YouTube = "YouTube";
+    }
+
+    private static final class VideoSiteUrl {
+        public static final String YouTube = "https://www.youtube.com/watch";
     }
 }
