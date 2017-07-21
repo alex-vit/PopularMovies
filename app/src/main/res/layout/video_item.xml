@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/video_name"
-    android:layout_width="match_parent"
+    style="@style/VideoButton"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent" />

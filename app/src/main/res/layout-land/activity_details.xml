@@ -100,11 +100,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_votes"
                     tools:text="@string/movie_overview_example" />
 
-                <LinearLayout
+                <com.google.android.flexbox.FlexboxLayout
                     android:id="@+id/video_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    app:alignContent="flex_start"
+                    app:alignItems="flex_start"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
                     app:layout_constraintTop_toBottomOf="@id/iv_poster" />
 
                 <ToggleButton

@@ -34,4 +34,8 @@
         <item name="android:textOff"></item>
     </style>
 
+    <style name="VideoButton" parent="Base.TextAppearance.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 </resources>
