@@ -10,103 +10,11 @@
 
         <include
             android:id="@+id/app_bar"
-            layout="@layout/detail_toolbar" />
+            layout="@layout/include_detail_toolbar" />
 
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/nested_scrollview_detail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-
-                <ImageView
-                    android:id="@+id/iv_poster"
-                    android:layout_width="185dp"
-                    android:layout_height="277dp"
-                    android:contentDescription="@string/iv_poster_description"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/placeholder" />
-
-                <TextView
-                    android:id="@+id/tv_year"
-                    style="@style/TextAppearance.AppCompat.Display1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_small"
-                    android:layout_marginStart="@dimen/margin_small"
-                    android:layout_marginTop="@dimen/margin_small"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_poster"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@string/year_example" />
-
-                <TextView
-                    android:id="@+id/tv_votes"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_year"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_year"
-                    tools:text="@string/movie_votes_example" />
-
-                <TextView
-                    android:id="@+id/tv_overview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_small"
-                    android:layout_marginLeft="@dimen/margin_small"
-                    android:layout_marginRight="@dimen/margin_small"
-                    android:layout_marginStart="@dimen/margin_small"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:ellipsize="end"
-                    android:maxLines="10"
-                    android:textStyle="italic"
-                    app:layout_constraintLeft_toRightOf="@id/iv_poster"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_votes"
-                    tools:text="@string/movie_overview_example" />
-
-                <com.google.android.flexbox.FlexboxLayout
-                    android:id="@+id/video_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:alignContent="flex_start"
-                    app:alignItems="flex_start"
-                    app:flexDirection="row"
-                    app:flexWrap="wrap"
-                    app:layout_constraintTop_toBottomOf="@id/iv_poster" />
-
-                <ToggleButton
-                    android:id="@+id/toggle_favortie"
-                    style="@style/ImageToggle"
-                    android:layout_width="@dimen/toggle_size"
-                    android:layout_height="@dimen/toggle_size"
-                    android:layout_marginEnd="@dimen/margin_small"
-                    android:layout_marginRight="@dimen/margin_small"
-                    android:background="@drawable/image_toggle_background_favorite"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_year" />
-
-                <LinearLayout
-                    android:id="@+id/review_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_small"
-                    android:layout_marginRight="@dimen/margin_small"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:orientation="vertical"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/video_list" />
-
-            </android.support.constraint.ConstraintLayout>
-
-        </android.support.v4.widget.NestedScrollView>
+        <include
+            android:id="@+id/body"
+            layout="@layout/include_detail_body" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

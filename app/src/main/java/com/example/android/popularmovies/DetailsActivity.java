@@ -52,7 +52,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         loadText(binding, mMovie);
         setupFavorite(binding, mMovie.id);
 
-        mExtrasAdapter = new MovieExtrasAdapter(binding.reviewList, binding.videoList);
+        mExtrasAdapter = new MovieExtrasAdapter(binding.body.reviewList, binding.body.videoList);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         Glide.with(this)
                 .load(posterUrl)
                 .placeholder(R.drawable.placeholder)
-                .into(binding.ivPoster);
+                .into(binding.body.ivPoster);
 
         String backdropUrl = Api.fullImageUrl(movie.backdropPath, backdropSize);
         Glide.with(this)
@@ -130,13 +130,13 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     }
 
     private void loadText(ActivityDetailsBinding binding, Movie movie) {
-        binding.tvYear.setText(movie.year());
-        binding.tvVotes.setText(
+        binding.body.tvYear.setText(movie.year());
+        binding.body.tvVotes.setText(
                 "Rating: "
                         + new DecimalFormat("#0.0").format(movie.voteAverage)
                         + " (" + movie.voteCount.toString() + " votes)"
         );
-        binding.tvOverview.setText(movie.overview);
+        binding.body.tvOverview.setText(movie.overview);
     }
 
     private void setupFavorite(ActivityDetailsBinding binding, int movieId) {
@@ -149,8 +149,8 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                     MovieContract.MovieEntry.COLUMN_IS_FAVORITE)) == 1);
             cursor.close();
         }
-        binding.toggleFavortie.setChecked(isFavorite);
-        binding.toggleFavortie.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
+        binding.body.toggleFavortie.setChecked(isFavorite);
+        binding.body.toggleFavortie.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
     }
 
     private class FavoriteToggleListener implements CompoundButton.OnCheckedChangeListener {
