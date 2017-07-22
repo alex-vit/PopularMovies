@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView mMovieGridRecyclerView;
     private MovieGridAdapter mAdapter;
     private SharedPreferences mSharedPreferences;
-    private String mSortBy;
+    private String mCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
-        mSortBy = Prefs.getSortBy(this);
+        mCategory = Prefs.getCategory(this);
         initRecyclerView();
     }
 
@@ -92,11 +92,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(getString(R.string.pref_sort_order_key))) {
+        if (key.equals(getString(R.string.pref_category_key))) {
             String newSortBy = sharedPreferences.getString(key, Api.defaultSorting());
-            if (!newSortBy.equals(mSortBy)) {
+            if (!newSortBy.equals(mCategory)) {
                 // Sorting changed, should reload data.
-                mSortBy = newSortBy;
+                mCategory = newSortBy;
                 reload();
             }
         }
@@ -144,11 +144,11 @@ public class MainActivity extends AppCompatActivity
 
     private void reload() {
         mAdapter.deleteMovies();
-        CharSequence title = Prefs.getSortByTitle(this, mSortBy);
+        CharSequence title = Prefs.getCategoryTitle(this, mCategory);
         setTitle(title);
 
         // Technically, "query" never changes, so init, don't restart ( == destroy, create)
-        if (mSortBy.equals(getString(R.string.pref_sort_by_favorite))) {
+        if (mCategory.equals(getString(R.string.pref_category_favorite))) {
             getSupportLoaderManager().destroyLoader(MOVIE_API_LOADER_ID);
             getSupportLoaderManager().initLoader(MOVIE_SQL_LOADER_ID, null, this);
         } else {

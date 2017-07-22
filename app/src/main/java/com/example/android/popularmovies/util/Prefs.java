@@ -13,16 +13,16 @@ import java.util.Arrays;
 
 public class Prefs {
 
-    public static String getSortBy(Context context) {
+    public static String getCategory(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(
-                context.getString(R.string.pref_sort_order_key),
-                Api.SortBy.popularityDesc
+                context.getString(R.string.pref_category_key),
+                Api.Category.popular
         );
     }
 
-    public static CharSequence getSortByTitle(Context context, String sortBy) {
-        CharSequence[] values = context.getResources().getStringArray(R.array.pref_sort_by_values);
-        CharSequence[] titles = context.getResources().getStringArray(R.array.pref_sort_by_entries);
+    public static CharSequence getCategoryTitle(Context context, String sortBy) {
+        CharSequence[] values = context.getResources().getStringArray(R.array.pref_category_values);
+        CharSequence[] titles = context.getResources().getStringArray(R.array.pref_category_entries);
         int idx = Arrays.asList(values).indexOf(sortBy);
         return titles[idx];
     }

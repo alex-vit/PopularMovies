@@ -6,9 +6,7 @@ import android.net.Uri;
 
 import com.example.android.popularmovies.models.Movie;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static com.example.android.popularmovies.data.MovieContract.MovieEntry;
@@ -76,7 +74,7 @@ public class Api {
     }
 
     public static String defaultSorting() {
-        return SortBy.popularityDesc;
+        return Category.popular;
     }
 
     public static boolean isSupportedVideoSite(String site) {
@@ -103,9 +101,9 @@ public class Api {
         public static final String voteCount = "vote_count.gte";
     }
 
-    public static final class SortBy {
-        public static final String popularityDesc = "popularity.desc";
-        public static final String voteAverageDesc = "vote_average.desc";
+    public static final class Category {
+        public static final String popular = "popular";
+        public static final String topRated = "top_rated";
         public static final String favorite = "favorite";
     }
 

@@ -20,7 +20,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        onSharedPreferenceChanged(sharedPreferences, getString(R.string.pref_sort_order_key));
+        onSharedPreferenceChanged(sharedPreferences, getString(R.string.pref_category_key));
     }
 
     @Override

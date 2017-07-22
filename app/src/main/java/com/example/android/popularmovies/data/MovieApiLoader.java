@@ -30,7 +30,7 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
 
     private static final String TAG = MovieApiLoader.class.getSimpleName();
 
-    private String mSortBy = "";
+    private String mCategory = "";
     private List<Movie> mMovies = null;
 
     public MovieApiLoader(Context context) {
@@ -52,12 +52,12 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
     @Override
     protected void onStartLoading() {
 
-        String newSortBy = Prefs.getSortBy(getContext());
+        String newCategory = Prefs.getCategory(getContext());
 
-        if (mSortBy.equals(newSortBy) && mMovies != null) {
+        if (mCategory.equals(newCategory) && mMovies != null) {
             deliverResult(mMovies);
         } else {
-            mSortBy = newSortBy;
+            mCategory = newCategory;
             forceLoad();
         }
 
@@ -68,8 +68,10 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
 
         String apiKey = getContext().getString(R.string.themoviedb_api_v3_key);
         Uri uri = baseUriBuilder(apiKey)
-                .appendEncodedPath("discover/movie")
-                .appendQueryParameter(Api.Param.sortBy, mSortBy)
+//                .appendEncodedPath("discover/movie")
+                .appendPath("movie")
+                .appendPath(mCategory)
+//                .appendQueryParameter(Api.Param.sortBy, mCategory)
                 .build();
 
         HttpURLConnection connection = null;

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <array name="pref_sort_by_entries">
+    <array name="pref_category_entries">
         <item>Popular</item>
         <item>Top rated</item>
         <item>Favorite</item>
     </array>
 
-    <array name="pref_sort_by_values">
-        <item>@string/pref_sort_by_popularity</item>
-        <item>@string/pref_sort_by_votes</item>
-        <item>@string/pref_sort_by_favorite</item>
+    <array name="pref_category_values">
+        <item>@string/pref_category_popular</item>
+        <item>@string/pref_category_top_rated</item>
+        <item>@string/pref_category_favorite</item>
     </array>
 
 </resources>
