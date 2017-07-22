@@ -94,12 +94,12 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     }
 
     private void initToolbar(ActivityDetailsBinding binding, String title) {
-        Toolbar toolbar = binding.toolbar;
+        Toolbar toolbar = binding.appBar.toolbar;
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        CollapsingToolbarLayout collapsingToolbarLayout = binding.collapsingToolbar;
+        CollapsingToolbarLayout collapsingToolbarLayout = binding.appBar.collapsingToolbar;
         collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(this, R.color.primary_dark));
         collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.white_text));
         collapsingToolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.white_text));
@@ -126,7 +126,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         Glide.with(this)
                 .load(backdropUrl)
                 .placeholder(R.drawable.placeholder_backdrop)
-                .into(binding.ivBackdrop);
+                .into(binding.appBar.ivBackdrop);
     }
 
     private void loadText(ActivityDetailsBinding binding, Movie movie) {
