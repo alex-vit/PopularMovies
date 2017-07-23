@@ -51,9 +51,8 @@ public class MovieExtrasApiLoader extends AsyncTaskLoader<MovieExtras> {
 
     @Override
     public MovieExtras loadInBackground() {
-        String apiKey = getContext().getString(R.string.themoviedb_api_v3_key);
 
-        Uri uri = baseUriBuilder(apiKey)
+        Uri uri = Api.baseUriBuilder()
                 .appendEncodedPath("movie/" + mMovieId + "/reviews")
                 .build();
 
@@ -76,7 +75,7 @@ public class MovieExtrasApiLoader extends AsyncTaskLoader<MovieExtras> {
             }
         }
 
-        uri = baseUriBuilder(apiKey)
+        uri = Api.baseUriBuilder()
                 .appendEncodedPath("movie/" + mMovieId + "/videos")
                 .build();
         connection = null;
@@ -103,12 +102,6 @@ public class MovieExtrasApiLoader extends AsyncTaskLoader<MovieExtras> {
     public void deliverResult(MovieExtras extras) {
         mExtras = extras;
         super.deliverResult(extras);
-    }
-
-    private static Uri.Builder baseUriBuilder(String apiKey) {
-        return Uri
-                .parse(API_BASE_URL).buildUpon()
-                .appendQueryParameter(Api.Param.apiKey, apiKey);
     }
 
     private static List<Review> parseListResponse(String response) {

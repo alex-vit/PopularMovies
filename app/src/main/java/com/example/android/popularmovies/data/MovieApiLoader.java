@@ -37,18 +37,6 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
         super(context);
     }
 
-    private static Uri.Builder baseUriBuilder(String apiKey) {
-        return Uri
-                .parse(API_BASE_URL).buildUpon()
-                .appendQueryParameter(Api.Param.apiKey, apiKey)
-                .appendQueryParameter(Api.Param.voteCount, String.valueOf(100));
-    }
-
-    private static List<Movie> parseListResponse(String response) {
-        MovieListResponse movieListResponse = new Gson().fromJson(response, MovieListResponse.class);
-        return movieListResponse.movies;
-    }
-
     @Override
     protected void onStartLoading() {
 
@@ -66,12 +54,9 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
     @Override
     public List<Movie> loadInBackground() {
 
-        String apiKey = getContext().getString(R.string.themoviedb_api_v3_key);
-        Uri uri = baseUriBuilder(apiKey)
-//                .appendEncodedPath("discover/movie")
+        Uri uri = Api.baseUriBuilder()
                 .appendPath("movie")
                 .appendPath(mCategory)
-//                .appendQueryParameter(Api.Param.sortBy, mCategory)
                 .build();
 
         HttpURLConnection connection = null;
@@ -98,6 +83,11 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
     public void deliverResult(List<Movie> movies) {
         mMovies = movies;
         super.deliverResult(movies);
+    }
+
+    private static List<Movie> parseListResponse(String response) {
+        MovieListResponse movieListResponse = new Gson().fromJson(response, MovieListResponse.class);
+        return movieListResponse.movies;
     }
 
 }

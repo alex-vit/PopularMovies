@@ -37,7 +37,9 @@ class MovieDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        final String SQL_DROP_MOVIE_TABLE = "DROP TABLE IF EXISTS " + MovieEntry.TABLE_NAME;
-        onCreate(db);
+        // Review suggested not using drop table in production.
+        // So I'm just removing this until I have an actual migration to worry about.
+//        final String SQL_DROP_MOVIE_TABLE = "DROP TABLE IF EXISTS " + MovieEntry.TABLE_NAME;
+//        onCreate(db);
     }
 }

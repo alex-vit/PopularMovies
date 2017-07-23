@@ -3,7 +3,9 @@ package com.example.android.popularmovies.util;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 
+import com.example.android.popularmovies.BuildConfig;
 import com.example.android.popularmovies.models.Movie;
 
 import java.util.Arrays;
@@ -19,10 +21,20 @@ public class Api {
 
     //    private static final String TEST_POSTER_URL = "http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
     public static final String API_BASE_URL = "https://api.themoviedb.org/3";
+
     private static final String TAG = Api.class.getSimpleName();
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
-
     private static final List<String> SUPPORTED_VIDE_SITES = Arrays.asList(VideoSite.YouTube);
+
+    public static String apiKey() {
+        return BuildConfig.TMDB_V3_API_KEY;
+    }
+
+    public static Uri.Builder baseUriBuilder() {
+        return Uri.parse(API_BASE_URL)
+                .buildUpon()
+                .appendQueryParameter(Param.apiKey, apiKey());
+    }
 
     public static String fullImageUrl(String imagePath) {
         return fullImageUrl(imagePath, PosterSize.w185);
@@ -73,7 +85,7 @@ public class Api {
 
     }
 
-    public static String defaultSorting() {
+    public static String defaultCategory() {
         return Category.popular;
     }
 

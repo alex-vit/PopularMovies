@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.pref_category_key))) {
-            String newSortBy = sharedPreferences.getString(key, Api.defaultSorting());
+            String newSortBy = sharedPreferences.getString(key, Api.defaultCategory());
             if (!newSortBy.equals(mCategory)) {
                 // Sorting changed, should reload data.
                 mCategory = newSortBy;
