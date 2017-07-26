@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.popularmovies">
+    package="com.alexvit.android.popularmovies">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.alexvit.android.popularmovies.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,23 +22,23 @@
         </activity>
 
         <activity
-            android:name=".DetailsActivity"
+            android:name="com.alexvit.android.popularmovies.DetailsActivity"
             android:label="@string/detail_activity_title"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.alexvit.android.popularmovies.MainActivity"
             android:theme="@style/NoActionBar">
 
         </activity>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.alexvit.android.popularmovies.SettingsActivity"
             android:label="@string/settings_activity_title"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.alexvit.android.popularmovies.MainActivity">
 
         </activity>
 
         <provider
-            android:name=".data.MovieContentProvider"
-            android:authorities="com.example.android.popularmovies"
+            android:name="com.alexvit.android.popularmovies.data.MovieContentProvider"
+            android:authorities="com.alexvit.android.popularmovies"
             android:exported="false" />
 
     </application>
