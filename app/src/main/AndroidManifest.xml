@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.alexvit.android.popularmovies.MainActivity"
+            android:name="com.alexvit.android.popularmovies.ListActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,7 @@
         <activity
             android:name="com.alexvit.android.popularmovies.DetailsActivity"
             android:label="@string/detail_activity_title"
-            android:parentActivityName="com.alexvit.android.popularmovies.MainActivity"
+            android:parentActivityName="com.alexvit.android.popularmovies.ListActivity"
             android:theme="@style/NoActionBar">
 
         </activity>
@@ -32,7 +32,7 @@
         <activity
             android:name="com.alexvit.android.popularmovies.SettingsActivity"
             android:label="@string/settings_activity_title"
-            android:parentActivityName="com.alexvit.android.popularmovies.MainActivity">
+            android:parentActivityName="com.alexvit.android.popularmovies.ListActivity">
 
         </activity>
 

@@ -16,17 +16,19 @@ import android.view.MenuItem;
 import com.alexvit.android.popularmovies.data.MovieApiLoader;
 import com.alexvit.android.popularmovies.data.MovieSqlLoader;
 import com.alexvit.android.popularmovies.models.Movie;
+import com.alexvit.android.popularmovies.util.Analytics;
 import com.alexvit.android.popularmovies.util.Api;
 import com.alexvit.android.popularmovies.util.Prefs;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
+public class ListActivity extends AppCompatActivity
         implements MovieGridAdapter.MovieClickListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
         LoaderManager.LoaderCallbacks {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = ListActivity.class.getSimpleName();
     private static final int MOVIE_API_LOADER_ID = 1000;
     private static final int MOVIE_SQL_LOADER_ID = 1100;
 
@@ -155,6 +157,7 @@ public class MainActivity extends AppCompatActivity
             getSupportLoaderManager().destroyLoader(MOVIE_SQL_LOADER_ID);
             getSupportLoaderManager().initLoader(MOVIE_API_LOADER_ID, null, this);
         }
+        Analytics.logCategoryView(this, mCategory);
     }
 
 }

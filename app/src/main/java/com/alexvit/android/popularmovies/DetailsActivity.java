@@ -20,6 +20,7 @@ import com.alexvit.android.popularmovies.data.MovieExtrasApiLoader;
 import com.alexvit.android.popularmovies.databinding.ActivityDetailsBinding;
 import com.alexvit.android.popularmovies.models.Movie;
 import com.alexvit.android.popularmovies.models.MovieExtras;
+import com.alexvit.android.popularmovies.util.Analytics;
 import com.alexvit.android.popularmovies.util.Api;
 import com.bumptech.glide.Glide;
 
@@ -33,7 +34,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     private static final int EXTRA_LOADER_ID = 1200;
 
     private MovieExtrasAdapter mExtrasAdapter;
-
     private Movie mMovie;
 
     @Override
@@ -53,6 +53,8 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         setupFavorite(binding, mMovie.id);
 
         mExtrasAdapter = new MovieExtrasAdapter(binding.body.reviewList, binding.body.videoList);
+
+        Analytics.logMovieView(this, mMovie);
     }
 
     @Override
