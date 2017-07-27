@@ -47,17 +47,20 @@ public class ListActivity extends AppCompatActivity
 
         mCategory = Prefs.getCategory(this);
         initRecyclerView();
+
+        if (mAdapter.getMode() == MovieGridAdapter.Mode.NoData) reload();
+        if (savedInstanceState == null) Analytics.logCategoryView(this, mCategory);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (mAdapter.getItemCount() == 0) {
-            // Reload if there's nothing to show (orientation changed)
-            // Always reload favorites, so if you open a favorite, unfavorite it and go back, it disappears
-            reload();
-        }
+//        if (mAdapter.getItemCount() == 0) {
+//            // Reload if there's nothing to show (orientation changed)
+//            // Always reload favorites, so if you open a favorite, unfavorite it and go back, it disappears
+//            reload();
+//        }
 
     }
 
@@ -100,6 +103,7 @@ public class ListActivity extends AppCompatActivity
                 // Sorting changed, should reload data.
                 mCategory = newSortBy;
                 reload();
+                Analytics.logCategoryView(this, mCategory);
             }
         }
     }
@@ -129,7 +133,7 @@ public class ListActivity extends AppCompatActivity
 
     @Override
     public void onLoaderReset(Loader loader) {
-        mAdapter.deleteMovies();
+//        mAdapter.deleteMovies();
     }
 
     private void initRecyclerView() {
@@ -157,7 +161,6 @@ public class ListActivity extends AppCompatActivity
             getSupportLoaderManager().destroyLoader(MOVIE_SQL_LOADER_ID);
             getSupportLoaderManager().initLoader(MOVIE_API_LOADER_ID, null, this);
         }
-        Analytics.logCategoryView(this, mCategory);
     }
 
 }

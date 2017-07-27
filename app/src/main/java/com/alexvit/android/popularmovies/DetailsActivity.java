@@ -54,7 +54,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
 
         mExtrasAdapter = new MovieExtrasAdapter(binding.body.reviewList, binding.body.videoList);
 
-        Analytics.logMovieView(this, mMovie);
+        if (savedInstanceState == null) Analytics.logMovieView(this, mMovie);
     }
 
     @Override
