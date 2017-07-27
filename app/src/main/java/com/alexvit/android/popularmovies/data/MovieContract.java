@@ -3,13 +3,15 @@ package com.alexvit.android.popularmovies.data;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import com.alexvit.android.popularmovies.Root;
+
 /**
  * Created by Aleksandrs Vitjukovs on 7/15/2017.
  */
 
 public class MovieContract {
 
-    static final String AUTHORITY = "com.example.android.popularmovies";
+    static final String AUTHORITY = Root.class.getPackage().getName();
     static final String PATH_MOVIES = "movies";
     private static final String SCHEME = "content://";
     private static final Uri BASE_CONTENT_URI = Uri.parse(SCHEME + AUTHORITY);
