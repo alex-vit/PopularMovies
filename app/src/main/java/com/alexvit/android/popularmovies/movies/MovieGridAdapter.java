@@ -15,6 +15,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Aleksandrs Vitjukovs on 5/31/2017.
  */
@@ -48,10 +51,10 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
         if (movie == null) return;
 
         String posterUrl = Api.fullImageUrl(movie.posterPath);
-        Glide.with(holder.mPosterImageView.getContext())
+        Glide.with(holder.ivPoster.getContext())
                 .load(posterUrl)
                 .placeholder(R.drawable.placeholder)
-                .into(holder.mPosterImageView);
+                .into(holder.ivPoster);
     }
 
     @Override
@@ -112,11 +115,15 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
     }
 
     class MovieGridAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final ImageView mPosterImageView;
+
+        @BindView(R.id.iv_poster)
+        ImageView ivPoster;
 
         MovieGridAdapterViewHolder(View itemView) {
             super(itemView);
-            mPosterImageView = (ImageView) itemView.findViewById(R.id.poster_image);
+
+            ButterKnife.bind(this, itemView);
+
             itemView.setOnClickListener(this);
         }
 

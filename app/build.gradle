@@ -21,10 +21,6 @@ android {
     buildTypes.each {
         it.buildConfigField 'String', 'TMDB_V3_API_KEY', TheMovieDbV3ApiKey
     }
-
-    dataBinding {
-        enabled = true
-    }
 }
 
 repositories {

@@ -24,6 +24,9 @@ import com.alexvit.android.popularmovies.utils.Prefs;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ListActivity extends AppCompatActivity
         implements MovieGridAdapter.MovieClickListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
@@ -33,7 +36,9 @@ public class ListActivity extends AppCompatActivity
     private static final int MOVIE_API_LOADER_ID = 1000;
     private static final int MOVIE_SQL_LOADER_ID = 1100;
 
-    private RecyclerView mMovieGridRecyclerView;
+    @BindView(R.id.movie_grid)
+    RecyclerView mMovieGridRecyclerView;
+
     private MovieGridAdapter mAdapter;
     private SharedPreferences mSharedPreferences;
     private String mCategory;
@@ -41,7 +46,9 @@ public class ListActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
@@ -134,8 +141,6 @@ public class ListActivity extends AppCompatActivity
     }
 
     private void initRecyclerView() {
-        mMovieGridRecyclerView = (RecyclerView) findViewById(R.id.movie_grid);
-
         final int nColumns = getResources().getInteger(R.integer.grid_column_count);
         mMovieGridRecyclerView.setLayoutManager(new GridLayoutManager(this, nColumns));
 
