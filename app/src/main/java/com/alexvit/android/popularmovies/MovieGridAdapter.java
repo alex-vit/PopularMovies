@@ -65,6 +65,10 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
         }
     }
 
+    public synchronized Mode getMode() {
+        return mode;
+    }
+
     synchronized void setMovies(List<Movie> movies) {
         movieList = movies;
         movieCursor = null;
@@ -98,7 +102,7 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
         }
     }
 
-    private enum Mode {
+    public enum Mode {
         List, Cursor, NoData
     }
 

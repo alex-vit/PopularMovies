@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "943963005116-d3ke1jrm2gfgh59cpq5gn9jpbh50i7f7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexvit.android.popularmovies",
+            "certificate_hash": "2da93f0454729d9b29459697059e1b67446b139e"
+          }
+        },
+        {
           "client_id": "943963005116-2jeuajsimau7loa85htp1lof3q9og5kp.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "943963005116-2jeuajsimau7loa85htp1lof3q9og5kp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
