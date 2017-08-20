@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.alexvit.android.popularmovies.models.MovieExtras;
+import com.alexvit.android.popularmovies.data.MovieExtras;
 import com.alexvit.android.popularmovies.models.Review;
 import com.alexvit.android.popularmovies.models.Video;
 import com.alexvit.android.popularmovies.util.Api;

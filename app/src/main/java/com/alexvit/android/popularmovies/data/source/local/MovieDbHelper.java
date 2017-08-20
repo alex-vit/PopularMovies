@@ -1,10 +1,10 @@
-package com.alexvit.android.popularmovies.data;
+package com.alexvit.android.popularmovies.data.source.local;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.alexvit.android.popularmovies.data.MovieContract.MovieEntry;
+import static com.alexvit.android.popularmovies.data.source.local.MovieContract.MovieEntry;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/15/2017.

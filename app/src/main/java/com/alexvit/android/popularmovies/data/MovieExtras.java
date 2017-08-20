@@ -1,4 +1,7 @@
-package com.alexvit.android.popularmovies.models;
+package com.alexvit.android.popularmovies.data;
+
+import com.alexvit.android.popularmovies.models.Review;
+import com.alexvit.android.popularmovies.models.Video;
 
 import java.util.List;
 

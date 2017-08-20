@@ -5,12 +5,12 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.alexvit.android.popularmovies.BuildConfig;
-import com.alexvit.android.popularmovies.models.Movie;
+import com.alexvit.android.popularmovies.data.Movie;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static com.alexvit.android.popularmovies.data.MovieContract.MovieEntry;
+import static com.alexvit.android.popularmovies.data.source.local.MovieContract.MovieEntry;
 
 /**
  * Created by Aleksandrs Vitjukovs on 6/2/2017.

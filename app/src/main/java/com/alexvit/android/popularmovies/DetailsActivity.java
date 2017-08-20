@@ -15,11 +15,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.CompoundButton;
 
-import com.alexvit.android.popularmovies.data.MovieContract;
-import com.alexvit.android.popularmovies.data.MovieExtrasApiLoader;
+import com.alexvit.android.popularmovies.data.source.local.MovieContract;
+import com.alexvit.android.popularmovies.data.source.remote.MovieExtrasApiLoader;
 import com.alexvit.android.popularmovies.databinding.ActivityDetailsBinding;
-import com.alexvit.android.popularmovies.models.Movie;
-import com.alexvit.android.popularmovies.models.MovieExtras;
+import com.alexvit.android.popularmovies.data.Movie;
+import com.alexvit.android.popularmovies.data.MovieExtras;
 import com.alexvit.android.popularmovies.util.Api;
 import com.bumptech.glide.Glide;
 

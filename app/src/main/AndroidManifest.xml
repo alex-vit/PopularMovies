@@ -37,7 +37,7 @@
         </activity>
 
         <provider
-            android:name="com.alexvit.android.popularmovies.data.MovieContentProvider"
+            android:name=".data.source.local.MovieContentProvider"
             android:authorities="com.alexvit.android.popularmovies"
             android:exported="false" />
 

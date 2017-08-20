@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.alexvit.android.popularmovies.models.Movie;
+import com.alexvit.android.popularmovies.data.Movie;
 import com.alexvit.android.popularmovies.util.Api;
 import com.bumptech.glide.Glide;
 

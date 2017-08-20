@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies.models;
+package com.alexvit.android.popularmovies.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

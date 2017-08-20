@@ -13,9 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.alexvit.android.popularmovies.data.MovieApiLoader;
-import com.alexvit.android.popularmovies.data.MovieSqlLoader;
-import com.alexvit.android.popularmovies.models.Movie;
+import com.alexvit.android.popularmovies.data.source.remote.MovieApiLoader;
+import com.alexvit.android.popularmovies.data.source.local.MovieSqlLoader;
+import com.alexvit.android.popularmovies.data.Movie;
 import com.alexvit.android.popularmovies.util.Api;
 import com.alexvit.android.popularmovies.util.Prefs;
 

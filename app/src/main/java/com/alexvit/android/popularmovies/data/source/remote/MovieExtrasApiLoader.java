@@ -1,11 +1,11 @@
-package com.alexvit.android.popularmovies.data;
+package com.alexvit.android.popularmovies.data.source.remote;
 
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-import com.alexvit.android.popularmovies.models.MovieExtras;
+import com.alexvit.android.popularmovies.data.MovieExtras;
 import com.alexvit.android.popularmovies.models.Review;
 import com.alexvit.android.popularmovies.models.ReviewListResponse;
 import com.alexvit.android.popularmovies.models.Video;
