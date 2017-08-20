@@ -4,34 +4,50 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.alexvit.android.popularmovies.R;
 import com.alexvit.android.popularmovies.data.source.local.MovieContract;
 import com.alexvit.android.popularmovies.data.source.remote.MovieExtrasApiLoader;
-import com.alexvit.android.popularmovies.databinding.ActivityDetailsBinding;
 import com.alexvit.android.popularmovies.data.Movie;
 import com.alexvit.android.popularmovies.data.MovieExtras;
 import com.alexvit.android.popularmovies.utils.Api;
 import com.bumptech.glide.Glide;
+import com.google.android.flexbox.FlexboxLayout;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import java.text.DecimalFormat;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<MovieExtras> {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
     private static final int EXTRA_LOADER_ID = 1200;
+    
+    @BindView(R.id.app_bar)
+    AppBarLayout incAppBar;
+    @BindView(R.id.body)
+    View incBody;
+
+    private AppBar mAppBar;
+    private Body mBody;
 
     private MovieExtrasAdapter mExtrasAdapter;
 
@@ -40,6 +56,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_details);
 
         mMovie = getMovie();
         if (mMovie == null) {
@@ -47,13 +64,19 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             return;
         }
 
-        ActivityDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_details);
-        initToolbar(binding, mMovie.title);
-        loadImages(binding, mMovie);
-        loadText(binding, mMovie);
-        setupFavorite(binding, mMovie.id);
+        ButterKnife.bind(this);
+        
+        mAppBar = new AppBar();
+        ButterKnife.bind(mAppBar, incAppBar);
+        mBody = new Body();
+        ButterKnife.bind(mBody, incBody);
 
-        mExtrasAdapter = new MovieExtrasAdapter(binding.body.reviewList, binding.body.videoList);
+        initToolbar(mMovie.title);
+        loadImages(mMovie);
+        loadText(mMovie);
+        setupFavorite(mMovie.id);
+
+        mExtrasAdapter = new MovieExtrasAdapter(mBody.reviewList, mBody.videoList);
     }
 
     @Override
@@ -94,20 +117,18 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
-    private void initToolbar(ActivityDetailsBinding binding, String title) {
-        Toolbar toolbar = binding.appBar.toolbar;
-        setSupportActionBar(toolbar);
+    private void initToolbar(String title) {
+        setSupportActionBar(mAppBar.toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        CollapsingToolbarLayout collapsingToolbarLayout = binding.appBar.collapsingToolbar;
-        collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(this, R.color.primary_dark));
-        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, R.color.white_text));
-        collapsingToolbarLayout.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.white_text));
-        collapsingToolbarLayout.setTitle(title);
+        mAppBar.collapsingToolbar.setContentScrimColor(ContextCompat.getColor(this, R.color.primary_dark));
+        mAppBar.collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(this, R.color.white_text));
+        mAppBar.collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(this, R.color.white_text));
+        mAppBar.collapsingToolbar.setTitle(title);
     }
 
-    private void loadImages(ActivityDetailsBinding binding, Movie movie) {
+    private void loadImages(Movie movie) {
         String posterSize = Api.PosterSize.w185;
         String backdropSize;
         if (getResources().getConfiguration().orientation ==
@@ -121,26 +142,26 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         Glide.with(this)
                 .load(posterUrl)
                 .placeholder(R.drawable.placeholder)
-                .into(binding.body.ivPoster);
+                .into(mBody.ivPoster);
 
         String backdropUrl = Api.fullImageUrl(movie.backdropPath, backdropSize);
         Glide.with(this)
                 .load(backdropUrl)
                 .placeholder(R.drawable.placeholder_backdrop)
-                .into(binding.appBar.ivBackdrop);
+                .into(mAppBar.ivBackdrop);
     }
 
-    private void loadText(ActivityDetailsBinding binding, Movie movie) {
-        binding.body.tvYear.setText(movie.year());
-        binding.body.tvVotes.setText(
+    private void loadText(Movie movie) {
+        mBody.tvYear.setText(movie.year());
+        mBody.tvVotes.setText(
                 "Rating: "
                         + new DecimalFormat("#0.0").format(movie.voteAverage)
                         + " (" + movie.voteCount.toString() + " votes)"
         );
-        binding.body.tvOverview.setText(movie.overview);
+        mBody.tvOverview.setText(movie.overview);
     }
 
-    private void setupFavorite(ActivityDetailsBinding binding, int movieId) {
+    private void setupFavorite(int movieId) {
         Uri uri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, movieId);
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
 
@@ -150,8 +171,8 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
                     MovieContract.MovieEntry.COLUMN_IS_FAVORITE)) == 1);
             cursor.close();
         }
-        binding.body.toggleFavortie.setChecked(isFavorite);
-        binding.body.toggleFavortie.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
+        mBody.toggleFavorite.setChecked(isFavorite);
+        mBody.toggleFavorite.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
     }
 
     private class FavoriteToggleListener implements CompoundButton.OnCheckedChangeListener {
@@ -178,4 +199,29 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
+    static class AppBar {
+        @BindView(R.id.collapsing_toolbar)
+        CollapsingToolbarLayout collapsingToolbar;
+        @BindView(R.id.iv_backdrop)
+        ImageView ivBackdrop;
+        @BindView(R.id.toolbar)
+        Toolbar toolbar;
+    }
+
+    static class Body {
+        @BindView(R.id.iv_poster)
+        ImageView ivPoster;
+        @BindView(R.id.tv_year)
+        TextView tvYear;
+        @BindView(R.id.tv_votes)
+        TextView tvVotes;
+        @BindView(R.id.tv_overview)
+        TextView tvOverview;
+        @BindView(R.id.video_list)
+        FlexboxLayout videoList;
+        @BindView(R.id.toggle_favortie)
+        ToggleButton toggleFavorite;
+        @BindView(R.id.review_list)
+        LinearLayout reviewList;
+    }
 }

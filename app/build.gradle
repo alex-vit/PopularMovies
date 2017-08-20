@@ -44,6 +44,10 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:preference-v7:$rootProject.supportLibraryVersion"
 
+    // Butterknife
+    compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
+
     // Views
     compile "net.opacapp:multiline-collapsingtoolbar:1.4.0"
     compile "com.google.android:flexbox:0.3.0"
