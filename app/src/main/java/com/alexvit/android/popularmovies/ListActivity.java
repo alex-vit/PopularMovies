@@ -21,12 +21,12 @@ import com.alexvit.android.popularmovies.util.Prefs;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
+public class ListActivity extends AppCompatActivity
         implements MovieGridAdapter.MovieClickListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
         LoaderManager.LoaderCallbacks {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = ListActivity.class.getSimpleName();
     private static final int MOVIE_API_LOADER_ID = 1000;
     private static final int MOVIE_SQL_LOADER_ID = 1100;
 
