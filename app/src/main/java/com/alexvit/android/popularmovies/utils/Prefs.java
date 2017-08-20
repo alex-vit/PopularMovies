@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies.util;
+package com.alexvit.android.popularmovies.utils;
 
 import android.content.Context;
 import android.support.v7.preference.PreferenceManager;

@@ -1,8 +1,10 @@
-package com.alexvit.android.popularmovies;
+package com.alexvit.android.popularmovies.settings;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import com.alexvit.android.popularmovies.R;
 
 /**
  * Created by Aleksandrs Vitjukovs on 6/3/2017.

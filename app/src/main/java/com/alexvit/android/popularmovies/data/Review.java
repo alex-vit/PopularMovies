@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies.models;
+package com.alexvit.android.popularmovies.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

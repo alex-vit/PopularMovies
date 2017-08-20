@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies;
+package com.alexvit.android.popularmovies.movies;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,8 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.alexvit.android.popularmovies.R;
 import com.alexvit.android.popularmovies.data.Movie;
-import com.alexvit.android.popularmovies.util.Api;
+import com.alexvit.android.popularmovies.utils.Api;
 import com.bumptech.glide.Glide;
 
 import java.util.List;

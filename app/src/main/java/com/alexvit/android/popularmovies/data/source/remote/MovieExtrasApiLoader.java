@@ -6,11 +6,11 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.alexvit.android.popularmovies.data.MovieExtras;
-import com.alexvit.android.popularmovies.models.Review;
-import com.alexvit.android.popularmovies.models.ReviewListResponse;
-import com.alexvit.android.popularmovies.models.Video;
-import com.alexvit.android.popularmovies.models.VideoListResponse;
-import com.alexvit.android.popularmovies.util.Api;
+import com.alexvit.android.popularmovies.data.Review;
+import com.alexvit.android.popularmovies.data.ReviewListResponse;
+import com.alexvit.android.popularmovies.data.Video;
+import com.alexvit.android.popularmovies.data.VideoListResponse;
+import com.alexvit.android.popularmovies.utils.Api;
 import com.google.gson.Gson;
 
 import java.io.IOException;

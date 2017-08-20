@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies;
+package com.alexvit.android.popularmovies.moviedetails;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -15,12 +15,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.CompoundButton;
 
+import com.alexvit.android.popularmovies.R;
 import com.alexvit.android.popularmovies.data.source.local.MovieContract;
 import com.alexvit.android.popularmovies.data.source.remote.MovieExtrasApiLoader;
 import com.alexvit.android.popularmovies.databinding.ActivityDetailsBinding;
 import com.alexvit.android.popularmovies.data.Movie;
 import com.alexvit.android.popularmovies.data.MovieExtras;
-import com.alexvit.android.popularmovies.util.Api;
+import com.alexvit.android.popularmovies.utils.Api;
 import com.bumptech.glide.Glide;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;

@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies;
+package com.alexvit.android.popularmovies.movies;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,11 +13,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.alexvit.android.popularmovies.moviedetails.DetailsActivity;
+import com.alexvit.android.popularmovies.R;
+import com.alexvit.android.popularmovies.settings.SettingsActivity;
 import com.alexvit.android.popularmovies.data.source.remote.MovieApiLoader;
 import com.alexvit.android.popularmovies.data.source.local.MovieSqlLoader;
 import com.alexvit.android.popularmovies.data.Movie;
-import com.alexvit.android.popularmovies.util.Api;
-import com.alexvit.android.popularmovies.util.Prefs;
+import com.alexvit.android.popularmovies.utils.Api;
+import com.alexvit.android.popularmovies.utils.Prefs;
 
 import java.util.List;
 

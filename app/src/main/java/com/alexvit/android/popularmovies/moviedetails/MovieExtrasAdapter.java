@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies;
+package com.alexvit.android.popularmovies.moviedetails;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -8,10 +8,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.alexvit.android.popularmovies.R;
 import com.alexvit.android.popularmovies.data.MovieExtras;
-import com.alexvit.android.popularmovies.models.Review;
-import com.alexvit.android.popularmovies.models.Video;
-import com.alexvit.android.popularmovies.util.Api;
+import com.alexvit.android.popularmovies.data.Review;
+import com.alexvit.android.popularmovies.data.Video;
+import com.alexvit.android.popularmovies.utils.Api;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/20/2017.

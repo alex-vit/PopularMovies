@@ -7,8 +7,8 @@ import android.util.Log;
 
 import com.alexvit.android.popularmovies.data.Movie;
 import com.alexvit.android.popularmovies.data.MovieListResponse;
-import com.alexvit.android.popularmovies.util.Api;
-import com.alexvit.android.popularmovies.util.Prefs;
+import com.alexvit.android.popularmovies.utils.Api;
+import com.alexvit.android.popularmovies.utils.Prefs;
 import com.google.gson.Gson;
 
 import java.io.IOException;
