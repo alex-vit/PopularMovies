@@ -8,7 +8,7 @@ I'm refactoring this from Spaghetti architecture to MVVM with RxJava and maybe D
 - [x] Reorganize data to resemble repository structure
 - [x] Create remote data source
 - [x] Migrate remote data source to retrofit
-- [ ] Add retrofit Rx bindings
+- [x] Add retrofit Rx adapter
 - [ ] Create local data source with sqlbrite
 - [ ] Create movies repository
 - [ ] Cache everything in local data source (with LRU eviction)
