@@ -25,7 +25,7 @@ import com.alexvit.android.popularmovies.data.source.local.MovieContract;
 import com.alexvit.android.popularmovies.data.source.remote.MovieExtrasApiLoader;
 import com.alexvit.android.popularmovies.data.Movie;
 import com.alexvit.android.popularmovies.data.MovieExtras;
-import com.alexvit.android.popularmovies.utils.Api;
+import com.alexvit.android.popularmovies.utils.Movies;
 import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -129,22 +129,22 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     }
 
     private void loadImages(Movie movie) {
-        String posterSize = Api.PosterSize.w185;
+        String posterSize = Movies.PosterSize.w185;
         String backdropSize;
         if (getResources().getConfiguration().orientation ==
                 Configuration.ORIENTATION_LANDSCAPE) {
-            backdropSize = Api.BackdropSize.w780;
+            backdropSize = Movies.BackdropSize.w780;
         } else {
-            backdropSize = Api.BackdropSize.w300;
+            backdropSize = Movies.BackdropSize.w300;
         }
 
-        String posterUrl = Api.fullImageUrl(movie.posterPath, posterSize);
+        String posterUrl = Movies.fullImageUrl(movie.posterPath, posterSize);
         Glide.with(this)
                 .load(posterUrl)
                 .placeholder(R.drawable.placeholder)
                 .into(mBody.ivPoster);
 
-        String backdropUrl = Api.fullImageUrl(movie.backdropPath, backdropSize);
+        String backdropUrl = Movies.fullImageUrl(movie.backdropPath, backdropSize);
         Glide.with(this)
                 .load(backdropUrl)
                 .placeholder(R.drawable.placeholder_backdrop)
@@ -187,7 +187,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
                 movie.isFavorite = true;
-                ContentValues values = Api.movieToContentValues(movie);
+                ContentValues values = Movies.movieToContentValues(movie);
                 getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, values);
             } else {
                 getContentResolver().delete(

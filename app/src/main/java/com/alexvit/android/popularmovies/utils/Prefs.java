@@ -16,7 +16,7 @@ public class Prefs {
     public static String getCategory(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(
                 context.getString(R.string.pref_category_key),
-                Api.Category.popular
+                Movies.Category.popular
         );
     }
 

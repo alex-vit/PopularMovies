@@ -19,7 +19,7 @@ import com.alexvit.android.popularmovies.settings.SettingsActivity;
 import com.alexvit.android.popularmovies.data.source.remote.MovieApiLoader;
 import com.alexvit.android.popularmovies.data.source.local.MovieSqlLoader;
 import com.alexvit.android.popularmovies.data.Movie;
-import com.alexvit.android.popularmovies.utils.Api;
+import com.alexvit.android.popularmovies.utils.Movies;
 import com.alexvit.android.popularmovies.utils.Prefs;
 
 import java.util.List;
@@ -103,7 +103,7 @@ public class ListActivity extends AppCompatActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.pref_category_key))) {
-            String newSortBy = sharedPreferences.getString(key, Api.defaultCategory());
+            String newSortBy = sharedPreferences.getString(key, Movies.defaultCategory());
             if (!newSortBy.equals(mCategory)) {
                 // Sorting changed, should reload data.
                 mCategory = newSortBy;

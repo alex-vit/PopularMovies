@@ -10,7 +10,7 @@ import com.alexvit.android.popularmovies.data.Review;
 import com.alexvit.android.popularmovies.data.ReviewListResponse;
 import com.alexvit.android.popularmovies.data.Video;
 import com.alexvit.android.popularmovies.data.VideoListResponse;
-import com.alexvit.android.popularmovies.utils.Api;
+import com.alexvit.android.popularmovies.utils.Movies;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -20,6 +20,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
+
+import retrofit2.Call;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/18/2017.
@@ -54,33 +56,22 @@ public class MovieExtrasApiLoader extends AsyncTaskLoader<MovieExtras> {
     @Override
     public MovieExtras loadInBackground() {
 
-        Uri uri = Api.baseUriBuilder()
-                .appendEncodedPath("movie/" + mMovieId + "/reviews")
-                .build();
-
-        HttpURLConnection connection = null;
+        Call<ReviewListResponse> call = MoviesRemoteDataSource.reviews(String.valueOf(mMovieId));
         List<Review> reviews = null;
         try {
-            URL url = new URL(uri.toString());
-            connection = (HttpURLConnection) url.openConnection();
-            InputStream in = connection.getInputStream();
-            Scanner scanner = new Scanner(in);
-            scanner.useDelimiter("\\A");
-            reviews = parseListResponse(scanner.next());
-        } catch (MalformedURLException e) {
-            Log.e(TAG, e.toString());
-        } catch (IOException e) {
-            Log.e(TAG, e.toString());
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
+            ReviewListResponse body = call.execute().body();
+            if (body != null) {
+                reviews = body.reviews;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        uri = Api.baseUriBuilder()
+
+        Uri uri = Movies.baseUriBuilder()
                 .appendEncodedPath("movie/" + mMovieId + "/videos")
                 .build();
-        connection = null;
+        HttpURLConnection connection = null;
         List<Video> videos = null;
         try {
             URL url = new URL(uri.toString());

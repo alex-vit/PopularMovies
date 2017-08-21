@@ -16,14 +16,14 @@ import static com.alexvit.android.popularmovies.data.source.local.MovieContract.
  * Created by Aleksandrs Vitjukovs on 6/2/2017.
  */
 
-public class Api {
+public class Movies {
 
     //    private static final String TEST_POSTER_URL = "http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
     public static final String API_BASE_URL = "https://api.themoviedb.org/3";
 
-    private static final String TAG = Api.class.getSimpleName();
+    private static final String TAG = Movies.class.getSimpleName();
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
-    private static final List<String> SUPPORTED_VIDE_SITES = Arrays.asList(VideoSite.YouTube);
+    private static final List<String> SUPPORTED_VIDEO_SITES = Arrays.asList(VideoSite.YouTube);
 
     public static String apiKey() {
         return BuildConfig.TMDB_V3_API_KEY;
@@ -89,11 +89,10 @@ public class Api {
     }
 
     public static boolean isSupportedVideoSite(String site) {
-        return SUPPORTED_VIDE_SITES.contains(site);
+        return SUPPORTED_VIDEO_SITES.contains(site);
     }
 
     public static Uri getVideoUri(String site, String key) {
-        Uri uri = null;
         switch (site) {
             case VideoSite.YouTube:
                 return Uri.parse(VideoSiteUrl.YouTube)

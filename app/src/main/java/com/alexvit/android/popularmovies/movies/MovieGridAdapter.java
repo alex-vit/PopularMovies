@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.alexvit.android.popularmovies.R;
 import com.alexvit.android.popularmovies.data.Movie;
-import com.alexvit.android.popularmovies.utils.Api;
+import com.alexvit.android.popularmovies.utils.Movies;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -50,7 +50,7 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
         Movie movie = getData(position);
         if (movie == null) return;
 
-        String posterUrl = Api.fullImageUrl(movie.posterPath);
+        String posterUrl = Movies.fullImageUrl(movie.posterPath);
         Glide.with(holder.ivPoster.getContext())
                 .load(posterUrl)
                 .placeholder(R.drawable.placeholder)
@@ -98,7 +98,7 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
         switch (mode) {
             case Cursor:
                 movieCursor.moveToPosition(position);
-                return Api.movieFromCursor(movieCursor);
+                return Movies.movieFromCursor(movieCursor);
             case List:
                 return movieList.get(position);
             default:

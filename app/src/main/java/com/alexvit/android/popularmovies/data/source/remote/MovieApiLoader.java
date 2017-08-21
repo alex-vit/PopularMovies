@@ -1,23 +1,18 @@
 package com.alexvit.android.popularmovies.data.source.remote;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
 import com.alexvit.android.popularmovies.data.Movie;
 import com.alexvit.android.popularmovies.data.MovieListResponse;
-import com.alexvit.android.popularmovies.utils.Api;
 import com.alexvit.android.popularmovies.utils.Prefs;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
-import java.util.Scanner;
+
+import retrofit2.Call;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/16/2017.
@@ -32,11 +27,6 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
 
     public MovieApiLoader(Context context) {
         super(context);
-    }
-
-    private static List<Movie> parseListResponse(String response) {
-        MovieListResponse movieListResponse = new Gson().fromJson(response, MovieListResponse.class);
-        return movieListResponse.movies;
     }
 
     @Override
@@ -56,35 +46,25 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
     @Override
     public List<Movie> loadInBackground() {
 
-        Uri uri = Api.baseUriBuilder()
-                .appendPath("movie")
-                .appendPath(mCategory)
-                .build();
-
-        HttpURLConnection connection = null;
+        Call<MovieListResponse> call = MoviesRemoteDataSource.movies(mCategory);
+        List<Movie> movies = null;
         try {
-            URL url = new URL(uri.toString());
-            connection = (HttpURLConnection) url.openConnection();
-            InputStream in = connection.getInputStream();
-            Scanner scanner = new Scanner(in);
-            scanner.useDelimiter("\\A");
-            return parseListResponse(scanner.next());
-        } catch (MalformedURLException e) {
-            Log.e(TAG, e.toString());
+            MovieListResponse body = call.execute().body();
+            if (body != null) {
+                movies = body.movies;
+            }
         } catch (IOException e) {
-            Log.e(TAG, e.toString());
-        } finally {
-            if (connection != null) connection.disconnect();
+            FirebaseCrash.report(e);
+            e.printStackTrace();
         }
-
-        return null;
-
+        return movies;
     }
 
     @Override
     public void deliverResult(List<Movie> movies) {
-        mMovies = movies;
+        if (movies != null) {
+            mMovies = movies;
+        }
         super.deliverResult(movies);
     }
-
 }

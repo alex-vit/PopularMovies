@@ -12,7 +12,7 @@ import com.alexvit.android.popularmovies.R;
 import com.alexvit.android.popularmovies.data.MovieExtras;
 import com.alexvit.android.popularmovies.data.Review;
 import com.alexvit.android.popularmovies.data.Video;
-import com.alexvit.android.popularmovies.utils.Api;
+import com.alexvit.android.popularmovies.utils.Movies;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/20/2017.
@@ -59,8 +59,8 @@ class MovieExtrasAdapter {
     }
 
     private void addVideo(final Video video) {
-        if (!Api.isSupportedVideoSite(video.site)) return;
-        final Uri videoUri = Api.getVideoUri(video.site, video.key);
+        if (!Movies.isSupportedVideoSite(video.site)) return;
+        final Uri videoUri = Movies.getVideoUri(video.site, video.key);
 
         LayoutInflater inflater = LayoutInflater.from(videoParent.getContext());
         View itemView = inflater.inflate(R.layout.video_item, videoParent, false);
