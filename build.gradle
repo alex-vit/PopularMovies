@@ -37,4 +37,5 @@ ext {
     butterknifeVersion = '8.8.1'
     firebaseVersion = '11.0.2'
     retrofitVersion = '2.3.0'
+    rxjavaVersion = '2.1.3'
 }
