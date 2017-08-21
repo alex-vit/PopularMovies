@@ -9,6 +9,7 @@ I'm refactoring this from Spaghetti architecture to MVVM with RxJava and maybe D
 - [x] Create remote data source
 - [x] Migrate remote data source to retrofit
 - [x] Add retrofit Rx adapter
+- [ ] Replace (Bi)Functions with lambdas
 - [ ] Create local data source with sqlbrite
 - [ ] Create movies repository
 - [ ] Cache everything in local data source (with LRU eviction)

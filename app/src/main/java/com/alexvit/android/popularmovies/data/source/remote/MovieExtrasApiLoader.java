@@ -10,8 +10,6 @@ import com.alexvit.android.popularmovies.data.Video;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.BiFunction;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/18/2017.
@@ -44,12 +42,7 @@ public class MovieExtrasApiLoader extends AsyncTaskLoader<MovieExtras> {
         Observable<List<Review>> reviewsOb = MoviesRemoteDataSource.reviews(String.valueOf(mMovieId));
         Observable<List<Video>> videosOb = MoviesRemoteDataSource.videos(String.valueOf(mMovieId));
 
-        Observable<MovieExtras> movieExtrasOb = reviewsOb.zipWith(videosOb, new BiFunction<List<Review>, List<Video>, MovieExtras>() {
-            @Override
-            public MovieExtras apply(@NonNull List<Review> reviews, @NonNull List<Video> videos) throws Exception {
-                return new MovieExtras(reviews, videos);
-            }
-        });
+        Observable<MovieExtras> movieExtrasOb = Observable.zip(reviewsOb, videosOb, MovieExtras::new);
 
         return movieExtrasOb.blockingSingle();
     }

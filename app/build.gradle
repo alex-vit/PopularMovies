@@ -18,8 +18,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     buildTypes.each {
         it.buildConfigField 'String', 'TMDB_V3_API_KEY', TheMovieDbV3ApiKey
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -67,6 +73,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'me.tatarka.retrolambda'
