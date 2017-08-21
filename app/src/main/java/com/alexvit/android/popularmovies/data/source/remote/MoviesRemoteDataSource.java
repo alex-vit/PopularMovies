@@ -1,18 +1,25 @@
 package com.alexvit.android.popularmovies.data.source.remote;
 
 import com.alexvit.android.popularmovies.BuildConfig;
+import com.alexvit.android.popularmovies.data.Movie;
 import com.alexvit.android.popularmovies.data.MovieListResponse;
+import com.alexvit.android.popularmovies.data.Review;
 import com.alexvit.android.popularmovies.data.ReviewListResponse;
+import com.alexvit.android.popularmovies.data.Video;
 import com.alexvit.android.popularmovies.data.VideoListResponse;
 
 import java.io.IOException;
+import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import retrofit2.Call;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -21,21 +28,40 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public final class MoviesRemoteDataSource {
 
-    private MoviesRemoteDataSource() {}
+    private MoviesRemoteDataSource() {
+    }
 
     private static TheMovieDbService SERVICE = null;
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
 
-    public static Call<MovieListResponse> movies(String category) {
-        return service().movies(category);
+    public static Observable<List<Movie>> movies(String category) {
+        return service().movies(category)
+                .map(new Function<MovieListResponse, List<Movie>>() {
+                    @Override
+                    public List<Movie> apply(@NonNull MovieListResponse movieListResponse) throws Exception {
+                        return movieListResponse.movies;
+                    }
+                });
     }
 
-    public static Call<ReviewListResponse> reviews(String movieId) {
-        return service().reviews(movieId);
+    public static Observable<List<Review>> reviews(String movieId) {
+        return service().reviews(movieId)
+                .map(new Function<ReviewListResponse, List<Review>>() {
+                    @Override
+                    public List<Review> apply(@NonNull ReviewListResponse reviewListResponse) throws Exception {
+                        return reviewListResponse.reviews;
+                    }
+                });
     }
 
-    public static Call<VideoListResponse> videos(String movieId) {
-        return service().videos(movieId);
+    public static Observable<List<Video>> videos(String movieId) {
+        return service().videos(movieId)
+                .map(new Function<VideoListResponse, List<Video>>() {
+                    @Override
+                    public List<Video> apply(@NonNull VideoListResponse videoListResponse) throws Exception {
+                        return videoListResponse.videos;
+                    }
+                });
     }
 
     private static synchronized TheMovieDbService service() {
@@ -43,6 +69,7 @@ public final class MoviesRemoteDataSource {
             final Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(buildOkHttpClient())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             SERVICE = retrofit.create(TheMovieDbService.class);

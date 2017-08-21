@@ -4,7 +4,7 @@ import com.alexvit.android.popularmovies.data.MovieListResponse;
 import com.alexvit.android.popularmovies.data.ReviewListResponse;
 import com.alexvit.android.popularmovies.data.VideoListResponse;
 
-import retrofit2.Call;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -15,12 +15,12 @@ import retrofit2.http.Path;
 public interface TheMovieDbService {
 
     @GET("movie/{category}")
-    Call<MovieListResponse> movies(@Path("category") String category);
+    Observable<MovieListResponse> movies(@Path("category") String category);
 
     @GET("movie/{movieId}/reviews")
-    Call<ReviewListResponse> reviews(@Path("movieId") String movieId);
+    Observable<ReviewListResponse> reviews(@Path("movieId") String movieId);
 
     @GET("movie/{movieId}/videos")
-    Call<VideoListResponse> videos(@Path("movieId") String movieId);
+    Observable<VideoListResponse> videos(@Path("movieId") String movieId);
 
 }

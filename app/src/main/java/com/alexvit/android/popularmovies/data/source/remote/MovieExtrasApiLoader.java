@@ -5,14 +5,13 @@ import android.support.v4.content.AsyncTaskLoader;
 
 import com.alexvit.android.popularmovies.data.MovieExtras;
 import com.alexvit.android.popularmovies.data.Review;
-import com.alexvit.android.popularmovies.data.ReviewListResponse;
 import com.alexvit.android.popularmovies.data.Video;
-import com.alexvit.android.popularmovies.data.VideoListResponse;
 
-import java.io.IOException;
 import java.util.List;
 
-import retrofit2.Call;
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.BiFunction;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/18/2017.
@@ -42,29 +41,17 @@ public class MovieExtrasApiLoader extends AsyncTaskLoader<MovieExtras> {
     @Override
     public MovieExtras loadInBackground() {
 
-        Call<ReviewListResponse> callReviews = MoviesRemoteDataSource.reviews(String.valueOf(mMovieId));
-        List<Review> reviews = null;
-        try {
-            ReviewListResponse body = callReviews.execute().body();
-            if (body != null) {
-                reviews = body.reviews;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Observable<List<Review>> reviewsOb = MoviesRemoteDataSource.reviews(String.valueOf(mMovieId));
+        Observable<List<Video>> videosOb = MoviesRemoteDataSource.videos(String.valueOf(mMovieId));
 
-        Call<VideoListResponse> callVideos = MoviesRemoteDataSource.videos(String.valueOf(mMovieId));
-        List<Video> videos = null;
-        try {
-            VideoListResponse body = callVideos.execute().body();
-            if (body != null) {
-                videos = body.videos;
+        Observable<MovieExtras> movieExtrasOb = reviewsOb.zipWith(videosOb, new BiFunction<List<Review>, List<Video>, MovieExtras>() {
+            @Override
+            public MovieExtras apply(@NonNull List<Review> reviews, @NonNull List<Video> videos) throws Exception {
+                return new MovieExtras(reviews, videos);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
 
-        return new MovieExtras(reviews, videos);
+        return movieExtrasOb.blockingSingle();
     }
 
     @Override

@@ -4,14 +4,9 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.alexvit.android.popularmovies.data.Movie;
-import com.alexvit.android.popularmovies.data.MovieListResponse;
 import com.alexvit.android.popularmovies.utils.Prefs;
-import com.google.firebase.crash.FirebaseCrash;
 
-import java.io.IOException;
 import java.util.List;
-
-import retrofit2.Call;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/16/2017.
@@ -44,19 +39,7 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
 
     @Override
     public List<Movie> loadInBackground() {
-
-        Call<MovieListResponse> call = MoviesRemoteDataSource.movies(mCategory);
-        List<Movie> movies = null;
-        try {
-            MovieListResponse body = call.execute().body();
-            if (body != null) {
-                movies = body.movies;
-            }
-        } catch (IOException e) {
-            FirebaseCrash.report(e);
-            e.printStackTrace();
-        }
-        return movies;
+        return MoviesRemoteDataSource.movies(mCategory).blockingSingle();
     }
 
     @Override
