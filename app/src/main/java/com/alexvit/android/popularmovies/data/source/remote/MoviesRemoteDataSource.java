@@ -2,18 +2,13 @@ package com.alexvit.android.popularmovies.data.source.remote;
 
 import com.alexvit.android.popularmovies.BuildConfig;
 import com.alexvit.android.popularmovies.data.Movie;
-import com.alexvit.android.popularmovies.data.MovieListResponse;
 import com.alexvit.android.popularmovies.data.Review;
-import com.alexvit.android.popularmovies.data.ReviewListResponse;
 import com.alexvit.android.popularmovies.data.Video;
-import com.alexvit.android.popularmovies.data.VideoListResponse;
 
 import java.io.IOException;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -35,33 +30,15 @@ public final class MoviesRemoteDataSource {
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
 
     public static Observable<List<Movie>> movies(String category) {
-        return service().movies(category)
-                .map(new Function<MovieListResponse, List<Movie>>() {
-                    @Override
-                    public List<Movie> apply(@NonNull MovieListResponse movieListResponse) throws Exception {
-                        return movieListResponse.movies;
-                    }
-                });
+        return service().movies(category).map(r -> r.movies);
     }
 
     public static Observable<List<Review>> reviews(String movieId) {
-        return service().reviews(movieId)
-                .map(new Function<ReviewListResponse, List<Review>>() {
-                    @Override
-                    public List<Review> apply(@NonNull ReviewListResponse reviewListResponse) throws Exception {
-                        return reviewListResponse.reviews;
-                    }
-                });
+        return service().reviews(movieId).map(r -> r.reviews);
     }
 
     public static Observable<List<Video>> videos(String movieId) {
-        return service().videos(movieId)
-                .map(new Function<VideoListResponse, List<Video>>() {
-                    @Override
-                    public List<Video> apply(@NonNull VideoListResponse videoListResponse) throws Exception {
-                        return videoListResponse.videos;
-                    }
-                });
+        return service().videos(movieId).map(r -> r.videos);
     }
 
     private static synchronized TheMovieDbService service() {
