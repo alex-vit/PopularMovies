@@ -13,13 +13,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.alexvit.android.popularmovies.moviedetails.DetailsActivity;
 import com.alexvit.android.popularmovies.R;
-import com.alexvit.android.popularmovies.settings.SettingsActivity;
-import com.alexvit.android.popularmovies.data.source.remote.MovieApiLoader;
-import com.alexvit.android.popularmovies.data.source.local.MovieSqlLoader;
 import com.alexvit.android.popularmovies.data.Movie;
-import com.alexvit.android.popularmovies.utils.Movies;
+import com.alexvit.android.popularmovies.data.source.local.MovieSqlLoader;
+import com.alexvit.android.popularmovies.data.source.remote.MovieApiLoader;
+import com.alexvit.android.popularmovies.moviedetails.DetailsActivity;
+import com.alexvit.android.popularmovies.settings.SettingsActivity;
 import com.alexvit.android.popularmovies.utils.Prefs;
 
 import java.util.List;
@@ -32,7 +31,9 @@ public class ListActivity extends AppCompatActivity
         SharedPreferences.OnSharedPreferenceChangeListener,
         LoaderManager.LoaderCallbacks {
 
+    @SuppressWarnings("unused")
     private static final String TAG = ListActivity.class.getSimpleName();
+
     private static final int MOVIE_API_LOADER_ID = 1000;
     private static final int MOVIE_SQL_LOADER_ID = 1100;
 
@@ -103,7 +104,7 @@ public class ListActivity extends AppCompatActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.pref_category_key))) {
-            String newSortBy = sharedPreferences.getString(key, Movies.defaultCategory());
+            String newSortBy = Prefs.getCategory(this);
             if (!newSortBy.equals(mCategory)) {
                 // Sorting changed, should reload data.
                 mCategory = newSortBy;

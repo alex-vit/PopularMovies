@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.alexvit.android.popularmovies.BuildConfig;
 import com.alexvit.android.popularmovies.data.Movie;
 
 import java.util.Arrays;
@@ -18,22 +17,11 @@ import static com.alexvit.android.popularmovies.data.source.local.MovieContract.
 
 public class Movies {
 
-    //    private static final String TEST_POSTER_URL = "http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
-    public static final String API_BASE_URL = "https://api.themoviedb.org/3";
-
+    @SuppressWarnings("unused")
     private static final String TAG = Movies.class.getSimpleName();
+
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
     private static final List<String> SUPPORTED_VIDEO_SITES = Arrays.asList(VideoSite.YouTube);
-
-    public static String apiKey() {
-        return BuildConfig.TMDB_V3_API_KEY;
-    }
-
-    public static Uri.Builder baseUriBuilder() {
-        return Uri.parse(API_BASE_URL)
-                .buildUpon()
-                .appendQueryParameter(Param.apiKey, apiKey());
-    }
 
     public static String fullImageUrl(String imagePath) {
         return fullImageUrl(imagePath, PosterSize.w185);
@@ -84,10 +72,6 @@ public class Movies {
 
     }
 
-    public static String defaultCategory() {
-        return Category.popular;
-    }
-
     public static boolean isSupportedVideoSite(String site) {
         return SUPPORTED_VIDEO_SITES.contains(site);
     }
@@ -103,18 +87,6 @@ public class Movies {
                 throw new UnsupportedOperationException("Unknown video site: " + site);
         }
 
-    }
-
-    public static final class Param {
-        public static final String apiKey = "api_key";
-        public static final String sortBy = "sort_by";
-        public static final String voteCount = "vote_count.gte";
-    }
-
-    public static final class Category {
-        public static final String popular = "popular";
-        public static final String topRated = "top_rated";
-        public static final String favorite = "favorite";
     }
 
     public static final class PosterSize {

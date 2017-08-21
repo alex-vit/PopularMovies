@@ -2,6 +2,7 @@ package com.alexvit.android.popularmovies.data.source.remote;
 
 import com.alexvit.android.popularmovies.data.MovieListResponse;
 import com.alexvit.android.popularmovies.data.ReviewListResponse;
+import com.alexvit.android.popularmovies.data.VideoListResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -18,5 +19,8 @@ public interface TheMovieDbService {
 
     @GET("movie/{movieId}/reviews")
     Call<ReviewListResponse> reviews(@Path("movieId") String movieId);
+
+    @GET("movie/{movieId}/videos")
+    Call<VideoListResponse> videos(@Path("movieId") String movieId);
 
 }

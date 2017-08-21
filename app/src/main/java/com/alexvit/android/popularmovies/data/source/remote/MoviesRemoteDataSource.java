@@ -3,6 +3,7 @@ package com.alexvit.android.popularmovies.data.source.remote;
 import com.alexvit.android.popularmovies.BuildConfig;
 import com.alexvit.android.popularmovies.data.MovieListResponse;
 import com.alexvit.android.popularmovies.data.ReviewListResponse;
+import com.alexvit.android.popularmovies.data.VideoListResponse;
 
 import java.io.IOException;
 
@@ -31,6 +32,10 @@ public final class MoviesRemoteDataSource {
 
     public static Call<ReviewListResponse> reviews(String movieId) {
         return service().reviews(movieId);
+    }
+
+    public static Call<VideoListResponse> videos(String movieId) {
+        return service().videos(movieId);
     }
 
     private static synchronized TheMovieDbService service() {

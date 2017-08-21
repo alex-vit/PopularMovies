@@ -7,7 +7,6 @@ import com.alexvit.android.popularmovies.data.Movie;
 import com.alexvit.android.popularmovies.data.MovieListResponse;
 import com.alexvit.android.popularmovies.utils.Prefs;
 import com.google.firebase.crash.FirebaseCrash;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.List;
