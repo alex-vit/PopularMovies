@@ -7,9 +7,8 @@ import com.alexvit.android.popularmovies.data.MovieExtras;
 import com.alexvit.android.popularmovies.data.Review;
 import com.alexvit.android.popularmovies.data.Video;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observable;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/18/2017.
@@ -39,12 +38,19 @@ public class MovieExtrasApiLoader extends AsyncTaskLoader<MovieExtras> {
     @Override
     public MovieExtras loadInBackground() {
 
-        Observable<List<Review>> reviewsOb = MoviesRemoteDataSource.reviews(String.valueOf(mMovieId));
-        Observable<List<Video>> videosOb = MoviesRemoteDataSource.videos(String.valueOf(mMovieId));
+        List<Review> reviews = MoviesRemoteDataSource
+                .reviews(String.valueOf(mMovieId))
+                .onErrorReturn(__ -> new ArrayList<Review>() {
+                })
+                .blockingSingle();
+        List<Video> videos = MoviesRemoteDataSource
+                .videos(String.valueOf(mMovieId))
+                .onErrorReturn(__ -> new ArrayList<Video>() {
+                })
+                .blockingSingle();
 
-        Observable<MovieExtras> movieExtrasOb = Observable.zip(reviewsOb, videosOb, MovieExtras::new);
 
-        return movieExtrasOb.blockingSingle();
+        return new MovieExtras(reviews, videos);
     }
 
     @Override

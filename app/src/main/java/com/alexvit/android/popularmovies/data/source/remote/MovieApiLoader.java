@@ -6,6 +6,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import com.alexvit.android.popularmovies.data.Movie;
 import com.alexvit.android.popularmovies.utils.Prefs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,9 +38,14 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
 
     }
 
+    // TODO: Handle errors by tyoe and retry when connected to internet
     @Override
     public List<Movie> loadInBackground() {
-        return MoviesRemoteDataSource.movies(mCategory).blockingSingle();
+        List<Movie> movies = MoviesRemoteDataSource.movies(mCategory)
+                .onErrorReturn(__ -> new ArrayList<Movie>() {
+                })
+                .blockingSingle();
+        return movies;
     }
 
     @Override

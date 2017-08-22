@@ -58,6 +58,7 @@ dependencies {
     compile "com.google.android:flexbox:0.3.0"
 
     // Firebase
+    compile "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
     compile "com.google.firebase:firebase-crash:$rootProject.firebaseVersion"
     compile "com.google.firebase:firebase-perf:$rootProject.firebaseVersion"
 
