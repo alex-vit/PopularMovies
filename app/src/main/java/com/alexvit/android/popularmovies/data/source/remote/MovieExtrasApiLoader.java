@@ -3,6 +3,7 @@ package com.alexvit.android.popularmovies.data.source.remote;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.alexvit.android.popularmovies.PopularMoviesApplication;
 import com.alexvit.android.popularmovies.data.MovieExtras;
 import com.alexvit.android.popularmovies.data.Review;
 import com.alexvit.android.popularmovies.data.Video;
@@ -18,12 +19,14 @@ public class MovieExtrasApiLoader extends AsyncTaskLoader<MovieExtras> {
 
     private static final String TAG = MovieExtrasApiLoader.class.getSimpleName();
 
+    private MoviesRemoteDataSource dataSource;
     private MovieExtras mExtras = null;
     private int mMovieId;
 
     public MovieExtrasApiLoader(Context context, int movieId) {
         super(context);
         this.mMovieId = movieId;
+        this.dataSource = PopularMoviesApplication.get(context).getMoviesRemoteDataSource();
     }
 
     @Override
@@ -38,12 +41,12 @@ public class MovieExtrasApiLoader extends AsyncTaskLoader<MovieExtras> {
     @Override
     public MovieExtras loadInBackground() {
 
-        List<Review> reviews = MoviesRemoteDataSource
+        List<Review> reviews = dataSource
                 .reviews(String.valueOf(mMovieId))
                 .onErrorReturn(__ -> new ArrayList<Review>() {
                 })
                 .blockingSingle();
-        List<Video> videos = MoviesRemoteDataSource
+        List<Video> videos = dataSource
                 .videos(String.valueOf(mMovieId))
                 .onErrorReturn(__ -> new ArrayList<Video>() {
                 })

@@ -3,6 +3,7 @@ package com.alexvit.android.popularmovies.data.source.remote;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.alexvit.android.popularmovies.PopularMoviesApplication;
 import com.alexvit.android.popularmovies.data.Movie;
 import com.alexvit.android.popularmovies.utils.Prefs;
 
@@ -17,11 +18,13 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
 
     private static final String TAG = MovieApiLoader.class.getSimpleName();
 
+    private MoviesRemoteDataSource dataSource;
     private String mCategory = "";
     private List<Movie> mMovies = null;
 
     public MovieApiLoader(Context context) {
         super(context);
+        this.dataSource = PopularMoviesApplication.get(context).getMoviesRemoteDataSource();
     }
 
     @Override
@@ -41,7 +44,7 @@ public class MovieApiLoader extends AsyncTaskLoader<List<Movie>> {
     // TODO: Handle errors by tyoe and retry when connected to internet
     @Override
     public List<Movie> loadInBackground() {
-        List<Movie> movies = MoviesRemoteDataSource.movies(mCategory)
+        List<Movie> movies = dataSource.movies(mCategory)
                 .onErrorReturn(__ -> new ArrayList<Movie>() {
                 })
                 .blockingSingle();
