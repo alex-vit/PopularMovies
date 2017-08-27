@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 import com.alexvit.android.popularmovies.data.source.remote.MoviesRemoteDataSource;
+import com.alexvit.android.popularmovies.di.ContextModule;
+import com.alexvit.android.popularmovies.di.PopularMoviesApplicationComponent;
 
 /**
  * Created by Aleksandrs Vitjukovs on 8/27/2017.

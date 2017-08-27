@@ -1,7 +1,8 @@
-package com.alexvit.android.popularmovies;
+package com.alexvit.android.popularmovies.di;
 
 import android.content.Context;
 
+import com.alexvit.android.popularmovies.BuildConfig;
 import com.alexvit.android.popularmovies.data.source.remote.InsertApiKeyInterceptor;
 import com.alexvit.android.popularmovies.data.source.remote.MoviesRemoteDataSource;
 import com.alexvit.android.popularmovies.data.source.remote.TheMovieDbService;
@@ -26,16 +27,19 @@ public class MoviesRemoteDataSourceModule {
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
 
     @Provides
+    @ApplicationScope
     public MoviesRemoteDataSource moviesRemoteDataSource(TheMovieDbService service) {
         return new MoviesRemoteDataSource(service);
     }
 
     @Provides
+    @ApplicationScope
     public TheMovieDbService theMovieDbService(Retrofit tmdbRetrofit) {
         return tmdbRetrofit.create(TheMovieDbService.class);
     }
 
     @Provides
+    @ApplicationScope
     public Retrofit retrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -46,6 +50,7 @@ public class MoviesRemoteDataSourceModule {
     }
 
     @Provides
+    @ApplicationScope
     public OkHttpClient okHttpClient(InsertApiKeyInterceptor insertApiKeyInterceptor, Cache cache) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(insertApiKeyInterceptor).cache(cache);
@@ -53,21 +58,25 @@ public class MoviesRemoteDataSourceModule {
     }
 
     @Provides
+    @ApplicationScope
     public InsertApiKeyInterceptor insertApiKeyInterceptor(String apiKey) {
         return new InsertApiKeyInterceptor(apiKey);
     }
 
     @Provides
+    @ApplicationScope
     public Cache cache(File cacheFile) {
         return new Cache(cacheFile, 10 * 1024 * 1024);
     }
 
     @Provides
+    @ApplicationScope
     public File cacheFile(Context context) {
         return new File(context.getCacheDir(), "okhttp-cache");
     }
 
     @Provides
+    @ApplicationScope
     public String apiKey() {
         return BuildConfig.TMDB_V3_API_KEY;
     }

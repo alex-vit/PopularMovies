@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies;
+package com.alexvit.android.popularmovies.di;
 
 import android.content.Context;
 
@@ -15,6 +15,7 @@ import dagger.Provides;
 public class GlideModule {
 
     @Provides
+    @ApplicationScope
     public Glide glide(Context context) {
         return Glide.get(context);
     }

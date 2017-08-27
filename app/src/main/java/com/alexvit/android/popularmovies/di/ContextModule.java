@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies;
+package com.alexvit.android.popularmovies.di;
 
 import android.content.Context;
 
@@ -19,6 +19,7 @@ public class ContextModule {
     }
 
     @Provides
+    @ApplicationScope
     public Context context() {
         return context;
     }
