@@ -39,4 +39,5 @@ ext {
     firebaseVersion = '11.0.2'
     retrofitVersion = '2.3.0'
     rxjavaVersion = '2.1.3'
+    dagger2Version = '2.11'
 }
