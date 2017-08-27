@@ -1,7 +1,6 @@
 package com.alexvit.android.popularmovies.di;
 
 import com.alexvit.android.popularmovies.data.source.remote.MoviesRemoteDataSource;
-import com.bumptech.glide.Glide;
 
 import dagger.Component;
 
@@ -10,10 +9,8 @@ import dagger.Component;
  */
 
 @ApplicationScope
-@Component(modules = {GlideModule.class, MoviesRemoteDataSourceModule.class})
+@Component(modules = {MoviesRemoteDataSourceModule.class})
 public interface PopularMoviesApplicationComponent {
-
-    Glide getGlide();
 
     MoviesRemoteDataSource getMoviesRemoteDataSource();
 }
