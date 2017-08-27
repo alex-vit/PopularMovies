@@ -16,7 +16,7 @@ public class GlideModule {
 
     @Provides
     @ApplicationScope
-    public Glide glide(Context context) {
+    public Glide glide(@ApplicationContext Context context) {
         return Glide.get(context);
     }
 }

@@ -59,24 +59,26 @@ public class MoviesRemoteDataSourceModule {
 
     @Provides
     @ApplicationScope
-    public InsertApiKeyInterceptor insertApiKeyInterceptor(String apiKey) {
+    public InsertApiKeyInterceptor insertApiKeyInterceptor(@ApiKey String apiKey) {
         return new InsertApiKeyInterceptor(apiKey);
     }
 
     @Provides
     @ApplicationScope
-    public Cache cache(File cacheFile) {
+    public Cache cache(@CacheFile File cacheFile) {
         return new Cache(cacheFile, 10 * 1024 * 1024);
     }
 
     @Provides
     @ApplicationScope
-    public File cacheFile(Context context) {
+    @CacheFile
+    public File cacheFile(@ApplicationContext Context context) {
         return new File(context.getCacheDir(), "okhttp-cache");
     }
 
     @Provides
     @ApplicationScope
+    @ApiKey
     public String apiKey() {
         return BuildConfig.TMDB_V3_API_KEY;
     }
