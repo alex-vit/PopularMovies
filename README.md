@@ -22,7 +22,7 @@ I'm refactoring this from Spaghetti architecture to MVVM with RxJava and maybe D
 - [ ] Remove all android dependencies from Repo and ViewModels
 - [ ] Unit test all the things
 - [ ] Espresso test what remains
-- [ ] Use Dagger2 DI instead of singletons
+- [x] Use Dagger2 DI instead of singletons
 - [ ] _Hey, not too rough_ Data binding without accidentally creating presenters.xml
 - [ ] _Hurt me plenty_ Rewrite in Kotlin (with Anko?)
 - [ ] _Nightmare!_ Rewrite in Scala
