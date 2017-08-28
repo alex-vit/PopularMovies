@@ -9,9 +9,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.alexvit.android.popularmovies.R;
-import com.alexvit.android.popularmovies.data.MovieExtras;
-import com.alexvit.android.popularmovies.data.Review;
-import com.alexvit.android.popularmovies.data.Video;
+import com.alexvit.android.popularmovies.data.models.MovieExtras;
+import com.alexvit.android.popularmovies.data.models.Review;
+import com.alexvit.android.popularmovies.data.models.Video;
 import com.alexvit.android.popularmovies.utils.Movies;
 
 /**

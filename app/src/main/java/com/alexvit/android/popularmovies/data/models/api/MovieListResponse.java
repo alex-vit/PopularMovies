@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies.data;
+package com.alexvit.android.popularmovies.data.models.api;
 
 /**
  * Created by Aleksandrs Vitjukovs on 6/2/2017.
@@ -11,6 +11,7 @@ package com.alexvit.android.popularmovies.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.alexvit.android.popularmovies.data.models.Movie;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

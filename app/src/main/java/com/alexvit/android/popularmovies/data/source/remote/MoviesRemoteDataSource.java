@@ -1,8 +1,8 @@
 package com.alexvit.android.popularmovies.data.source.remote;
 
-import com.alexvit.android.popularmovies.data.Movie;
-import com.alexvit.android.popularmovies.data.Review;
-import com.alexvit.android.popularmovies.data.Video;
+import com.alexvit.android.popularmovies.data.models.Movie;
+import com.alexvit.android.popularmovies.data.models.Review;
+import com.alexvit.android.popularmovies.data.models.Video;
 
 import java.util.List;
 

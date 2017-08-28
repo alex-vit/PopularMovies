@@ -4,9 +4,9 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.alexvit.android.popularmovies.PopularMoviesApplication;
-import com.alexvit.android.popularmovies.data.MovieExtras;
-import com.alexvit.android.popularmovies.data.Review;
-import com.alexvit.android.popularmovies.data.Video;
+import com.alexvit.android.popularmovies.data.models.MovieExtras;
+import com.alexvit.android.popularmovies.data.models.Review;
+import com.alexvit.android.popularmovies.data.models.Video;
 
 import java.util.ArrayList;
 import java.util.List;

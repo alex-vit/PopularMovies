@@ -1,10 +1,6 @@
 package com.alexvit.android.popularmovies.moviedetails;
 
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.LoaderManager;
@@ -21,10 +17,9 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.alexvit.android.popularmovies.R;
-import com.alexvit.android.popularmovies.data.source.local.MovieContract;
+import com.alexvit.android.popularmovies.data.models.Movie;
+import com.alexvit.android.popularmovies.data.models.MovieExtras;
 import com.alexvit.android.popularmovies.data.source.remote.MovieExtrasApiLoader;
-import com.alexvit.android.popularmovies.data.Movie;
-import com.alexvit.android.popularmovies.data.MovieExtras;
 import com.alexvit.android.popularmovies.utils.Movies;
 import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
@@ -35,6 +30,8 @@ import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.alexvit.android.popularmovies.utils.Toast.toast;
 
 public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<MovieExtras> {
 
@@ -74,7 +71,8 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         initToolbar(mMovie.title);
         loadImages(mMovie);
         loadText(mMovie);
-        setupFavorite(mMovie.id);
+
+        mBody.toggleFavorite.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
 
         mExtrasAdapter = new MovieExtrasAdapter(mBody.reviewList, mBody.videoList);
     }
@@ -161,20 +159,6 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mBody.tvOverview.setText(movie.overview);
     }
 
-    private void setupFavorite(int movieId) {
-        Uri uri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, movieId);
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-
-        boolean isFavorite = false;
-        if (cursor != null && cursor.moveToFirst()) {
-            isFavorite = (cursor.getInt(cursor.getColumnIndex(
-                    MovieContract.MovieEntry.COLUMN_IS_FAVORITE)) == 1);
-            cursor.close();
-        }
-        mBody.toggleFavorite.setChecked(isFavorite);
-        mBody.toggleFavorite.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
-    }
-
     private class FavoriteToggleListener implements CompoundButton.OnCheckedChangeListener {
 
         private Movie movie;
@@ -186,16 +170,13 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
-                movie.isFavorite = true;
-                ContentValues values = Movies.movieToContentValues(movie);
-                getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, values);
+                // TODO: Favorite movie
+                toast(DetailsActivity.this, "Favorite movie");
             } else {
-                getContentResolver().delete(
-                        ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, movie.id),
-                        null,
-                        null);
+                // TODO: Un-favorite movie
+                toast(DetailsActivity.this, "Un-favorite movie");
             }
-            getContentResolver().notifyChange(MovieContract.MovieEntry.CONTENT_URI, null);
+            // TODO: Notify change, anyone?
         }
     }
 

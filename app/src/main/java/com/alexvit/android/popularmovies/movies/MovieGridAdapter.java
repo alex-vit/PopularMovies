@@ -1,7 +1,6 @@
 package com.alexvit.android.popularmovies.movies;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.alexvit.android.popularmovies.R;
-import com.alexvit.android.popularmovies.data.Movie;
+import com.alexvit.android.popularmovies.data.models.Movie;
 import com.alexvit.android.popularmovies.utils.Movies;
 import com.bumptech.glide.Glide;
 
@@ -24,11 +23,11 @@ import butterknife.ButterKnife;
 
 class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAdapterViewHolder> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = MovieGridAdapter.class.getSimpleName();
+
     private final MovieClickListener mMovieClickListener;
     private List<Movie> movieList;
-    private Cursor movieCursor;
-    private Mode mode = Mode.NoData;
 
     MovieGridAdapter(MovieClickListener mMovieClickListener) {
         this.mMovieClickListener = mMovieClickListener;
@@ -59,55 +58,21 @@ class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.MovieGridAd
 
     @Override
     public int getItemCount() {
-        switch (mode) {
-            case Cursor:
-                return (movieCursor == null) ? 0 : movieCursor.getCount();
-            case List:
-                return movieList.size();
-            default:
-                return 0;
-        }
+        return (movieList == null) ? 0 : movieList.size();
     }
 
-    public synchronized Mode getMode() {
-        return mode;
-    }
-
-    synchronized void setMovies(List<Movie> movies) {
+    void setMovies(List<Movie> movies) {
         movieList = movies;
-        movieCursor = null;
-        mode = Mode.List;
-        notifyDataSetChanged();
-    }
-
-    synchronized void setMovies(Cursor cursor) {
-        movieCursor = cursor;
-        movieList = null;
-        mode = Mode.Cursor;
         notifyDataSetChanged();
     }
 
     synchronized void deleteMovies() {
-        movieCursor = null;
         movieList = null;
-        mode = Mode.NoData;
         notifyDataSetChanged();
     }
 
     private Movie getData(int position) {
-        switch (mode) {
-            case Cursor:
-                movieCursor.moveToPosition(position);
-                return Movies.movieFromCursor(movieCursor);
-            case List:
-                return movieList.get(position);
-            default:
-                return null;
-        }
-    }
-
-    public enum Mode {
-        List, Cursor, NoData
+        return movieList.get(position);
     }
 
     interface MovieClickListener {

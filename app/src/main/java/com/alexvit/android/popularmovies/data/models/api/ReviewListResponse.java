@@ -1,5 +1,6 @@
-package com.alexvit.android.popularmovies.data;
+package com.alexvit.android.popularmovies.data.models.api;
 
+import com.alexvit.android.popularmovies.data.models.Review;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

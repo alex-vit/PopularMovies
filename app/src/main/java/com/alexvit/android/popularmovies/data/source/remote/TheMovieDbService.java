@@ -1,8 +1,8 @@
 package com.alexvit.android.popularmovies.data.source.remote;
 
-import com.alexvit.android.popularmovies.data.MovieListResponse;
-import com.alexvit.android.popularmovies.data.ReviewListResponse;
-import com.alexvit.android.popularmovies.data.VideoListResponse;
+import com.alexvit.android.popularmovies.data.models.api.MovieListResponse;
+import com.alexvit.android.popularmovies.data.models.api.ReviewListResponse;
+import com.alexvit.android.popularmovies.data.models.api.VideoListResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

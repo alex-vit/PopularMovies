@@ -3,7 +3,7 @@ package com.alexvit.android.popularmovies.utils;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.alexvit.android.popularmovies.data.Movie;
+import com.alexvit.android.popularmovies.data.models.Movie;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**

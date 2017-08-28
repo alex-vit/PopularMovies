@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies.data;
+package com.alexvit.android.popularmovies.data.models;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/19/2017.
