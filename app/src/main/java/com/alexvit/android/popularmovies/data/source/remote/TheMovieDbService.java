@@ -15,12 +15,12 @@ import retrofit2.http.Path;
 public interface TheMovieDbService {
 
     @GET("movie/{category}")
-    Observable<MovieListResponse> movies(@Path("category") String category);
+    Observable<MovieListResponse> moviesByCategory(@Path("category") String category);
 
     @GET("movie/{movieId}/reviews")
-    Observable<ReviewListResponse> reviews(@Path("movieId") String movieId);
+    Observable<ReviewListResponse> reviewsByMovieId(@Path("movieId") String movieId);
 
     @GET("movie/{movieId}/videos")
-    Observable<VideoListResponse> videos(@Path("movieId") String movieId);
+    Observable<VideoListResponse> videosByMovieId(@Path("movieId") String movieId);
 
 }

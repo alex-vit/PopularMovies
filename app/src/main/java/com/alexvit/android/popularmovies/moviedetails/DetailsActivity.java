@@ -3,9 +3,7 @@ package com.alexvit.android.popularmovies.moviedetails;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,10 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.alexvit.android.popularmovies.PopularMoviesApplication;
 import com.alexvit.android.popularmovies.R;
+import com.alexvit.android.popularmovies.data.MoviesRepository;
 import com.alexvit.android.popularmovies.data.models.Movie;
-import com.alexvit.android.popularmovies.data.models.MovieExtras;
-import com.alexvit.android.popularmovies.data.source.remote.MovieExtrasApiLoader;
 import com.alexvit.android.popularmovies.utils.Movies;
 import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
@@ -30,14 +28,17 @@ import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.alexvit.android.popularmovies.utils.Toast.toast;
 
-public class DetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<MovieExtras> {
+public class DetailsActivity extends AppCompatActivity {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
-    private static final int EXTRA_LOADER_ID = 1200;
-    
+
     @BindView(R.id.app_bar)
     AppBarLayout incAppBar;
     @BindView(R.id.body)
@@ -47,8 +48,9 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
     private Body mBody;
 
     private MovieExtrasAdapter mExtrasAdapter;
-
     private Movie mMovie;
+    private MoviesRepository repository;
+    private CompositeDisposable compositeSub = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,35 +77,15 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mBody.toggleFavorite.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
 
         mExtrasAdapter = new MovieExtrasAdapter(mBody.reviewList, mBody.videoList);
+        repository = PopularMoviesApplication.get(this).getMoviesRepository();
+        loadData();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Bundle args = new Bundle();
-        args.putInt("movieId", mMovie.id);
-        getSupportLoaderManager().initLoader(EXTRA_LOADER_ID, args, this);
-    }
-
-    @Override
-    public Loader<MovieExtras> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case EXTRA_LOADER_ID:
-                int movieId = args.getInt("movieId");
-                return new MovieExtrasApiLoader(this, movieId);
-            default:
-                throw new UnsupportedOperationException("Unknown loader id: " + id);
-        }
-    }
-
-    @Override
-    public void onLoadFinished(Loader<MovieExtras> loader, MovieExtras extras) {
-        mExtrasAdapter.setExtras(extras);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<MovieExtras> loader) {
-        mExtrasAdapter.deleteExtras();
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeSub.clear();
+        compositeSub.dispose();
     }
 
     private Movie getMovie() {
@@ -159,6 +141,26 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         mBody.tvOverview.setText(movie.overview);
     }
 
+    private void loadData() {
+        Disposable reviewsSub = repository.reviewsByMovieId(String.valueOf(mMovie.id))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        mExtrasAdapter::setReviews,
+                        err -> toast(this, err.getMessage())
+                );
+        compositeSub.add(reviewsSub);
+
+        Disposable videosSub = repository.videosByMovieId(String.valueOf(mMovie.id))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        mExtrasAdapter::setVideos,
+                        err -> toast(this, err.getMessage())
+                );
+        compositeSub.add(videosSub);
+    }
+
     private class FavoriteToggleListener implements CompoundButton.OnCheckedChangeListener {
 
         private Movie movie;
@@ -171,10 +173,10 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
                 // TODO: Favorite movie
-                toast(DetailsActivity.this, "Favorite movie");
+                toast(DetailsActivity.this, "Favorite " + movie.title);
             } else {
                 // TODO: Un-favorite movie
-                toast(DetailsActivity.this, "Un-favorite movie");
+                toast(DetailsActivity.this, "Un-favorite " + movie.title);
             }
             // TODO: Notify change, anyone?
         }

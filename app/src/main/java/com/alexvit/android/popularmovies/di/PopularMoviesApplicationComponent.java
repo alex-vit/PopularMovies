@@ -1,6 +1,6 @@
 package com.alexvit.android.popularmovies.di;
 
-import com.alexvit.android.popularmovies.data.source.remote.MoviesRemoteDataSource;
+import com.alexvit.android.popularmovies.data.MoviesRepository;
 
 import dagger.Component;
 
@@ -9,8 +9,8 @@ import dagger.Component;
  */
 
 @ApplicationScope
-@Component(modules = {MoviesRemoteDataSourceModule.class})
+@Component(modules = {MoviesRepositoryModule.class})
 public interface PopularMoviesApplicationComponent {
 
-    MoviesRemoteDataSource getMoviesRemoteDataSource();
+    MoviesRepository getMoviesRepository();
 }

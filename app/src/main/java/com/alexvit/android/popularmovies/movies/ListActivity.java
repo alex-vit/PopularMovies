@@ -122,9 +122,8 @@ public class ListActivity extends AppCompatActivity
         CharSequence title = Prefs.getCategoryTitle(this, mCategory);
         setTitle(title);
 
-        // TODO: Load movies from API
-        PopularMoviesApplication.get(this).getMoviesRemoteDataSource()
-                .movies(mCategory)
+        PopularMoviesApplication.get(this).getMoviesRepository()
+                .moviesByCategory(mCategory)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

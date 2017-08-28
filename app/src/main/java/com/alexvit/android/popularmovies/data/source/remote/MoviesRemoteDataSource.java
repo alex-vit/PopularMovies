@@ -20,16 +20,16 @@ public final class MoviesRemoteDataSource {
         this.service = service;
     }
 
-    public Observable<List<Movie>> movies(String category) {
-        return service.movies(category).map(r -> r.movies);
+    public Observable<List<Movie>> moviesByCategory(String category) {
+        return service.moviesByCategory(category).map(r -> r.movies);
     }
 
-    public Observable<List<Review>> reviews(String movieId) {
-        return service.reviews(movieId).map(r -> r.reviews);
+    public Observable<List<Review>> reviewsByMovieId(String movieId) {
+        return service.reviewsByMovieId(movieId).map(r -> r.reviews);
     }
 
-    public Observable<List<Video>> videos(String movieId) {
-        return service.videos(movieId).map(r -> r.videos);
+    public Observable<List<Video>> videosByMovieId(String movieId) {
+        return service.videosByMovieId(movieId).map(r -> r.videos);
     }
 
 }

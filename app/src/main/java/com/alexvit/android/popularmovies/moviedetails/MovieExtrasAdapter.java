@@ -9,10 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.alexvit.android.popularmovies.R;
-import com.alexvit.android.popularmovies.data.models.MovieExtras;
 import com.alexvit.android.popularmovies.data.models.Review;
 import com.alexvit.android.popularmovies.data.models.Video;
 import com.alexvit.android.popularmovies.utils.Movies;
+
+import java.util.List;
 
 /**
  * Created by Aleksandrs Vitjukovs on 7/20/2017.
@@ -28,26 +29,18 @@ class MovieExtrasAdapter {
         this.videoParent = videoParent;
     }
 
-    void setExtras(MovieExtras extras) {
+    void setReviews(List<Review> reviews) {
         reviewParent.removeAllViews();
-        videoParent.removeAllViews();
-        if (extras == null) return;
-
-        if (extras.reviews != null && extras.reviews.size() > 0) {
-            for (Review review : extras.reviews) {
-                addReview(review);
-            }
-        }
-
-        if (extras.videos != null && extras.videos.size() > 0) {
-            for (Video video : extras.videos) {
-                addVideo(video);
-            }
+        if (reviews != null) {
+            reviews.forEach(this::addReview);
         }
     }
 
-    void deleteExtras() {
-        setExtras(null);
+    void setVideos(List<Video> videos) {
+        videoParent.removeAllViews();
+        if (videos != null) {
+            videos.forEach(this::addVideo);
+        }
     }
 
     private void addReview(Review review) {
@@ -67,12 +60,8 @@ class MovieExtrasAdapter {
         ((TextView) itemView.findViewById(R.id.video_name)).setText(video.name);
 
         Button button = (Button) itemView;
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, videoUri));
-            }
-        });
+        button.setOnClickListener(view -> view.getContext().startActivity(
+                new Intent(Intent.ACTION_VIEW, videoUri)));
 
         videoParent.addView(itemView);
     }

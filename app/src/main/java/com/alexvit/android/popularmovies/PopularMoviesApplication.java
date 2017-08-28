@@ -3,7 +3,7 @@ package com.alexvit.android.popularmovies;
 import android.app.Application;
 import android.content.Context;
 
-import com.alexvit.android.popularmovies.data.source.remote.MoviesRemoteDataSource;
+import com.alexvit.android.popularmovies.data.MoviesRepository;
 import com.alexvit.android.popularmovies.di.ContextModule;
 import com.alexvit.android.popularmovies.di.DaggerPopularMoviesApplicationComponent;
 import com.alexvit.android.popularmovies.di.PopularMoviesApplicationComponent;
@@ -14,11 +14,11 @@ import com.alexvit.android.popularmovies.di.PopularMoviesApplicationComponent;
 
 public class PopularMoviesApplication extends Application {
 
+    private MoviesRepository moviesRepository;
+
     public static PopularMoviesApplication get(Context context) {
         return (PopularMoviesApplication) context.getApplicationContext();
     }
-
-    private MoviesRemoteDataSource moviesRemoteDataSource;
 
     @Override
     public void onCreate() {
@@ -29,10 +29,10 @@ public class PopularMoviesApplication extends Application {
                 .contextModule(new ContextModule(this))
                 .build();
 
-        moviesRemoteDataSource = component.getMoviesRemoteDataSource();
+        moviesRepository = component.getMoviesRepository();
     }
 
-    public MoviesRemoteDataSource getMoviesRemoteDataSource() {
-        return moviesRemoteDataSource;
+    public MoviesRepository getMoviesRepository() {
+        return moviesRepository;
     }
 }
