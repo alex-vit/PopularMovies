@@ -13,7 +13,7 @@ I'm refactoring this from Spaghetti architecture to MVVM with RxJava and maybe D
 - [x] Use Dagger2 DI instead of singletons
 - [x] Create movies repository
 - [x] Remove loaders
-- [ ] Create movies viewmodel
+- [x] Create movies viewmodel
 - [ ] Create details viewmodel and stop passing around parcels
 - [ ] Use @Inject
 - [ ] Create local data source with Room
