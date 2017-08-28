@@ -3,8 +3,6 @@ package com.alexvit.android.popularmovies.movies;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -12,20 +10,24 @@ import android.view.MenuItem;
 
 import com.alexvit.android.popularmovies.App;
 import com.alexvit.android.popularmovies.R;
+import com.alexvit.android.popularmovies.base.BaseActivity;
 import com.alexvit.android.popularmovies.data.models.Movie;
+import com.alexvit.android.popularmovies.di.ActivityModule;
+import com.alexvit.android.popularmovies.di.DaggerActivityComponent;
 import com.alexvit.android.popularmovies.moviedetails.DetailsActivity;
 import com.alexvit.android.popularmovies.settings.SettingsActivity;
 import com.alexvit.android.popularmovies.utils.Prefs;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
-import static com.alexvit.android.popularmovies.utils.Toast.toast;
-
-public class ListActivity extends AppCompatActivity
-        implements MovieGridAdapter.MovieClickListener,
+public class ListActivity extends BaseActivity<ListViewModel>
+        implements ListNavigator,
+        MovieGridAdapter.MovieClickListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     @SuppressWarnings("unused")
@@ -35,8 +37,12 @@ public class ListActivity extends AppCompatActivity
     RecyclerView mMovieGridRecyclerView;
 
     private MovieGridAdapter mAdapter;
-    private SharedPreferences mSharedPreferences;
     private String mCategory;
+
+    @Inject
+    SharedPreferences mSharedPreferences;
+    @Inject
+    ListViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +51,13 @@ public class ListActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        DaggerActivityComponent.builder()
+                .activityModule(new ActivityModule(this))
+                .appComponent(App.get(this).component())
+                .build()
+                .inject(this);
+        viewModel.setNavigator(this);
+
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         mCategory = Prefs.getCategory(this);
@@ -59,7 +71,7 @@ public class ListActivity extends AppCompatActivity
         if (mAdapter.getItemCount() == 0) {
             // Reload if there's nothing to show (orientation changed)
             // Always reload favorites, so if you open a favorite, unfavorite it and go back, it disappears
-            reload();
+            viewModel.onCategoryChanged(mCategory);
         }
 
     }
@@ -67,7 +79,9 @@ public class ListActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        viewModel.onDestroy();
     }
 
     @Override
@@ -102,9 +116,19 @@ public class ListActivity extends AppCompatActivity
             if (!newSortBy.equals(mCategory)) {
                 // Sorting changed, should reload data.
                 mCategory = newSortBy;
-                reload();
+                viewModel.onCategoryChanged(mCategory);
             }
         }
+    }
+
+    @Override
+    public void displayMovies(List<Movie> movies) {
+        mAdapter.deleteMovies();
+
+        CharSequence title = Prefs.getCategoryTitle(this, mCategory);
+        setTitle(title);
+
+        mAdapter.setMovies(movies);
     }
 
     private void initRecyclerView() {
@@ -116,20 +140,4 @@ public class ListActivity extends AppCompatActivity
 
         mMovieGridRecyclerView.setHasFixedSize(true);
     }
-
-    private void reload() {
-        mAdapter.deleteMovies();
-        CharSequence title = Prefs.getCategoryTitle(this, mCategory);
-        setTitle(title);
-
-        App.get(this).getMoviesRepository()
-                .moviesByCategory(mCategory)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        movies -> mAdapter.setMovies(movies),
-                        error -> toast(this, error.getMessage())
-                );
-    }
-
 }

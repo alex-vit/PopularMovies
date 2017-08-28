@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.alexvit.android.popularmovies.data.MoviesRepository;
+import com.alexvit.android.popularmovies.di.AppComponent;
 import com.alexvit.android.popularmovies.di.ContextModule;
 import com.alexvit.android.popularmovies.di.DaggerAppComponent;
 
@@ -14,6 +15,8 @@ import javax.inject.Inject;
  */
 
 public class App extends Application {
+
+    private AppComponent component;
 
     @Inject
     MoviesRepository moviesRepository;
@@ -26,10 +29,15 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        DaggerAppComponent.builder()
+        component = DaggerAppComponent.builder()
                 .contextModule(new ContextModule(this))
-                .build()
-                .inject(this);
+                .build();
+
+        component.inject(this);
+    }
+
+    public AppComponent component() {
+        return component;
     }
 
     public MoviesRepository getMoviesRepository() {
