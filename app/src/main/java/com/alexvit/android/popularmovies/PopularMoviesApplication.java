@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.alexvit.android.popularmovies.data.source.remote.MoviesRemoteDataSource;
 import com.alexvit.android.popularmovies.di.ContextModule;
+import com.alexvit.android.popularmovies.di.DaggerPopularMoviesApplicationComponent;
 import com.alexvit.android.popularmovies.di.PopularMoviesApplicationComponent;
 
 /**
