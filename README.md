@@ -10,19 +10,16 @@ I'm refactoring this from Spaghetti architecture to MVVM with RxJava and maybe D
 - [x] Migrate remote data source to retrofit
 - [x] Add retrofit Rx adapter
 - [x] Replace (Bi)Functions with lambdas
-- [ ] Create local data source with sqlbrite
-- [ ] Create movies repository
-- [ ] Cache everything in local data source (with LRU eviction)
-- [ ] \(Optional) Also cache stuff in memory
-- [ ] Create movies viewmodel and remove loaders
+- [x] Use Dagger2 DI instead of singletons
+- [x] Create movies repository
+- [x] Remove loaders
+- [ ] Create movies viewmodel
 - [ ] Create details viewmodel and stop passing around parcels
-- [ ] Migrate listeners to retrolambdas
-- [ ] Bind listeners using butterknife or RxBinding
-- [ ] Move UI logic into viewmodels and expose view state Rx subject
-- [ ] Remove all android dependencies from Repo and ViewModels
+- [ ] Use @Inject
+- [ ] Create local data source with Room
+- [ ] \(Optional) Also cache stuff in memory
 - [ ] Unit test all the things
 - [ ] Espresso test what remains
-- [x] Use Dagger2 DI instead of singletons
 - [ ] _Hey, not too rough_ Data binding without accidentally creating presenters.xml
 - [ ] _Hurt me plenty_ Rewrite in Kotlin (with Anko?)
 - [ ] _Nightmare!_ Rewrite in Scala
