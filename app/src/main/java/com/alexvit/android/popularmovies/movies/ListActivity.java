@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.alexvit.android.popularmovies.PopularMoviesApplication;
+import com.alexvit.android.popularmovies.App;
 import com.alexvit.android.popularmovies.R;
 import com.alexvit.android.popularmovies.data.models.Movie;
 import com.alexvit.android.popularmovies.moviedetails.DetailsActivity;
@@ -122,7 +122,7 @@ public class ListActivity extends AppCompatActivity
         CharSequence title = Prefs.getCategoryTitle(this, mCategory);
         setTitle(title);
 
-        PopularMoviesApplication.get(this).getMoviesRepository()
+        App.get(this).getMoviesRepository()
                 .moviesByCategory(mCategory)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

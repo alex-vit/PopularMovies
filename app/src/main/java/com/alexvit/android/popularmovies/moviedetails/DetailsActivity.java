@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.alexvit.android.popularmovies.PopularMoviesApplication;
+import com.alexvit.android.popularmovies.App;
 import com.alexvit.android.popularmovies.R;
 import com.alexvit.android.popularmovies.data.MoviesRepository;
 import com.alexvit.android.popularmovies.data.models.Movie;
@@ -77,7 +77,7 @@ public class DetailsActivity extends AppCompatActivity {
         mBody.toggleFavorite.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
 
         mExtrasAdapter = new MovieExtrasAdapter(mBody.reviewList, mBody.videoList);
-        repository = PopularMoviesApplication.get(this).getMoviesRepository();
+        repository = App.get(this).getMoviesRepository();
         loadData();
     }
 

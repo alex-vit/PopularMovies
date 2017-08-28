@@ -10,7 +10,7 @@ import dagger.Component;
 
 @ApplicationScope
 @Component(modules = {MoviesRepositoryModule.class})
-public interface PopularMoviesApplicationComponent {
+public interface AppComponent {
 
     MoviesRepository getMoviesRepository();
 }
