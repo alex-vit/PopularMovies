@@ -19,17 +19,22 @@ public abstract class BaseViewModel<N> {
 
     public abstract void onViewInitialized();
 
-    protected N getNavigator() {
+    public void onDestroy() {
+        compositeSub.clear();
+        compositeSub.dispose();
+    }
+
+    protected final N getNavigator() {
         return navigator;
     }
 
-    public void setNavigator(N navigator) {
+    public final void setNavigator(N navigator) {
         this.navigator = navigator;
     }
 
-    protected <T> void subscribe(Observable<T> observable,
-                                 Consumer<? super T> onNext,
-                                 Consumer<? super Throwable> onError) {
+    protected final <T> void subscribe(Observable<T> observable,
+                                       Consumer<? super T> onNext,
+                                       Consumer<? super Throwable> onError) {
 
         Disposable subscription = observable
                 .subscribeOn(Schedulers.io())
@@ -37,10 +42,5 @@ public abstract class BaseViewModel<N> {
                 .subscribe(onNext, onError);
 
         compositeSub.add(subscription);
-    }
-
-    public void onDestroy() {
-        compositeSub.clear();
-        compositeSub.dispose();
     }
 }

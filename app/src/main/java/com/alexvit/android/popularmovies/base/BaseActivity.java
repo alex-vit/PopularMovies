@@ -35,7 +35,7 @@ public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatAct
 
     protected abstract V getViewModel();
 
-    protected ActivityComponent getComponent() {
+    protected final ActivityComponent getComponent() {
         return component;
     }
 }
