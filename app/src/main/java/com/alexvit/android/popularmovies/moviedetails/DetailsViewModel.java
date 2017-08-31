@@ -2,6 +2,7 @@ package com.alexvit.android.popularmovies.moviedetails;
 
 import com.alexvit.android.popularmovies.base.BaseViewModel;
 import com.alexvit.android.popularmovies.data.MoviesRepository;
+import com.alexvit.android.popularmovies.data.models.Movie;
 
 /**
  * Created by Aleksandrs Vitjukovs on 8/31/2017.
@@ -34,5 +35,10 @@ public class DetailsViewModel extends BaseViewModel<DetailsNavigator> {
         subscribe(moviesRepository.videosByMovieId(movieId),
                 getNavigator()::onVideosLoaded,
                 getNavigator()::onError);
+    }
+
+    void onFavorite(Movie movie, boolean isFavorite) {
+        movie.favorite = isFavorite;
+        moviesRepository.updateMovie(movie);
     }
 }

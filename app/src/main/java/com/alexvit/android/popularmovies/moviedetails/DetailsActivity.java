@@ -34,7 +34,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.alexvit.android.popularmovies.utils.Movies.yearOfMovie;
-import static com.alexvit.android.popularmovies.utils.Toast.toast;
 
 public class DetailsActivity extends BaseActivity<DetailsViewModel>
         implements DetailsNavigator {
@@ -93,7 +92,7 @@ public class DetailsActivity extends BaseActivity<DetailsViewModel>
         initToolbar(movie.title);
         loadImages(movie);
         loadText(movie);
-        mBody.toggleFavorite.setOnCheckedChangeListener(new FavoriteToggleListener(movie));
+        setupFavorite(movie);
 
         Analytics.logMovieView(this, movie);
     }
@@ -165,6 +164,14 @@ public class DetailsActivity extends BaseActivity<DetailsViewModel>
         mBody.tvOverview.setText(movie.overview);
     }
 
+    private void setupFavorite(Movie movie) {
+        mBody.toggleFavorite.setOnCheckedChangeListener(null);
+        mBody.toggleFavorite.setChecked(
+                (movie.favorite == null) ? false : movie.favorite
+        );
+        mBody.toggleFavorite.setOnCheckedChangeListener(new FavoriteToggleListener(movie));
+    }
+
     private class FavoriteToggleListener implements CompoundButton.OnCheckedChangeListener {
 
         private final Movie movie;
@@ -177,10 +184,12 @@ public class DetailsActivity extends BaseActivity<DetailsViewModel>
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
                 // TODO: Favorite movie
-                toast(DetailsActivity.this, "Favorite " + movie.title);
+//                toast(DetailsActivity.this, "Favorite " + movie.title);
+                viewModel.onFavorite(movie, true);
             } else {
                 // TODO: Un-favorite movie
-                toast(DetailsActivity.this, "Un-favorite " + movie.title);
+//                toast(DetailsActivity.this, "Un-favorite " + movie.title);
+                viewModel.onFavorite(movie, false);
             }
             // TODO: Notify change, anyone?
         }

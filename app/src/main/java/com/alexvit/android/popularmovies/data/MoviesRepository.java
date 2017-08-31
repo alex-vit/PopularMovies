@@ -1,7 +1,5 @@
 package com.alexvit.android.popularmovies.data;
 
-import android.util.Log;
-
 import com.alexvit.android.popularmovies.data.models.Movie;
 import com.alexvit.android.popularmovies.data.models.Review;
 import com.alexvit.android.popularmovies.data.models.Video;
@@ -46,13 +44,12 @@ public class MoviesRepository {
         return remoteDb.videosByMovieId(movieId);
     }
 
-    public int updateMovie(Movie movie) {
-        return localDb.update(movie);
+    public void updateMovie(Movie movie) {
+        localDb.update(movie);
     }
 
     private Movie cache(Movie movie) {
         localDb.insert(movie);
-        Log.d("Repo", "caching " + movie.id);
         return movie;
     }
 }
