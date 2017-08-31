@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.alexvit.android.popularmovies.utils.Movies.yearOfMovie;
 import static com.alexvit.android.popularmovies.utils.Toast.toast;
 
 public class DetailsActivity extends AppCompatActivity implements DetailsNavigator {
@@ -160,7 +161,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsNavigat
     }
 
     private void loadText(Movie movie) {
-        mBody.tvYear.setText(movie.releaseDate);
+        mBody.tvYear.setText(yearOfMovie(movie));
         mBody.tvVotes.setText(
                 "Rating: "
                         + new DecimalFormat("#0.0").format(movie.voteAverage)

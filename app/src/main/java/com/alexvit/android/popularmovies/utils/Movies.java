@@ -2,6 +2,8 @@ package com.alexvit.android.popularmovies.utils;
 
 import android.net.Uri;
 
+import com.alexvit.android.popularmovies.data.models.Movie;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,7 +45,10 @@ public class Movies {
             default:
                 throw new UnsupportedOperationException("Unknown video site: " + site);
         }
+    }
 
+    public static String yearOfMovie(Movie movie) {
+        return movie.releaseDate.split("-")[0];
     }
 
     public static final class PosterSize {
