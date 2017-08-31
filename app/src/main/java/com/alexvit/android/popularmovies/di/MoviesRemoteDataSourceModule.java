@@ -28,19 +28,19 @@ public class MoviesRemoteDataSourceModule {
 
     @Provides
     @ApplicationScope
-    public MoviesRemoteDataSource moviesRemoteDataSource(TheMovieDbService service) {
+    MoviesRemoteDataSource moviesRemoteDataSource(TheMovieDbService service) {
         return new MoviesRemoteDataSource(service);
     }
 
     @Provides
     @ApplicationScope
-    public TheMovieDbService theMovieDbService(Retrofit tmdbRetrofit) {
+    TheMovieDbService theMovieDbService(Retrofit tmdbRetrofit) {
         return tmdbRetrofit.create(TheMovieDbService.class);
     }
 
     @Provides
     @ApplicationScope
-    public Retrofit retrofit(OkHttpClient okHttpClient) {
+    Retrofit retrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)
@@ -51,7 +51,7 @@ public class MoviesRemoteDataSourceModule {
 
     @Provides
     @ApplicationScope
-    public OkHttpClient okHttpClient(InsertApiKeyInterceptor insertApiKeyInterceptor, Cache cache) {
+    OkHttpClient okHttpClient(InsertApiKeyInterceptor insertApiKeyInterceptor, Cache cache) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(insertApiKeyInterceptor).cache(cache);
         return builder.build();
@@ -59,27 +59,27 @@ public class MoviesRemoteDataSourceModule {
 
     @Provides
     @ApplicationScope
-    public InsertApiKeyInterceptor insertApiKeyInterceptor(@ApiKey String apiKey) {
+    InsertApiKeyInterceptor insertApiKeyInterceptor(@ApiKey String apiKey) {
         return new InsertApiKeyInterceptor(apiKey);
     }
 
     @Provides
     @ApplicationScope
-    public Cache cache(@CacheFile File cacheFile) {
+    Cache cache(@CacheFile File cacheFile) {
         return new Cache(cacheFile, 10 * 1024 * 1024);
     }
 
     @Provides
     @ApplicationScope
     @CacheFile
-    public File cacheFile(@ApplicationContext Context context) {
+    File cacheFile(@ApplicationContext Context context) {
         return new File(context.getCacheDir(), "okhttp-cache");
     }
 
     @Provides
     @ApplicationScope
     @ApiKey
-    public String apiKey() {
+    String apiKey() {
         return BuildConfig.TMDB_V3_API_KEY;
     }
 }

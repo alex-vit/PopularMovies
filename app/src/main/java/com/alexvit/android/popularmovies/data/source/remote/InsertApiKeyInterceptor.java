@@ -1,5 +1,7 @@
 package com.alexvit.android.popularmovies.data.source.remote;
 
+import android.support.annotation.NonNull;
+
 import java.io.IOException;
 
 import okhttp3.HttpUrl;
@@ -18,7 +20,7 @@ public class InsertApiKeyInterceptor implements Interceptor {
     }
 
     @Override
-    public okhttp3.Response intercept(Chain chain) throws IOException {
+    public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
         Request originalRequest = chain.request();
         HttpUrl originalUrl = originalRequest.url();
 

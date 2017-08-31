@@ -48,7 +48,7 @@ public class MovieListResponse implements Parcelable {
     protected MovieListResponse(Parcel in) {
         page = in.readByte() == 0x00 ? null : in.readInt();
         if (in.readByte() == 0x01) {
-            movies = new ArrayList<Movie>();
+            movies = new ArrayList<>();
             in.readList(movies, Movie.class.getClassLoader());
         } else {
             movies = null;

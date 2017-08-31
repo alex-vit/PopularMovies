@@ -30,8 +30,8 @@
 
     <style name="ImageToggle">
         <item name="android:buttonStyleToggle">@style/Widget.Button.ImageToggle</item>
-        <item name="android:textOn"></item>
-        <item name="android:textOff"></item>
+        <item name="android:textOn" />
+        <item name="android:textOff" />
     </style>
 
     <style name="VideoButton" parent="Base.TextAppearance.AppCompat.Button">

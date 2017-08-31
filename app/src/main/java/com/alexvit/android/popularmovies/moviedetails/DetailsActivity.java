@@ -55,7 +55,6 @@ public class DetailsActivity extends BaseActivity<DetailsViewModel>
     private Body mBody;
 
     private MovieExtrasAdapter mExtrasAdapter;
-    private long movieId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +69,7 @@ public class DetailsActivity extends BaseActivity<DetailsViewModel>
         ButterKnife.bind(mBody, incBody);
 
 
-        movieId = getMovieId();
+        long movieId = getMovieId();
         if (movieId == -1) {
             Log.e(TAG, "No movie ID was passed.");
             return;
@@ -168,7 +167,7 @@ public class DetailsActivity extends BaseActivity<DetailsViewModel>
 
     private class FavoriteToggleListener implements CompoundButton.OnCheckedChangeListener {
 
-        private Movie movie;
+        private final Movie movie;
 
         FavoriteToggleListener(Movie movie) {
             this.movie = movie;

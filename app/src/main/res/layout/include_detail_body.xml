@@ -26,7 +26,6 @@
             style="@style/TextAppearance.AppCompat.Display1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_small"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_small"
             app:layout_constraintLeft_toRightOf="@+id/iv_poster"
@@ -75,7 +74,6 @@
             android:layout_width="@dimen/toggle_size"
             android:layout_height="@dimen/toggle_size"
             android:layout_marginEnd="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_small"
             android:background="@drawable/image_toggle_background_favorite"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_year" />
