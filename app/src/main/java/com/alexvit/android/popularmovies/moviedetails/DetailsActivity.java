@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -14,13 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.alexvit.android.popularmovies.App;
 import com.alexvit.android.popularmovies.R;
+import com.alexvit.android.popularmovies.base.BaseActivity;
 import com.alexvit.android.popularmovies.data.models.Movie;
 import com.alexvit.android.popularmovies.data.models.Review;
 import com.alexvit.android.popularmovies.data.models.Video;
-import com.alexvit.android.popularmovies.di.ActivityModule;
-import com.alexvit.android.popularmovies.di.DaggerActivityComponent;
 import com.alexvit.android.popularmovies.utils.Analytics;
 import com.alexvit.android.popularmovies.utils.Movies;
 import com.bumptech.glide.Glide;
@@ -39,7 +36,8 @@ import butterknife.ButterKnife;
 import static com.alexvit.android.popularmovies.utils.Movies.yearOfMovie;
 import static com.alexvit.android.popularmovies.utils.Toast.toast;
 
-public class DetailsActivity extends AppCompatActivity implements DetailsNavigator {
+public class DetailsActivity extends BaseActivity<DetailsViewModel>
+        implements DetailsNavigator {
 
     public static final String TAG_MOVIE_ID = "TAG_MOVIE_ID";
 
@@ -71,11 +69,6 @@ public class DetailsActivity extends AppCompatActivity implements DetailsNavigat
         mBody = new Body();
         ButterKnife.bind(mBody, incBody);
 
-        DaggerActivityComponent.builder()
-                .activityModule(new ActivityModule(this))
-                .appComponent(App.get(this).component())
-                .build()
-                .inject(this);
 
         movieId = getMovieId();
         if (movieId == -1) {
@@ -85,15 +78,15 @@ public class DetailsActivity extends AppCompatActivity implements DetailsNavigat
 
         mExtrasAdapter = new MovieExtrasAdapter(mBody.reviewList, mBody.videoList);
 
+        getComponent().inject(this);
+
         viewModel.setNavigator(this);
         viewModel.onMovieId(movieId);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        viewModel.onDestroy();
+    protected DetailsViewModel getViewModel() {
+        return viewModel;
     }
 
     @Override

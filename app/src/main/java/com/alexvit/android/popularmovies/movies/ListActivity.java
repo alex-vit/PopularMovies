@@ -9,12 +9,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.alexvit.android.popularmovies.App;
 import com.alexvit.android.popularmovies.R;
 import com.alexvit.android.popularmovies.base.BaseActivity;
 import com.alexvit.android.popularmovies.data.models.Movie;
-import com.alexvit.android.popularmovies.di.ActivityModule;
-import com.alexvit.android.popularmovies.di.DaggerActivityComponent;
 import com.alexvit.android.popularmovies.moviedetails.DetailsActivity;
 import com.alexvit.android.popularmovies.settings.SettingsActivity;
 import com.alexvit.android.popularmovies.utils.Analytics;
@@ -53,11 +50,8 @@ public class ListActivity extends BaseActivity<ListViewModel>
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        DaggerActivityComponent.builder()
-                .activityModule(new ActivityModule(this))
-                .appComponent(App.get(this).component())
-                .build()
-                .inject(this);
+        getComponent().inject(this);
+
         viewModel.setNavigator(this);
 
         mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
@@ -75,7 +69,6 @@ public class ListActivity extends BaseActivity<ListViewModel>
             // Always reload favorites, so if you open a favorite, unfavorite it and go back, it disappears
             viewModel.onCategoryChanged(mCategory);
         }
-
     }
 
     @Override
@@ -83,7 +76,11 @@ public class ListActivity extends BaseActivity<ListViewModel>
         super.onDestroy();
 
         mSharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
-        viewModel.onDestroy();
+    }
+
+    @Override
+    protected ListViewModel getViewModel() {
+        return viewModel;
     }
 
     @Override
