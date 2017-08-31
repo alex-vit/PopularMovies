@@ -88,6 +88,13 @@ public class DetailsActivity extends AppCompatActivity implements DetailsNavigat
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        viewModel.onDestroy();
+    }
+
+    @Override
     public void onMovieLoaded(Movie movie) {
         initToolbar(movie.title);
         loadImages(movie);
