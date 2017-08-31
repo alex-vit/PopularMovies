@@ -4,32 +4,61 @@ package com.alexvit.android.popularmovies.data.models;
  * Created by Aleksandrs Vitjukovs on 7/19/2017.
  */
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "videos",
+        indices = {@Index("movie_id")},
+        foreignKeys = @ForeignKey(
+                entity = Movie.class,
+                parentColumns = "id",
+                childColumns = "movie_id",
+                onDelete = CASCADE,
+                onUpdate = CASCADE
+        ))
 public class Video {
+
+    @Expose
     @SerializedName("id")
-    @Expose
     public String id;
+
+    @ColumnInfo(name = "movie_id")
+    public Long movieId;
+
+    @Expose
     @SerializedName("iso_639_1")
-    @Expose
+    @ColumnInfo(name = "iso_639_1")
     public String iso6391;
+
+    @Expose
     @SerializedName("iso_3166_1")
-    @Expose
+    @ColumnInfo(name = "iso_3166_1")
     public String iso31661;
+
+    @Expose
     @SerializedName("key")
-    @Expose
     public String key;
+
+    @Expose
     @SerializedName("name")
-    @Expose
     public String name;
+
+    @Expose
     @SerializedName("site")
-    @Expose
     public String site;
+
+    @Expose
     @SerializedName("size")
-    @Expose
     public Integer size;
-    @SerializedName("type")
+
     @Expose
+    @SerializedName("type")
     public String type;
 }
