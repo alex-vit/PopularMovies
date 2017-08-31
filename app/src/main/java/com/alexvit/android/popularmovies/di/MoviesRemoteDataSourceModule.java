@@ -6,6 +6,7 @@ import com.alexvit.android.popularmovies.BuildConfig;
 import com.alexvit.android.popularmovies.data.source.remote.InsertApiKeyInterceptor;
 import com.alexvit.android.popularmovies.data.source.remote.MoviesRemoteDataSource;
 import com.alexvit.android.popularmovies.data.source.remote.TheMovieDbService;
+import com.alexvit.android.popularmovies.utils.Constants;
 
 import java.io.File;
 
@@ -24,8 +25,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module(includes = {ContextModule.class})
 public class MoviesRemoteDataSourceModule {
 
-    private static final String BASE_URL = "https://api.themoviedb.org/3/";
-
     @Provides
     @ApplicationScope
     MoviesRemoteDataSource moviesRemoteDataSource(TheMovieDbService service) {
@@ -42,7 +41,7 @@ public class MoviesRemoteDataSourceModule {
     @ApplicationScope
     Retrofit retrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(Constants.API_BASE_URL)
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
