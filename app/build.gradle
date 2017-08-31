@@ -76,6 +76,11 @@ dependencies {
     compile "com.google.dagger:dagger:$rootProject.dagger2Version"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
 
+    // Room
+    compile "android.arch.persistence.room:runtime:$rootProject.roomVersion"
+    compile "android.arch.persistence.room:rxjava2:$rootProject.roomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
+
     testCompile 'junit:junit:4.12'
 }
 

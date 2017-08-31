@@ -39,6 +39,7 @@ ext {
     dagger2Version = '2.11'
     firebaseVersion = '11.0.2'
     retrofitVersion = '2.3.0'
+    roomVersion = '1.0.0-alpha9'
     rxAndroidVersion = '2.0.1'
     rxjavaVersion = '2.1.3'
 }
