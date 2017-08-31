@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -127,6 +128,11 @@ public class ListActivity extends BaseActivity<ListViewModel>
         setTitle(title);
 
         mAdapter.setMovies(movies);
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+        Log.e(TAG, throwable.getMessage());
     }
 
     private void initRecyclerView() {

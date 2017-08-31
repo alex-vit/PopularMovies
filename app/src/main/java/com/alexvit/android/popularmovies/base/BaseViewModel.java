@@ -1,6 +1,11 @@
 package com.alexvit.android.popularmovies.base;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -9,13 +14,10 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public abstract class BaseViewModel<N> {
 
+    private final CompositeDisposable compositeSub = new CompositeDisposable();
     private N navigator;
 
-    private final CompositeDisposable compositeSub = new CompositeDisposable();
-
-    protected CompositeDisposable getCompositeSub() {
-        return compositeSub;
-    }
+    public abstract void onViewInitialized();
 
     protected N getNavigator() {
         return navigator;
@@ -25,7 +27,17 @@ public abstract class BaseViewModel<N> {
         this.navigator = navigator;
     }
 
-    public abstract void onViewInitialized();
+    protected <T> void subscribe(Observable<T> observable,
+                                 Consumer<? super T> onNext,
+                                 Consumer<? super Throwable> onError) {
+
+        Disposable subscription = observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(onNext, onError);
+
+        compositeSub.add(subscription);
+    }
 
     public void onDestroy() {
         compositeSub.clear();

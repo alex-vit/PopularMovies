@@ -112,6 +112,11 @@ public class DetailsActivity extends AppCompatActivity implements DetailsNavigat
         mExtrasAdapter.setVideos(videos);
     }
 
+    @Override
+    public void onError(Throwable throwable) {
+        Log.e(TAG, throwable.getMessage());
+    }
+
     private long getMovieId() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
