@@ -13,6 +13,9 @@ import java.util.List;
 
 public class Movies {
 
+    private Movies() {
+    }
+
     @SuppressWarnings("unused")
     private static final String TAG = Movies.class.getSimpleName();
 

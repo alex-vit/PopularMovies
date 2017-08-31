@@ -11,6 +11,10 @@ import com.google.firebase.analytics.FirebaseAnalytics;
  */
 
 public class Analytics {
+
+    private Analytics() {
+    }
+
     public static void logCategoryView(Context context, String category) {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, category);

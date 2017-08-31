@@ -13,6 +13,9 @@ import java.util.Arrays;
 
 public class Prefs {
 
+    private Prefs() {
+    }
+
     public static String getCategory(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(
                 context.getString(R.string.pref_category_key),
