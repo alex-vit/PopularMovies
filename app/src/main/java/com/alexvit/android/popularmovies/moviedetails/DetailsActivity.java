@@ -21,6 +21,7 @@ import com.alexvit.android.popularmovies.data.models.Review;
 import com.alexvit.android.popularmovies.data.models.Video;
 import com.alexvit.android.popularmovies.di.ActivityModule;
 import com.alexvit.android.popularmovies.di.DaggerActivityComponent;
+import com.alexvit.android.popularmovies.utils.Analytics;
 import com.alexvit.android.popularmovies.utils.Movies;
 import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
@@ -101,6 +102,8 @@ public class DetailsActivity extends AppCompatActivity implements DetailsNavigat
         loadImages(movie);
         loadText(movie);
         mBody.toggleFavorite.setOnCheckedChangeListener(new FavoriteToggleListener(movie));
+
+        Analytics.logMovieView(this, movie);
     }
 
     @Override
@@ -168,26 +171,6 @@ public class DetailsActivity extends AppCompatActivity implements DetailsNavigat
                         + " (" + movie.voteCount.toString() + " votes)"
         );
         mBody.tvOverview.setText(movie.overview);
-    }
-
-    private void loadData() {
-//        Disposable reviewsSub = repository.reviewsByMovieId(String.valueOf(mMovie.id))
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(
-//                        mExtrasAdapter::setReviews,
-//                        err -> toast(this, err.getMessage())
-//                );
-//        compositeSub.add(reviewsSub);
-//
-//        Disposable videosSub = repository.videosByMovieId(String.valueOf(mMovie.id))
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(
-//                        mExtrasAdapter::setVideos,
-//                        err -> toast(this, err.getMessage())
-//                );
-//        compositeSub.add(videosSub);
     }
 
     private class FavoriteToggleListener implements CompoundButton.OnCheckedChangeListener {

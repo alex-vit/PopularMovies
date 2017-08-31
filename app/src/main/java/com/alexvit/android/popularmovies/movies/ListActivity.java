@@ -17,6 +17,7 @@ import com.alexvit.android.popularmovies.di.ActivityModule;
 import com.alexvit.android.popularmovies.di.DaggerActivityComponent;
 import com.alexvit.android.popularmovies.moviedetails.DetailsActivity;
 import com.alexvit.android.popularmovies.settings.SettingsActivity;
+import com.alexvit.android.popularmovies.utils.Analytics;
 import com.alexvit.android.popularmovies.utils.Prefs;
 
 import java.util.List;
@@ -122,12 +123,14 @@ public class ListActivity extends BaseActivity<ListViewModel>
 
     @Override
     public void onMoviesLoaded(List<Movie> movies) {
-        mAdapter.deleteMovies();
 
         CharSequence title = Prefs.getCategoryTitle(this, mCategory);
         setTitle(title);
 
+        mAdapter.deleteMovies();
         mAdapter.setMovies(movies);
+
+        Analytics.logCategoryView(this, mCategory);
     }
 
     @Override
