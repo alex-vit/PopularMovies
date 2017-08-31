@@ -15,16 +15,9 @@ public class ListViewModel extends BaseViewModel<ListNavigator> {
 
     private final MoviesRepository moviesRepository;
 
-    private ListNavigator navigator;
-
     public ListViewModel(MoviesRepository moviesRepository) {
         super();
         this.moviesRepository = moviesRepository;
-    }
-
-    @Override
-    public void setNavigator(ListNavigator navigator) {
-        this.navigator = navigator;
     }
 
     @Override
@@ -36,7 +29,7 @@ public class ListViewModel extends BaseViewModel<ListNavigator> {
         Disposable sub = moviesRepository.moviesByCategory(category)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(navigator::onMoviesLoaded);
+                .subscribe(getNavigator()::onMoviesLoaded);
         getCompositeSub().add(sub);
     }
 }

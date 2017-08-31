@@ -15,16 +15,9 @@ public class DetailsViewModel extends BaseViewModel<DetailsNavigator> {
 
     private final MoviesRepository moviesRepository;
 
-    private DetailsNavigator navigator;
-
     public DetailsViewModel(MoviesRepository moviesRepository) {
         super();
         this.moviesRepository = moviesRepository;
-    }
-
-    @Override
-    public void setNavigator(DetailsNavigator navigator) {
-        this.navigator = navigator;
     }
 
     @Override
@@ -36,19 +29,19 @@ public class DetailsViewModel extends BaseViewModel<DetailsNavigator> {
         Disposable moviesSub = moviesRepository.movieById(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(navigator::onMovieLoaded);
+                .subscribe(getNavigator()::onMovieLoaded);
         getCompositeSub().add(moviesSub);
 
         Disposable reviewsSub = moviesRepository.reviewsByMovieId(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(navigator::onReviewsLoaded);
+                .subscribe(getNavigator()::onReviewsLoaded);
         getCompositeSub().add(reviewsSub);
 
         Disposable videosSub = moviesRepository.videosByMovieId(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(navigator::onVideosLoaded);
+                .subscribe(getNavigator()::onVideosLoaded);
         getCompositeSub().add(videosSub);
     }
 }
