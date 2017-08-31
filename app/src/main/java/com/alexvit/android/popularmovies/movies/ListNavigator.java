@@ -9,5 +9,6 @@ import java.util.List;
  */
 
 public interface ListNavigator {
-    void displayMovies(List<Movie> movies);
+
+    void onMoviesLoaded(List<Movie> movies);
 }

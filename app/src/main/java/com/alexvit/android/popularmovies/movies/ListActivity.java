@@ -120,7 +120,7 @@ public class ListActivity extends BaseActivity<ListViewModel>
     }
 
     @Override
-    public void displayMovies(List<Movie> movies) {
+    public void onMoviesLoaded(List<Movie> movies) {
         mAdapter.deleteMovies();
 
         CharSequence title = Prefs.getCategoryTitle(this, mCategory);

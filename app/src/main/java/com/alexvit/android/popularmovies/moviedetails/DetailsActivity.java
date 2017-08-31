@@ -17,6 +17,8 @@ import android.widget.ToggleButton;
 import com.alexvit.android.popularmovies.App;
 import com.alexvit.android.popularmovies.R;
 import com.alexvit.android.popularmovies.data.models.Movie;
+import com.alexvit.android.popularmovies.data.models.Review;
+import com.alexvit.android.popularmovies.data.models.Video;
 import com.alexvit.android.popularmovies.di.ActivityModule;
 import com.alexvit.android.popularmovies.di.DaggerActivityComponent;
 import com.alexvit.android.popularmovies.utils.Movies;
@@ -26,6 +28,7 @@ import com.google.android.flexbox.FlexboxLayout;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -85,11 +88,21 @@ public class DetailsActivity extends AppCompatActivity implements DetailsNavigat
     }
 
     @Override
-    public void displayMovie(Movie movie) {
+    public void onMovieLoaded(Movie movie) {
         initToolbar(movie.title);
         loadImages(movie);
         loadText(movie);
         mBody.toggleFavorite.setOnCheckedChangeListener(new FavoriteToggleListener(movie));
+    }
+
+    @Override
+    public void onReviewsLoaded(List<Review> reviews) {
+        mExtrasAdapter.setReviews(reviews);
+    }
+
+    @Override
+    public void onVideosLoaded(List<Video> videos) {
+        mExtrasAdapter.setVideos(videos);
     }
 
     private long getMovieId() {

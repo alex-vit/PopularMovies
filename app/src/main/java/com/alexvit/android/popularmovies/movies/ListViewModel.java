@@ -36,7 +36,7 @@ public class ListViewModel extends BaseViewModel<ListNavigator> {
         Disposable sub = moviesRepository.moviesByCategory(category)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(navigator::displayMovies);
+                .subscribe(navigator::onMoviesLoaded);
         getCompositeSub().add(sub);
     }
 }

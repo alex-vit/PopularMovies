@@ -1,6 +1,10 @@
 package com.alexvit.android.popularmovies.moviedetails;
 
 import com.alexvit.android.popularmovies.data.models.Movie;
+import com.alexvit.android.popularmovies.data.models.Review;
+import com.alexvit.android.popularmovies.data.models.Video;
+
+import java.util.List;
 
 /**
  * Created by Aleksandrs Vitjukovs on 8/31/2017.
@@ -8,5 +12,9 @@ import com.alexvit.android.popularmovies.data.models.Movie;
 
 interface DetailsNavigator {
 
-    void displayMovie(Movie movie);
+    void onMovieLoaded(Movie movie);
+
+    void onReviewsLoaded(List<Review> reviews);
+
+    void onVideosLoaded(List<Video> videos);
 }

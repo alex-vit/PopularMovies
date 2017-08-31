@@ -33,10 +33,22 @@ public class DetailsViewModel extends BaseViewModel<DetailsNavigator> {
     }
 
     void onMovieId(long movieId) {
-        Disposable sub = moviesRepository.movieById(movieId)
+        Disposable moviesSub = moviesRepository.movieById(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(navigator::displayMovie);
-        getCompositeSub().add(sub);
+                .subscribe(navigator::onMovieLoaded);
+        getCompositeSub().add(moviesSub);
+
+        Disposable reviewsSub = moviesRepository.reviewsByMovieId(movieId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(navigator::onReviewsLoaded);
+        getCompositeSub().add(reviewsSub);
+
+        Disposable videosSub = moviesRepository.videosByMovieId(movieId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(navigator::onVideosLoaded);
+        getCompositeSub().add(videosSub);
     }
 }
