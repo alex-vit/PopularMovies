@@ -9,6 +9,7 @@ import com.alexvit.android.popularmovies.data.models.Movie;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
@@ -22,6 +23,9 @@ public interface MovieDao {
 
     @Query("SELECT * FROM movies WHERE id = :id")
     Single<Movie> movieById(long id);
+
+    @Query("SELECT * FROM movies WHERE favorite = 1")
+    Flowable<List<Movie>> favoriteMovies();
 
 //    @Query("SELECT * FROM movies WHERE id IN (:listOfIds)")
 //    public List<Movie> moviesByIdList(List<Long> listOfIds);

@@ -32,6 +32,10 @@ public abstract class BaseViewModel<N> {
         this.navigator = navigator;
     }
 
+    public final CompositeDisposable getCompositeSub() {
+        return compositeSub;
+    }
+
     protected final <T> void subscribe(Observable<T> observable,
                                        Consumer<? super T> onNext,
                                        Consumer<? super Throwable> onError) {

@@ -22,7 +22,7 @@ public class ListViewModel extends BaseViewModel<ListNavigator> {
     }
 
     void onCategoryChanged(String category) {
-
+        getCompositeSub().clear(); // because otherwise "favorites" flowable survives
         subscribe(moviesRepository.moviesByCategory(category),
                 getNavigator()::onMoviesLoaded,
                 getNavigator()::onError);

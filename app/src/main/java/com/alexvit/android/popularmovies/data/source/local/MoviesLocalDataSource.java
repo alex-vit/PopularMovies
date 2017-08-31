@@ -2,6 +2,9 @@ package com.alexvit.android.popularmovies.data.source.local;
 
 import com.alexvit.android.popularmovies.data.models.Movie;
 
+import java.util.List;
+
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -20,6 +23,10 @@ public class MoviesLocalDataSource {
 
     public Single<Movie> movieById(long id) {
         return db.movieDao().movieById(id);
+    }
+
+    public Flowable<List<Movie>> favoriteMovies() {
+        return db.movieDao().favoriteMovies();
     }
 
     public long insert(Movie movie) {
