@@ -15,16 +15,20 @@ public class ReviewListResponse {
 
     @SerializedName("id")
     @Expose
-    public Integer id;
+    public Long id;
+
     @SerializedName("page")
     @Expose
     public Integer page;
+
     @SerializedName("results")
     @Expose
     public List<Review> reviews = null;
+
     @SerializedName("total_pages")
     @Expose
     public Integer totalPages;
+
     @SerializedName("total_results")
     @Expose
     public Integer totalResults;

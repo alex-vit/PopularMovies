@@ -14,7 +14,8 @@ public class VideoListResponse {
 
     @SerializedName("id")
     @Expose
-    public Integer id;
+    public Long id;
+
     @SerializedName("results")
     @Expose
     public List<Video> videos = null;

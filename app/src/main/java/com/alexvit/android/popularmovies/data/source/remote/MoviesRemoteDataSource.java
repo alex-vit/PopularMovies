@@ -29,10 +29,23 @@ public final class MoviesRemoteDataSource {
     }
 
     public Observable<List<Review>> reviewsByMovieId(long movieId) {
-        return service.reviewsByMovieId(movieId).map(r -> r.reviews);
+        return service.reviewsByMovieId(movieId)
+                .map(resp -> {
+                    final List<Review> reviews = resp.reviews;
+                    for (Review r : reviews) {
+                        r.movieId = resp.id;
+                    }
+                    return reviews;
+                });
     }
 
     public Observable<List<Video>> videosByMovieId(long movieId) {
-        return service.videosByMovieId(movieId).map(r -> r.videos);
+        return service.videosByMovieId(movieId).map(resp -> {
+            final List<Video> videos = resp.videos;
+            for (Video v : videos) {
+                v.movieId = resp.id;
+            }
+            return videos;
+        });
     }
 }
