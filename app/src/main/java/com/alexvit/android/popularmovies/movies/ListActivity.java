@@ -104,9 +104,7 @@ public class ListActivity extends BaseActivity<ListViewModel>
 
     @Override
     public void onMovieClicked(Movie movie) {
-        Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra("movie", movie);
-        startActivity(intent);
+        launchDetails(movie.id);
     }
 
     @Override
@@ -139,5 +137,11 @@ public class ListActivity extends BaseActivity<ListViewModel>
         mMovieGridRecyclerView.setAdapter(mAdapter);
 
         mMovieGridRecyclerView.setHasFixedSize(true);
+    }
+
+    private void launchDetails(long movieId) {
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra(DetailsActivity.TAG_MOVIE_ID, movieId);
+        startActivity(intent);
     }
 }

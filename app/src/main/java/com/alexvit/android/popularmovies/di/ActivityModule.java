@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 
 import com.alexvit.android.popularmovies.data.MoviesRepository;
+import com.alexvit.android.popularmovies.moviedetails.DetailsViewModel;
 import com.alexvit.android.popularmovies.movies.ListViewModel;
 
 import dagger.Module;
@@ -28,6 +29,12 @@ public class ActivityModule {
     @ActivityScope
     public ListViewModel listViewModel(MoviesRepository moviesRepository) {
         return new ListViewModel(moviesRepository);
+    }
+
+    @Provides
+    @ActivityScope
+    public DetailsViewModel detailsViewModel(MoviesRepository moviesRepository) {
+        return new DetailsViewModel(moviesRepository);
     }
 
     @Provides

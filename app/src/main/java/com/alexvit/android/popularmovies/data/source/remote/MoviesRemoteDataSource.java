@@ -24,12 +24,15 @@ public final class MoviesRemoteDataSource {
         return service.moviesByCategory(category).map(r -> r.movies);
     }
 
-    public Observable<List<Review>> reviewsByMovieId(String movieId) {
+    public Observable<Movie> movieById(long movieId) {
+        return service.movieById(movieId);
+    }
+
+    public Observable<List<Review>> reviewsByMovieId(long movieId) {
         return service.reviewsByMovieId(movieId).map(r -> r.reviews);
     }
 
-    public Observable<List<Video>> videosByMovieId(String movieId) {
+    public Observable<List<Video>> videosByMovieId(long movieId) {
         return service.videosByMovieId(movieId).map(r -> r.videos);
     }
-
 }

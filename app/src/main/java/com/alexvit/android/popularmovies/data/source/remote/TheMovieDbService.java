@@ -1,5 +1,6 @@
 package com.alexvit.android.popularmovies.data.source.remote;
 
+import com.alexvit.android.popularmovies.data.models.Movie;
 import com.alexvit.android.popularmovies.data.models.api.MovieListResponse;
 import com.alexvit.android.popularmovies.data.models.api.ReviewListResponse;
 import com.alexvit.android.popularmovies.data.models.api.VideoListResponse;
@@ -17,10 +18,13 @@ public interface TheMovieDbService {
     @GET("movie/{category}")
     Observable<MovieListResponse> moviesByCategory(@Path("category") String category);
 
+    @GET("movie/{movieId}")
+    Observable<Movie> movieById(@Path("movieId") long movieId);
+
     @GET("movie/{movieId}/reviews")
-    Observable<ReviewListResponse> reviewsByMovieId(@Path("movieId") String movieId);
+    Observable<ReviewListResponse> reviewsByMovieId(@Path("movieId") long movieId);
 
     @GET("movie/{movieId}/videos")
-    Observable<VideoListResponse> videosByMovieId(@Path("movieId") String movieId);
+    Observable<VideoListResponse> videosByMovieId(@Path("movieId") long movieId);
 
 }

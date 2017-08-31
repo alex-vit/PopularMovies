@@ -13,11 +13,11 @@ public abstract class BaseViewModel<N> {
 
     private final CompositeDisposable compositeSub = new CompositeDisposable();
 
-    public CompositeDisposable getCompositeSub() {
+    protected CompositeDisposable getCompositeSub() {
         return compositeSub;
     }
 
-    public N getNavigator() {
+    protected N getNavigator() {
         return navigator;
     }
 

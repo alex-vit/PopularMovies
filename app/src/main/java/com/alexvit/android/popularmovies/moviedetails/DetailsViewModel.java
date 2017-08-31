@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies.movies;
+package com.alexvit.android.popularmovies.moviedetails;
 
 import com.alexvit.android.popularmovies.base.BaseViewModel;
 import com.alexvit.android.popularmovies.data.MoviesRepository;
@@ -8,22 +8,22 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by Aleksandrs Vitjukovs on 8/28/2017.
+ * Created by Aleksandrs Vitjukovs on 8/31/2017.
  */
 
-public class ListViewModel extends BaseViewModel<ListNavigator> {
+public class DetailsViewModel extends BaseViewModel<DetailsNavigator> {
 
     private final MoviesRepository moviesRepository;
 
-    private ListNavigator navigator;
+    private DetailsNavigator navigator;
 
-    public ListViewModel(MoviesRepository moviesRepository) {
+    public DetailsViewModel(MoviesRepository moviesRepository) {
         super();
         this.moviesRepository = moviesRepository;
     }
 
     @Override
-    public void setNavigator(ListNavigator navigator) {
+    public void setNavigator(DetailsNavigator navigator) {
         this.navigator = navigator;
     }
 
@@ -32,11 +32,11 @@ public class ListViewModel extends BaseViewModel<ListNavigator> {
 
     }
 
-    public void onCategoryChanged(String category) {
-        Disposable sub = moviesRepository.moviesByCategory(category)
+    void onMovieId(long movieId) {
+        Disposable sub = moviesRepository.movieById(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(navigator::displayMovies);
+                .subscribe(navigator::displayMovie);
         getCompositeSub().add(sub);
     }
 }

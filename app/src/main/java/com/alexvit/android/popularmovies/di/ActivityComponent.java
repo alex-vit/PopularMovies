@@ -1,5 +1,6 @@
 package com.alexvit.android.popularmovies.di;
 
+import com.alexvit.android.popularmovies.moviedetails.DetailsActivity;
 import com.alexvit.android.popularmovies.movies.ListActivity;
 
 import dagger.Component;
@@ -13,4 +14,6 @@ import dagger.Component;
 public interface ActivityComponent {
 
     void inject(ListActivity listActivity);
+
+    void inject(DetailsActivity detailsActivity);
 }

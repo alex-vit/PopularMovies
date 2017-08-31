@@ -16,8 +16,9 @@ import android.widget.ToggleButton;
 
 import com.alexvit.android.popularmovies.App;
 import com.alexvit.android.popularmovies.R;
-import com.alexvit.android.popularmovies.data.MoviesRepository;
 import com.alexvit.android.popularmovies.data.models.Movie;
+import com.alexvit.android.popularmovies.di.ActivityModule;
+import com.alexvit.android.popularmovies.di.DaggerActivityComponent;
 import com.alexvit.android.popularmovies.utils.Movies;
 import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
@@ -26,16 +27,16 @@ import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import java.text.DecimalFormat;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.alexvit.android.popularmovies.utils.Toast.toast;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements DetailsNavigator {
+
+    public static final String TAG_MOVIE_ID = "TAG_MOVIE_ID";
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
 
@@ -44,57 +45,59 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.body)
     View incBody;
 
+    @Inject
+    DetailsViewModel viewModel;
+
     private AppBar mAppBar;
     private Body mBody;
 
     private MovieExtrasAdapter mExtrasAdapter;
-    private Movie mMovie;
-    private MoviesRepository repository;
-    private CompositeDisposable compositeSub = new CompositeDisposable();
+    private long movieId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        mMovie = getMovie();
-        if (mMovie == null) {
-            Log.e(TAG, "No movie was passed.");
-            return;
-        }
-
         ButterKnife.bind(this);
-        
+
         mAppBar = new AppBar();
         ButterKnife.bind(mAppBar, incAppBar);
         mBody = new Body();
         ButterKnife.bind(mBody, incBody);
 
-        initToolbar(mMovie.title);
-        loadImages(mMovie);
-        loadText(mMovie);
+        DaggerActivityComponent.builder()
+                .activityModule(new ActivityModule(this))
+                .appComponent(App.get(this).component())
+                .build()
+                .inject(this);
 
-        mBody.toggleFavorite.setOnCheckedChangeListener(new FavoriteToggleListener(mMovie));
+        movieId = getMovieId();
+        if (movieId == -1) {
+            Log.e(TAG, "No movie ID was passed.");
+            return;
+        }
 
         mExtrasAdapter = new MovieExtrasAdapter(mBody.reviewList, mBody.videoList);
-        repository = App.get(this).getMoviesRepository();
-        loadData();
+
+        viewModel.setNavigator(this);
+        viewModel.onMovieId(movieId);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        compositeSub.clear();
-        compositeSub.dispose();
+    public void displayMovie(Movie movie) {
+        initToolbar(movie.title);
+        loadImages(movie);
+        loadText(movie);
+        mBody.toggleFavorite.setOnCheckedChangeListener(new FavoriteToggleListener(movie));
     }
 
-    private Movie getMovie() {
+    private long getMovieId() {
         Bundle extras = getIntent().getExtras();
-        if (extras == null) {
-            return null;
-        } else {
-            return getIntent().getParcelableExtra("movie");
+        if (extras != null) {
+            return getIntent().getLongExtra(TAG_MOVIE_ID, -1);
         }
+        return -1;
     }
 
     private void initToolbar(String title) {
@@ -132,7 +135,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void loadText(Movie movie) {
-        mBody.tvYear.setText(movie.year());
+        mBody.tvYear.setText(movie.releaseDate);
         mBody.tvVotes.setText(
                 "Rating: "
                         + new DecimalFormat("#0.0").format(movie.voteAverage)
@@ -142,23 +145,23 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        Disposable reviewsSub = repository.reviewsByMovieId(String.valueOf(mMovie.id))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        mExtrasAdapter::setReviews,
-                        err -> toast(this, err.getMessage())
-                );
-        compositeSub.add(reviewsSub);
-
-        Disposable videosSub = repository.videosByMovieId(String.valueOf(mMovie.id))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        mExtrasAdapter::setVideos,
-                        err -> toast(this, err.getMessage())
-                );
-        compositeSub.add(videosSub);
+//        Disposable reviewsSub = repository.reviewsByMovieId(String.valueOf(mMovie.id))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(
+//                        mExtrasAdapter::setReviews,
+//                        err -> toast(this, err.getMessage())
+//                );
+//        compositeSub.add(reviewsSub);
+//
+//        Disposable videosSub = repository.videosByMovieId(String.valueOf(mMovie.id))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(
+//                        mExtrasAdapter::setVideos,
+//                        err -> toast(this, err.getMessage())
+//                );
+//        compositeSub.add(videosSub);
     }
 
     private class FavoriteToggleListener implements CompoundButton.OnCheckedChangeListener {

@@ -25,11 +25,15 @@ public class MoviesRepository {
         return remoteDataSource.moviesByCategory(category);
     }
 
-    public Observable<List<Review>> reviewsByMovieId(String movieId) {
+    public Observable<Movie> movieById(long movieId) {
+        return remoteDataSource.movieById(movieId);
+    }
+
+    public Observable<List<Review>> reviewsByMovieId(long movieId) {
         return remoteDataSource.reviewsByMovieId(movieId);
     }
 
-    public Observable<List<Video>> videosByMovieId(String movieId) {
+    public Observable<List<Video>> videosByMovieId(long movieId) {
         return remoteDataSource.videosByMovieId(movieId);
     }
 }
