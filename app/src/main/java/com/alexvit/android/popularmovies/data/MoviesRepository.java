@@ -35,7 +35,9 @@ public class MoviesRepository {
 
         remoteDb.moviesByPopularity()
                 .subscribeOn(Schedulers.io())
-                .subscribe(localDb::insert);
+                .subscribe(localDb::insert,
+                        __ -> {
+                        });
 
         return localDb.moviesByPopularity()
                 .toObservable();
@@ -45,7 +47,9 @@ public class MoviesRepository {
 
         remoteDb.moviesByRating()
                 .subscribeOn(Schedulers.io())
-                .subscribe(localDb::insert);
+                .subscribe(localDb::insert,
+                        __ -> {
+                        });
 
         return localDb.moviesByRating()
                 .toObservable();
