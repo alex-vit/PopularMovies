@@ -27,6 +27,7 @@ public class MoviesLocalDataSourceModule {
     @ApplicationScope
     MoviesDatabase moviesDatabase(@ApplicationContext Context context) {
         return Room.databaseBuilder(context, MoviesDatabase.class, Constants.DATABASE_FILE_NAME)
+                .fallbackToDestructiveMigration()
                 .build();
     }
 }

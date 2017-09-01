@@ -12,7 +12,7 @@ import com.alexvit.android.popularmovies.data.source.local.dao.MovieDao;
  * Created by Aleksandrs Vitjukovs on 8/31/2017.
  */
 
-@Database(entities = {Movie.class, Review.class, Video.class}, version = 1)
+@Database(entities = {Movie.class, Review.class, Video.class}, version = 2)
 public abstract class MoviesDatabase extends RoomDatabase {
 
     public abstract MovieDao movieDao();

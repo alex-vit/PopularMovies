@@ -3,6 +3,7 @@ package com.alexvit.android.popularmovies.data.models;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
@@ -14,7 +15,8 @@ import java.util.List;
  * Created by Aleksandrs Vitjukovs on 8/31/2017.
  */
 
-@Entity(tableName = "movies")
+@Entity(tableName = "movies",
+        indices = {@Index("popularity"), @Index("vote_average")})
 public class Movie {
 
     @Expose

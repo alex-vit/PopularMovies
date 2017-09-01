@@ -25,7 +25,13 @@ public interface MovieDao {
     Single<Movie> movieById(long id);
 
     @Query("SELECT * FROM movies WHERE favorite = 1")
-    Flowable<List<Movie>> favoriteMovies();
+    Flowable<List<Movie>> moviesByFavorite();
+
+    @Query("SELECT * FROM movies ORDER BY popularity DESC LIMIT 20")
+    Flowable<List<Movie>> moviesByPopularity();
+
+    @Query("SELECT * FROM movies ORDER BY vote_average DESC LIMIT 20")
+    Flowable<List<Movie>> moviesByRating();
 
 //    @Query("SELECT * FROM movies WHERE id IN (:listOfIds)")
 //    public List<Movie> moviesByIdList(List<Long> listOfIds);

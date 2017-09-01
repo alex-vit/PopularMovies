@@ -25,8 +25,20 @@ public class MoviesLocalDataSource {
         return db.movieDao().movieById(id);
     }
 
-    public Flowable<List<Movie>> favoriteMovies() {
-        return db.movieDao().favoriteMovies();
+    public Flowable<List<Movie>> moviesByFavorite() {
+        return db.movieDao().moviesByFavorite();
+    }
+
+    public Flowable<List<Movie>> moviesByPopularity() {
+        return db.movieDao().moviesByPopularity();
+    }
+
+    public Flowable<List<Movie>> moviesByRating() {
+        return db.movieDao().moviesByRating();
+    }
+
+    public Flowable<List<Movie>> popularMovies() {
+        return db.movieDao().moviesByPopularity();
     }
 
     public long insert(Movie movie) {

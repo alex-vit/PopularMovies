@@ -26,13 +26,16 @@ public class MoviesRepository {
         this.remoteDb = remoteDb;
     }
 
-    public Observable<List<Movie>> moviesByCategory(String category) {
-        switch (category) {
-            case "favorite":
-                return localDb.favoriteMovies().toObservable();
-            default:
-                return remoteDb.moviesByCategory(category);
-        }
+    public Observable<List<Movie>> moviesByFavorite() {
+        return localDb.moviesByFavorite().toObservable();
+    }
+
+    public Observable<List<Movie>> moviesByPopularity() {
+        return remoteDb.moviesByPopularity();
+    }
+
+    public Observable<List<Movie>> moviesByRating() {
+        return remoteDb.moviesByRating();
     }
 
     public Observable<Movie> movieById(long movieId) {
