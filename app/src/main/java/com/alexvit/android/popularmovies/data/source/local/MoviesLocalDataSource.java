@@ -45,6 +45,10 @@ public class MoviesLocalDataSource {
         return db.movieDao().insert(movie);
     }
 
+    public long[] insert(List<Movie> movies) {
+        return db.movieDao().insert(movies);
+    }
+
     public void update(Movie movie) {
         Observable.fromCallable(() -> db.movieDao().update(movie))
                 .subscribeOn(Schedulers.io())

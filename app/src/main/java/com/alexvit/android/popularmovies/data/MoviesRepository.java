@@ -9,6 +9,7 @@ import com.alexvit.android.popularmovies.data.source.remote.MoviesRemoteDataSour
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Aleksandrs Vitjukovs on 8/28/2017.
@@ -31,17 +32,29 @@ public class MoviesRepository {
     }
 
     public Observable<List<Movie>> moviesByPopularity() {
-        return remoteDb.moviesByPopularity();
+
+        remoteDb.moviesByPopularity()
+                .subscribeOn(Schedulers.io())
+                .subscribe(localDb::insert);
+
+        return localDb.moviesByPopularity()
+                .toObservable();
     }
 
     public Observable<List<Movie>> moviesByRating() {
-        return remoteDb.moviesByRating();
+
+        remoteDb.moviesByRating()
+                .subscribeOn(Schedulers.io())
+                .subscribe(localDb::insert);
+
+        return localDb.moviesByRating()
+                .toObservable();
     }
 
     public Observable<Movie> movieById(long movieId) {
         return localDb.movieById(movieId)
                 .toObservable()
-                .onErrorResumeNext(remoteDb.movieById(movieId).map(this::cache));
+                .onErrorResumeNext(remoteDb.movieById(movieId).doOnNext(localDb::insert));
     }
 
     public Observable<List<Review>> reviewsByMovieId(long movieId) {
@@ -54,10 +67,5 @@ public class MoviesRepository {
 
     public void updateMovie(Movie movie) {
         localDb.update(movie);
-    }
-
-    private Movie cache(Movie movie) {
-        localDb.insert(movie);
-        return movie;
     }
 }

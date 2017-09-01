@@ -46,7 +46,7 @@ public class ListViewModel extends BaseViewModel<ListNavigator> {
                 moviesObs = moviesRepository.moviesByRating();
                 break;
             default:
-                throw new UnsupportedOperationException("Unknown category " + category);
+                throw new UnsupportedOperationException("Unknown category \"" + category + "\"");
         }
 
         subscribe(moviesObs,

@@ -14,7 +14,7 @@
     <string name="title_pref_category">Sort by</string>
     <string name="pref_category_default">@string/pref_category_popular</string>
     <string name="pref_category_popular">popular</string>
-    <string name="pref_category_top_rated">top_rated</string>
+    <string name="pref_category_top_rated">top_voted</string>
     <string name="pref_category_favorite">favorite</string>
 
 </resources>
