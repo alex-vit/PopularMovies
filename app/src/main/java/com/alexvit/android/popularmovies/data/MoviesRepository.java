@@ -9,7 +9,6 @@ import com.alexvit.android.popularmovies.data.source.remote.MoviesRemoteDataSour
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Aleksandrs Vitjukovs on 8/28/2017.
@@ -33,26 +32,24 @@ public class MoviesRepository {
 
     public Observable<List<Movie>> moviesByPopularity() {
 
-        remoteDb.moviesByPopularity()
-                .subscribeOn(Schedulers.io())
-                .subscribe(localDb::insert,
-                        __ -> {
-                        });
+        Observable<List<Movie>> localObs = localDb.moviesByPopularity().toObservable();
+        Observable<List<Movie>> remoteObs = remoteDb.moviesByPopularity()
+                .doOnNext(localDb::insert)
+                .onErrorResumeNext(Observable.empty())
+                .filter(__ -> false);
 
-        return localDb.moviesByPopularity()
-                .toObservable();
+        return localObs.mergeWith(remoteObs);
     }
 
     public Observable<List<Movie>> moviesByRating() {
 
-        remoteDb.moviesByRating()
-                .subscribeOn(Schedulers.io())
-                .subscribe(localDb::insert,
-                        __ -> {
-                        });
+        Observable<List<Movie>> localObs = localDb.moviesByRating().toObservable();
+        Observable<List<Movie>> remoteObs = remoteDb.moviesByRating()
+                .doOnNext(localDb::insert)
+                .onErrorResumeNext(Observable.empty())
+                .filter(__ -> false);
 
-        return localDb.moviesByRating()
-                .toObservable();
+        return localObs.mergeWith(remoteObs);
     }
 
     public Observable<Movie> movieById(long movieId) {
