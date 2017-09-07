@@ -7,5 +7,5 @@ import javax.inject.Qualifier;
  */
 
 @Qualifier
-@interface ApiKey {
+public @interface ApiKey {
 }

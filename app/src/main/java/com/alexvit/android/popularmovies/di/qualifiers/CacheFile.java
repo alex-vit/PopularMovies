@@ -7,5 +7,5 @@ import javax.inject.Qualifier;
  */
 
 @Qualifier
-@interface CacheFile {
+public @interface CacheFile {
 }

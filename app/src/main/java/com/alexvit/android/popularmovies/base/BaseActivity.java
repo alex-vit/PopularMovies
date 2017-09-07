@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.alexvit.android.popularmovies.App;
-import com.alexvit.android.popularmovies.di.DaggerActivityComponent;
 import com.alexvit.android.popularmovies.di.components.ActivityComponent;
+import com.alexvit.android.popularmovies.di.components.DaggerActivityComponent;
 import com.alexvit.android.popularmovies.di.modules.ActivityModule;
 
 /**

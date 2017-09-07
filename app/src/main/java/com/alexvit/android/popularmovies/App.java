@@ -3,8 +3,8 @@ package com.alexvit.android.popularmovies;
 import android.app.Application;
 import android.content.Context;
 
-import com.alexvit.android.popularmovies.di.DaggerAppComponent;
 import com.alexvit.android.popularmovies.di.components.AppComponent;
+import com.alexvit.android.popularmovies.di.components.DaggerAppComponent;
 import com.alexvit.android.popularmovies.di.modules.ContextModule;
 
 /**
