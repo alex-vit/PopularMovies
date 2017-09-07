@@ -1,10 +1,12 @@
-package com.alexvit.android.popularmovies.di;
+package com.alexvit.android.popularmovies.di.modules;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.alexvit.android.popularmovies.data.source.local.MoviesDatabase;
 import com.alexvit.android.popularmovies.data.source.local.MoviesLocalDataSource;
+import com.alexvit.android.popularmovies.di.qualifiers.ApplicationContext;
+import com.alexvit.android.popularmovies.di.scopes.ApplicationScope;
 import com.alexvit.android.popularmovies.utils.Constants;
 
 import dagger.Module;

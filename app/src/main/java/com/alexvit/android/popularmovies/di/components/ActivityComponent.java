@@ -1,5 +1,7 @@
-package com.alexvit.android.popularmovies.di;
+package com.alexvit.android.popularmovies.di.components;
 
+import com.alexvit.android.popularmovies.di.modules.ActivityModule;
+import com.alexvit.android.popularmovies.di.scopes.ActivityScope;
 import com.alexvit.android.popularmovies.moviedetails.DetailsActivity;
 import com.alexvit.android.popularmovies.movies.ListActivity;
 

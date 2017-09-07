@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies.di;
+package com.alexvit.android.popularmovies.di.modules;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 
 import com.alexvit.android.popularmovies.data.MoviesRepository;
+import com.alexvit.android.popularmovies.di.qualifiers.ActivityContext;
+import com.alexvit.android.popularmovies.di.scopes.ActivityScope;
 import com.alexvit.android.popularmovies.moviedetails.DetailsViewModel;
 import com.alexvit.android.popularmovies.movies.ListViewModel;
 

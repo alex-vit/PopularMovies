@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies.di;
+package com.alexvit.android.popularmovies.di.modules;
 
 import android.content.Context;
 
@@ -6,6 +6,10 @@ import com.alexvit.android.popularmovies.BuildConfig;
 import com.alexvit.android.popularmovies.data.source.remote.InsertApiKeyInterceptor;
 import com.alexvit.android.popularmovies.data.source.remote.MoviesRemoteDataSource;
 import com.alexvit.android.popularmovies.data.source.remote.TheMovieDbService;
+import com.alexvit.android.popularmovies.di.ApiKey;
+import com.alexvit.android.popularmovies.di.CacheFile;
+import com.alexvit.android.popularmovies.di.qualifiers.ApplicationContext;
+import com.alexvit.android.popularmovies.di.scopes.ApplicationScope;
 import com.alexvit.android.popularmovies.utils.Constants;
 
 import java.io.File;

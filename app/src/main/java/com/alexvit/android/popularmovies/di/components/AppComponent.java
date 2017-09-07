@@ -1,6 +1,8 @@
-package com.alexvit.android.popularmovies.di;
+package com.alexvit.android.popularmovies.di.components;
 
 import com.alexvit.android.popularmovies.data.MoviesRepository;
+import com.alexvit.android.popularmovies.di.modules.MoviesRepositoryModule;
+import com.alexvit.android.popularmovies.di.scopes.ApplicationScope;
 
 import dagger.Component;
 

@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies.di;
+package com.alexvit.android.popularmovies.di.qualifiers;
 
 import javax.inject.Qualifier;
 

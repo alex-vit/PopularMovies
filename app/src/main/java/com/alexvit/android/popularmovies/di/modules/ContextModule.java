@@ -1,6 +1,9 @@
-package com.alexvit.android.popularmovies.di;
+package com.alexvit.android.popularmovies.di.modules;
 
 import android.content.Context;
+
+import com.alexvit.android.popularmovies.di.qualifiers.ApplicationContext;
+import com.alexvit.android.popularmovies.di.scopes.ApplicationScope;
 
 import dagger.Module;
 import dagger.Provides;

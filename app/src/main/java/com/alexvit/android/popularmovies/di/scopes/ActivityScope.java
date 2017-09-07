@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies.di;
+package com.alexvit.android.popularmovies.di.scopes;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

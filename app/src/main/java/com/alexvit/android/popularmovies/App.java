@@ -3,9 +3,9 @@ package com.alexvit.android.popularmovies;
 import android.app.Application;
 import android.content.Context;
 
-import com.alexvit.android.popularmovies.di.AppComponent;
-import com.alexvit.android.popularmovies.di.ContextModule;
 import com.alexvit.android.popularmovies.di.DaggerAppComponent;
+import com.alexvit.android.popularmovies.di.components.AppComponent;
+import com.alexvit.android.popularmovies.di.modules.ContextModule;
 
 /**
  * Created by Aleksandrs Vitjukovs on 8/27/2017.

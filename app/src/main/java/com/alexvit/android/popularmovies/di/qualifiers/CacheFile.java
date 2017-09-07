@@ -1,4 +1,4 @@
-package com.alexvit.android.popularmovies.di;
+package com.alexvit.android.popularmovies.di.qualifiers;
 
 import javax.inject.Qualifier;
 
@@ -7,5 +7,5 @@ import javax.inject.Qualifier;
  */
 
 @Qualifier
-public @interface ApplicationContext {
+@interface CacheFile {
 }
