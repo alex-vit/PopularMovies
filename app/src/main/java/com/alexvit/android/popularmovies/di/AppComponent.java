@@ -1,6 +1,6 @@
 package com.alexvit.android.popularmovies.di;
 
-import com.alexvit.android.popularmovies.App;
+import com.alexvit.android.popularmovies.data.MoviesRepository;
 
 import dagger.Component;
 
@@ -12,5 +12,5 @@ import dagger.Component;
 @Component(modules = {MoviesRepositoryModule.class})
 public interface AppComponent {
 
-    void inject(App app);
+    MoviesRepository moviesRepository();
 }
