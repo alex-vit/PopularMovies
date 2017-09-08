@@ -81,6 +81,9 @@ dependencies {
     compile "android.arch.persistence.room:rxjava2:$rootProject.roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
 
+    // TV
+    compile "com.android.support:leanback-v17:$rootProject.supportLibraryVersion"
+
     testCompile 'junit:junit:4.12'
 }
 
