@@ -15,6 +15,6 @@
     <dimen name="iv_poster_height">277dp</dimen>
     <dimen name="toggle_size">48dp</dimen>
     <!-- TV -->
-    <dimen name="tv_card_width">185dp</dimen>
-    <dimen name="tv_card_height">296dp</dimen>
+    <dimen name="tv_card_width">200dp</dimen>
+    <dimen name="tv_card_height">300dp</dimen>
 </resources>

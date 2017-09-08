@@ -50,7 +50,7 @@ class MovieCardPresenter extends Presenter {
                 cardView.getResources().getDimensionPixelSize(R.dimen.tv_card_height)
         );
         Glide.with(cardView.getContext())
-                .load(Movies.fullImageUrl(movie.backdropPath))
+                .load(Movies.fullImageUrl(movie.posterPath, Movies.PosterSize.w500))
                 .into(cardView.getMainImageView());
     }
 
@@ -62,12 +62,13 @@ class MovieCardPresenter extends Presenter {
     }
 
     private void setupColors(Context context) {
-        defaultBackgroundColor = ContextCompat.getColor(context, R.color.primary_light);
+        defaultBackgroundColor = ContextCompat.getColor(context, R.color.primary_dark);
         selectedBackgroundColor = ContextCompat.getColor(context, R.color.accent);
     }
 
     private void updateCardBackgroundColor(ImageCardView view, boolean selected) {
         int color = selected ? selectedBackgroundColor : defaultBackgroundColor;
         view.setBackgroundColor(color);
+        view.findViewById(R.id.info_field).setBackgroundColor(color);
     }
 }

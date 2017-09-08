@@ -57,6 +57,7 @@ public class Movies {
     public static final class PosterSize {
         public static final String w185 = "w185";
         public static final String w342 = "w342";
+        public static final String w500 = "w500";
     }
 
     public static final class BackdropSize {
