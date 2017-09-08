@@ -36,19 +36,17 @@
             android:name="com.alexvit.android.popularmovies.moviedetails.DetailsActivity"
             android:label="@string/detail_activity_title"
             android:parentActivityName="com.alexvit.android.popularmovies.movies.ListActivity"
-            android:theme="@style/NoActionBar">
-
-        </activity>
+            android:theme="@style/NoActionBar" />
 
         <activity
             android:name="com.alexvit.android.popularmovies.settings.SettingsActivity"
             android:label="@string/settings_activity_title"
-            android:parentActivityName="com.alexvit.android.popularmovies.movies.ListActivity">
-
-        </activity>
+            android:parentActivityName="com.alexvit.android.popularmovies.movies.ListActivity" />
 
         <!-- TV -->
-        <activity android:name=".tv.TvActivity">
+        <activity
+            android:name=".tv.TvActivity"
+            android:theme="@style/Theme.Leanback">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
