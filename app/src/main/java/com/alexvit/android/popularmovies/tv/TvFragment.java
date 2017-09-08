@@ -45,7 +45,13 @@ public class TvFragment extends BaseBrowseFragment {
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        movies -> displayCategory("Popular", movies)
+                        movies -> displayCategory(0, "Popular", movies)
+                );
+        moviesRepository.moviesByRating()
+                .observeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        movies -> displayCategory(1, "Top rated", movies)
                 );
     }
 
@@ -56,12 +62,12 @@ public class TvFragment extends BaseBrowseFragment {
         setBrandColor(ContextCompat.getColor(getActivity(), R.color.primary));
     }
 
-    private void displayCategory(String title, List<Movie> movies) {
+    private void displayCategory(int index, String title, List<Movie> movies) {
 //        Log.d(TAG, "Got movies = " + movies.size());
         HeaderItem header = new HeaderItem(title);
         ArrayObjectAdapter moviesAdapter = new ArrayObjectAdapter(new MovieCardPresenter());
         moviesAdapter.addAll(0, movies);
         ListRow listRow = new ListRow(header, moviesAdapter);
-        mCategoryAdapter.add(listRow);
+        mCategoryAdapter.add(index, listRow);
     }
 }
